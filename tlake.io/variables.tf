@@ -7,11 +7,11 @@ variable dnsimple_account {
 }
 
 variable dnsimple_domain {
-  type    = string
+  type = string
 }
 
 variable porkbun_ip_address {
-    type = string
+  type = string
 }
 
 variable home_ip_address {
