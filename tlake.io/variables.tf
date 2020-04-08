@@ -1,3 +1,7 @@
+variable default_ttl {
+  type = number
+}
+
 variable dnsimple_token {
   type = string
 }

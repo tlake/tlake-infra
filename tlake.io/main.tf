@@ -3,7 +3,7 @@ resource dnsimple_record blog_tlake_io {
   name   = "blog"
   value  = var.porkbun_ip_address
   type   = "A"
-  ttl    = 3600
+  ttl    = var.default_ttl
 }
 
 resource dnsimple_record email_tlake_io {
@@ -11,7 +11,7 @@ resource dnsimple_record email_tlake_io {
   name   = "email"
   value  = var.porkbun_ip_address
   type   = "A"
-  ttl    = 3600
+  ttl    = var.default_ttl
 }
 
 resource dnsimple_record mc_tlake_io {
@@ -19,7 +19,7 @@ resource dnsimple_record mc_tlake_io {
   name   = "mc"
   value  = var.home_ip_address
   type   = "A"
-  ttl    = 3600
+  ttl    = var.default_ttl
 }
 
 resource dnsimple_record minecraft_tlake_io {
@@ -27,7 +27,7 @@ resource dnsimple_record minecraft_tlake_io {
   name   = "minecraft"
   value  = var.home_ip_address
   type   = "A"
-  ttl    = 3600
+  ttl    = var.default_ttl
 }
 
 resource dnsimple_record cloud_tlake_io {
@@ -35,7 +35,7 @@ resource dnsimple_record cloud_tlake_io {
   name   = "cloud"
   value  = var.home_ip_address
   type   = "A"
-  ttl    = 3600
+  ttl    = var.default_ttl
 }
 
 resource dnsimple_record alias_tlake_io {
@@ -43,7 +43,7 @@ resource dnsimple_record alias_tlake_io {
   name   = ""
   value  = "tlake.github.io"
   type   = "ALIAS"
-  ttl    = 3600
+  ttl    = var.default_ttl
 }
 
 resource dnsimple_record www_tlake_io {
@@ -51,7 +51,7 @@ resource dnsimple_record www_tlake_io {
   name   = "www"
   value  = "tlake.io"
   type   = "CNAME"
-  ttl    = 3600
+  ttl    = var.default_ttl
 }
 
 resource dnsimple_record alias_txt_tlake_io {
@@ -59,7 +59,7 @@ resource dnsimple_record alias_txt_tlake_io {
   name   = ""
   value  = "ALIAS for tlake.github.io"
   type   = "TXT"
-  ttl    = 3600
+  ttl    = var.default_ttl
 }
 
 resource dnsimple_record challenge1_tlake_io {
