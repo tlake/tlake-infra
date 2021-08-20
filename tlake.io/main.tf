@@ -40,10 +40,10 @@ resource dnsimple_record cloud_tlake_io {
 
 resource dnsimple_record foundry_tlake_io {
   domain = var.dnsimple_domain
-  name = "foundry"
-  value = var.home_ip_address
-  type = "A"
-  ttl = var.default_ttl
+  name   = "foundry"
+  value  = var.home_ip_address
+  type   = "A"
+  ttl    = var.default_ttl
 }
 
 resource dnsimple_record alias_tlake_io {
