@@ -13,15 +13,15 @@ terraform {
   required_providers {
     aws = {
       source = "hashicorp/aws"
+      version = ">= 3.55"
     }
   }
 }
 
 provider "aws" {
-  required_version = ">= 3.55"
+  region = var.aws_region
 
   default_tags {
     Process = "Managed by Terraform"
   }
-  region = var.aws_region
 }

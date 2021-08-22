@@ -12,14 +12,13 @@ terraform {
 
   required_providers {
     dnsimple = {
-      source = "terraform-providers/dnsimple"
+      source  = "terraform-providers/dnsimple"
+      version = ">= 0.6"
     }
   }
 }
 
 provider "dnsimple" {
-  required_version = ">= 0.6"
-
   account = var.dnsimple_account
   token   = var.dnsimple_token
 }
