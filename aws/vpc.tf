@@ -17,6 +17,18 @@ resource "aws_default_subnet" "defaults" {
   ])
 
   availability_zone = each.key
+
+  tags = {
+    Name = "Default Subnet in AZ ${each.key}"
+  }
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_default_vpc.default.id
+
+  tags = {
+    Name   = "Default SG for Default VPC"
+  }
 }
 
 ################
