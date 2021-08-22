@@ -18,6 +18,8 @@ terraform {
 }
 
 provider "dnsimple" {
-  token   = var.dnsimple_token
+  required_version = ">= 0.6"
+
   account = var.dnsimple_account
+  token   = var.dnsimple_token
 }
