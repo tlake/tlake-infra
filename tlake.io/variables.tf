@@ -1,24 +1,24 @@
-variable default_ttl {
+variable "default_ttl" {
   type = number
 }
 
-variable dnsimple_token {
+variable "dnsimple_token" {
   type = string
 }
 
-variable dnsimple_account {
+variable "dnsimple_account" {
   type = string
 }
 
-variable dnsimple_domain {
+variable "dnsimple_domain" {
   type = string
 }
 
-variable porkbun_ip_address {
+variable "porkbun_ip_address" {
   type = string
 }
 
-variable home_ip_address {
+variable "home_ip_address" {
   type = string
 }
 
