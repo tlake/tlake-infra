@@ -133,11 +133,3 @@ resource dnsimple_record challenge8_tlake_io {
   type   = "TXT"
   ttl    = 1
 }
-
-resource dnsimple_record deletemelater {
-  domain = var.dnsimple_domain
-  name   = "tmp"
-  value  = "tmp"
-  type   = "TXT"
-  ttl    = 1
-}
