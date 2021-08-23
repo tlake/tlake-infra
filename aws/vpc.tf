@@ -50,6 +50,7 @@ resource "aws_vpc" "tlake_infra" {
 resource "aws_security_group" "codefellows_ssh" {
   name        = "ssh-access"
   description = "Security Group created for Code Fellows"
+  vpc_id      = aws_default_vpc.default.id
 
   egress = [
     {
