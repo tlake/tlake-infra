@@ -65,13 +65,3 @@ resource "aws_security_group" "codefellows_ssh" {
   ]
 }
 
-resource "aws_db_instance" "imagerdb" {
-  instance_class      = "db.t2.micro"
-  name                = "imagerdb"
-  publicly_accessible = true
-  skip_final_snapshot = true
-
-  tags = {
-    workload-type = "other"
-  }
-}
