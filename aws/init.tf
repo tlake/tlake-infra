@@ -12,7 +12,7 @@ terraform {
 
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = ">= 3.55"
     }
   }
@@ -22,6 +22,8 @@ provider "aws" {
   region = var.aws_region
 
   default_tags {
-    Process = "Managed by Terraform"
+    tags = {
+      "Process" = "Managed by Terraform"
+    }
   }
 }
