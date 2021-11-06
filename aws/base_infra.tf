@@ -28,7 +28,7 @@ resource "aws_default_security_group" "default" {
 }
 
 resource "aws_security_group" "tlake_default" {
-  description = "allows http, https, ssh, and portainer agent"
+  description = "allows http, https, and ssh"
   name        = "tlake-default"
   vpc_id      = aws_default_vpc.default.id
 
@@ -80,6 +80,29 @@ resource "aws_security_group" "tlake_default" {
       self             = false
       to_port          = 80
     },
+  ]
+}
+
+resource "aws_security_group" "tlake_ec2_apps" {
+  description = "configure egress/ingress for applications on the tl-ec2 instance"
+  name        = "tlake-ec2-apps"
+  vpc_id      = aws_default_vpc.default.id
+
+  egress = [
+    {
+      cidr_blocks      = ["0.0.0.0/0"]
+      description      = ""
+      from_port        = 0
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "-1"
+      security_groups  = []
+      self             = false
+      to_port          = 0
+    },
+  ]
+
+  ingress = [
     {
       cidr_blocks      = [ "0.0.0.0/0" ]
       description      = "portainer agent"
