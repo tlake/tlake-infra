@@ -28,7 +28,7 @@ resource "aws_default_security_group" "default" {
 }
 
 resource "aws_security_group" "tlake_default" {
-  description = "allows http, https, and ssh"
+  description = "allows http, https, ssh, and portainer agent"
   name        = "tlake-default"
   vpc_id      = aws_default_vpc.default.id
 
@@ -79,6 +79,17 @@ resource "aws_security_group" "tlake_default" {
       security_groups  = []
       self             = false
       to_port          = 80
+    },
+    {
+      cidr_blocks      = [ "0.0.0.0/0" ]
+      description      = "portainer agent"
+      from_port        = 9001
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 9001
     },
     {
       cidr_blocks      = [ "0.0.0.0/0" ]
