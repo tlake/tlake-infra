@@ -1,3 +1,46 @@
+################
+# ROOT
+################
+resource "dnsimple_record" "www_tlake_io" {
+  domain = var.dnsimple_domain
+  name   = "www"
+  value  = "tlake.io"
+  type   = "CNAME"
+  ttl    = var.default_ttl
+}
+
+################
+# ALIAS
+################
+
+resource "dnsimple_record" "alias_tlake_io" {
+  domain = var.dnsimple_domain
+  name   = ""
+  value  = "tlake.github.io"
+  type   = "ALIAS"
+  ttl    = var.default_ttl
+}
+
+resource "dnsimple_record" "alias_txt_tlake_io" {
+  domain = var.dnsimple_domain
+  name   = ""
+  value  = "ALIAS for tlake.github.io"
+  type   = "TXT"
+  ttl    = var.default_ttl
+}
+
+################
+# A
+################
+
+resource "dnsimple_record" "bitwarden_tlake_io" {
+  domain = var.dnsimple_domain
+  name   = "bitwarden"
+  value  = var.home_ip_address
+  type   = "A"
+  ttl    = var.default_ttl
+}
+
 resource "dnsimple_record" "blog_tlake_io" {
   domain = var.dnsimple_domain
   name   = "blog"
@@ -6,10 +49,26 @@ resource "dnsimple_record" "blog_tlake_io" {
   ttl    = var.default_ttl
 }
 
+resource "dnsimple_record" "cloud_tlake_io" {
+  domain = var.dnsimple_domain
+  name   = "cloud"
+  value  = var.home_ip_address
+  type   = "A"
+  ttl    = var.default_ttl
+}
+
 resource "dnsimple_record" "email_tlake_io" {
   domain = var.dnsimple_domain
   name   = "email"
   value  = var.porkbun_ip_address
+  type   = "A"
+  ttl    = var.default_ttl
+}
+
+resource "dnsimple_record" "foundry_tlake_io" {
+  domain = var.dnsimple_domain
+  name   = "foundry"
+  value  = var.home_ip_address
   type   = "A"
   ttl    = var.default_ttl
 }
@@ -30,53 +89,17 @@ resource "dnsimple_record" "minecraft_tlake_io" {
   ttl    = var.default_ttl
 }
 
-resource "dnsimple_record" "cloud_tlake_io" {
+resource "dnsimple_record" "portainer_tlake_io" {
   domain = var.dnsimple_domain
-  name   = "cloud"
+  name   = "portainer"
   value  = var.home_ip_address
   type   = "A"
   ttl    = var.default_ttl
 }
 
-resource "dnsimple_record" "foundry_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "foundry"
-  value  = var.home_ip_address
-  type   = "A"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "bitwarden_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "bitwarden"
-  value  = var.home_ip_address
-  type   = "A"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "alias_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = ""
-  value  = "tlake.github.io"
-  type   = "ALIAS"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "www_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "www"
-  value  = "tlake.io"
-  type   = "CNAME"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "alias_txt_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = ""
-  value  = "ALIAS for tlake.github.io"
-  type   = "TXT"
-  ttl    = var.default_ttl
-}
+################
+# MISC
+################
 
 resource "dnsimple_record" "challenge1_tlake_io" {
   domain = var.dnsimple_domain
