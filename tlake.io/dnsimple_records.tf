@@ -97,6 +97,14 @@ resource "dnsimple_record" "portainer_tlake_io" {
   ttl    = var.default_ttl
 }
 
+resource "dnsimple_record" "portainer_agent_artemicion_tlake_io" {
+  domain = var.dnsimple_domain
+  name   = "portainer-agent-artemicion"
+  value  = var.home_ip_address
+  type   = "A"
+  ttl    = var.default_ttl
+}
+
 ################
 # MISC
 ################
