@@ -57,6 +57,14 @@ resource "dnsimple_record" "cloud_tlake_io" {
   ttl    = var.default_ttl
 }
 
+resource "dnsimple_record" "docker-registry_tlake_io" {
+  domain = var.dnsimple_domain
+  name   = "docker-registry"
+  value  = var.home_ip_address
+  type   = "A"
+  ttl    = var.default_ttl
+}
+
 resource "dnsimple_record" "email_tlake_io" {
   domain = var.dnsimple_domain
   name   = "email"
