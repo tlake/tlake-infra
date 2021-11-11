@@ -1,6 +1,7 @@
 ################
 # ROOT
 ################
+
 resource "dnsimple_record" "www_tlake_io" {
   domain = var.dnsimple_domain
   name   = "www"
@@ -33,82 +34,35 @@ resource "dnsimple_record" "alias_txt_tlake_io" {
 # A
 ################
 
-resource "dnsimple_record" "bitwarden_tlake_io" {
+resource "dnsimple_record" "tlake_io_subdomain_home_routes" {
+  for_each = toset([
+    "bitwarden",
+    "cloud",
+    "docker-registry",
+    "foundry",
+    "mc",
+    "minecraft",
+    "portainer",
+    "portainer-agent-artemicion",
+  ])
+
   domain = var.dnsimple_domain
-  name   = "bitwarden"
+  name = each.value
   value  = var.home_ip_address
   type   = "A"
   ttl    = var.default_ttl
 }
 
-resource "dnsimple_record" "blog_tlake_io" {
+
+resource "dnsimple_record" "tlake_io_subdomain_porkbun_routes" {
+  for_each = toset([
+    "blog",
+    "email",
+  ])
+
   domain = var.dnsimple_domain
-  name   = "blog"
+  name   = each.value
   value  = var.porkbun_ip_address
-  type   = "A"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "cloud_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "cloud"
-  value  = var.home_ip_address
-  type   = "A"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "docker-registry_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "docker-registry"
-  value  = var.home_ip_address
-  type   = "A"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "email_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "email"
-  value  = var.porkbun_ip_address
-  type   = "A"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "foundry_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "foundry"
-  value  = var.home_ip_address
-  type   = "A"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "mc_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "mc"
-  value  = var.home_ip_address
-  type   = "A"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "minecraft_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "minecraft"
-  value  = var.home_ip_address
-  type   = "A"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "portainer_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "portainer"
-  value  = var.home_ip_address
-  type   = "A"
-  ttl    = var.default_ttl
-}
-
-resource "dnsimple_record" "portainer_agent_artemicion_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "portainer-agent-artemicion"
-  value  = var.home_ip_address
   type   = "A"
   ttl    = var.default_ttl
 }
@@ -117,66 +71,26 @@ resource "dnsimple_record" "portainer_agent_artemicion_tlake_io" {
 # MISC
 ################
 
-resource "dnsimple_record" "challenge1_tlake_io" {
+locals {
+  txt_challenges = [
+    { record_name: "_acme-challenge",     record_value: "5zj3Pr2eRPPyw5S4euvnZ98qubjcLqAbO2aEz53h-lo", },
+    { record_name: "_acme-challenge",     record_value: "5VV_XGcGHlA8m3Eg2xODf0YLr2FealenncWLEB6a2Hk", },
+    { record_name: "_acme-challenge",     record_value: "NJZu_dPxwNqbliE8sUiQ4qcIzzPHFk7IiPIr_3gXd9o", },
+    { record_name: "_acme-challenge",     record_value: "C30lQ5JRtgXzqctmzk9aK5AgiuYYPSAjnt6-J0cZ1GQ", },
+    { record_name: "_acme-challenge.www", record_value: "2eAi2LfAqe2kZD1exDz4YJz2PnlwznNBz-FDOSV3e4c", },
+    { record_name: "_acme-challenge.www", record_value: "ztNqyaS4r9atH4FaWb3CMpCWTmXnH7xyJ276LzklQpQ", },
+    { record_name: "_acme-challenge.www", record_value: "MQl-hplvzWNmkqOF4l3_ntOzBOYAKjNj_Tamn3Endtg", },
+    { record_name: "_acme-challenge.www", record_value: "TEJuZs7UoIaRFrylsCKW9wtsP-ICR8li7zD8wCCHPeM", },
+  ]
+}
+
+resource "dnsimple_record" "tlake_io_txt_challenges" {
+  count = length(local.txt_challenges)
+
   domain = var.dnsimple_domain
-  name   = "_acme-challenge"
-  value  = "5zj3Pr2eRPPyw5S4euvnZ98qubjcLqAbO2aEz53h-lo"
+  name   = local.txt_challenges[count.index]["record_name"]
+  value  = local.txt_challenges[count.index]["record_value"]
   type   = "TXT"
   ttl    = 1
 }
 
-resource "dnsimple_record" "challenge2_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "_acme-challenge"
-  value  = "5VV_XGcGHlA8m3Eg2xODf0YLr2FealenncWLEB6a2Hk"
-  type   = "TXT"
-  ttl    = 1
-}
-
-resource "dnsimple_record" "challenge3_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "_acme-challenge"
-  value  = "NJZu_dPxwNqbliE8sUiQ4qcIzzPHFk7IiPIr_3gXd9o"
-  type   = "TXT"
-  ttl    = 1
-}
-
-resource "dnsimple_record" "challenge4_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "_acme-challenge"
-  value  = "C30lQ5JRtgXzqctmzk9aK5AgiuYYPSAjnt6-J0cZ1GQ"
-  type   = "TXT"
-  ttl    = 1
-}
-
-resource "dnsimple_record" "challenge5_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "_acme-challenge.www"
-  value  = "2eAi2LfAqe2kZD1exDz4YJz2PnlwznNBz-FDOSV3e4c"
-  type   = "TXT"
-  ttl    = 1
-}
-
-resource "dnsimple_record" "challenge6_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "_acme-challenge.www"
-  value  = "ztNqyaS4r9atH4FaWb3CMpCWTmXnH7xyJ276LzklQpQ"
-  type   = "TXT"
-  ttl    = 1
-}
-
-resource "dnsimple_record" "challenge7_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "_acme-challenge.www"
-  value  = "MQl-hplvzWNmkqOF4l3_ntOzBOYAKjNj_Tamn3Endtg"
-  type   = "TXT"
-  ttl    = 1
-}
-
-resource "dnsimple_record" "challenge8_tlake_io" {
-  domain = var.dnsimple_domain
-  name   = "_acme-challenge.www"
-  value  = "TEJuZs7UoIaRFrylsCKW9wtsP-ICR8li7zD8wCCHPeM"
-  type   = "TXT"
-  ttl    = 1
-}
