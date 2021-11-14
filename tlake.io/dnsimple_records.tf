@@ -37,6 +37,7 @@ resource "dnsimple_record" "alias_txt_tlake_io" {
 resource "dnsimple_record" "tlake_io_subdomain_home_routes" {
   for_each = toset([
     "bitwarden",
+    "calibre-web",
     "cloud",
     "docker-registry",
     "foundry",
@@ -44,7 +45,6 @@ resource "dnsimple_record" "tlake_io_subdomain_home_routes" {
     "mc",
     "minecraft",
     "portainer",
-    "portainer-agent-artemicion",
   ])
 
   domain = var.dnsimple_domain
