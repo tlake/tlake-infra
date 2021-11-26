@@ -45,7 +45,6 @@ resource "dnsimple_record" "tlake_io_subdomain_home_routes" {
     "mc",
     "minecraft",
     "portainer",
-    "ssh",
   ])
 
   domain = var.dnsimple_domain
