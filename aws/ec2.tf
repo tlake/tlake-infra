@@ -15,3 +15,18 @@ resource "aws_instance" "tlake_general" {
     Name = "tlake-general"
   }
 }
+
+resource "aws_ebs_volume" "tlake_general" {
+  availability_zone = aws_instance.tlake_general.availability_zone
+  size = 32
+  type = "gp2"
+  tags = {
+    "Name" = "tlake-general"
+  }
+}
+
+resource "aws_volume_attachment" "tlake_general" {
+  device_name = "/dev/xvda"
+  instance_id = aws_instance.tlake_general.id
+  volume_id = aws_ebs_volume.tlake_general.id
+}
