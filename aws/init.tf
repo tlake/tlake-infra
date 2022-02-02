@@ -1,8 +1,7 @@
 terraform {
-  required_version = ">= 1.0"
+  required_version = ">= 1.1"
 
-  backend "remote" {
-    hostname     = "app.terraform.io"
+  cloud {
     organization = "tlake"
 
     workspaces {
