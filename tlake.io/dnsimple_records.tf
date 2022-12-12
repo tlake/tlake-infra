@@ -41,6 +41,7 @@ resource "dnsimple_record" "tlake_io_subdomain_home_routes" {
     "cloud",
     "docker-registry",
     "foundry",
+    "gitea",
     "gitlab",
     "mc",
     "minecraft",
