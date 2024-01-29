@@ -36,6 +36,7 @@ resource "dnsimple_record" "alias_txt_tlake_io" {
 
 resource "dnsimple_record" "tlake_io_subdomain_home_routes" {
   for_each = toset([
+    "actual",
     "bitwarden",
     "calibre-web",
     "cloud",
