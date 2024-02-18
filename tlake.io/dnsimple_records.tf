@@ -47,6 +47,7 @@ resource "dnsimple_record" "tlake_io_subdomain_home_routes" {
     "ghostfolio",
     "gitea",
     "gitlab",
+    "lazylibrarian",
     "mc",
     "minecraft",
     "portainer",
