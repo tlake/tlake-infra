@@ -1,0 +1,30 @@
+thicketpis:
+  hosts:
+    cinderblanket:
+    butterbeak:
+    cosmosblock:
+    candydearth:
+  vars:
+    ansible_user: pi
+    ansible_ssh_pass: "{{ thicket_pis_ssh_password }}"
+
+k8s:
+  children:
+    k8smasters:
+    k8sworkers:
+
+k8smanager:
+  hosts:
+    cinderblanket:
+      token: raspberrythicketraspberrythicket
+
+k8sworkers:
+  hosts:
+    butterbeak:
+      token: raspberrythicketraspberrythicketbutterbeak
+    cosmosblock:
+      token: raspberrythicketraspberrythicketcosmosblock
+    candydearth:
+      token: raspberrythicketraspberrythicketcandydearth
+  vars:
+    k8smanager: 192.168.0.131:25000

@@ -1,0 +1,5 @@
+- name: ping the thicket
+  gather_facts: no
+  hosts: thicketpis
+  tasks:
+    - action: ansible.builtin.ping

@@ -1,0 +1,47 @@
+- name: Prepare for Kubernetes
+  hosts: thicketpis
+  tasks:
+    - set_fact:
+        cmdline_txt_path: "/boot/firmware/cmdline.txt"
+  
+    - include_tasks: cmdline.yaml
+      args:
+        apply:
+          become: true
+      vars:
+        key: cgroup_enable
+        value: memory
+        update: false
+        # will add the argument if the key-value-pair doesn't exist
+  
+    - include_tasks: cmdline.yaml
+      args:
+        apply:
+          become: true
+      vars:
+        key: cgroup_memory
+        value: 1
+        update: true
+        # will replace the value of the first matching key, if found;
+        # will add it if it's not found
+
+    # - name: Configure host name
+    #   become: true
+    #   shell: sh -c "echo '$(hostname).local' > /etc/hostname"
+  
+    - shell: export LC_ALL=C.UTF-8
+    - shell: export LANG=C.UTF-8
+    - shell: echo "LC_ALL=en_US.UTF-8" | sudo tee -a /etc/environment
+    - shell: echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen
+    - shell: echo "LANG=en_US.UTF-8" | sudo tee -a /etc/locale.conf
+  
+    - name: Configure locale
+      become: true
+      shell: locale-gen en_US.UTF-8
+  
+    - name: Reboot
+      become: true
+      reboot:
+        reboot_timeout: 200
+      ignore_errors: yes
+      ignore_unreachable: yes

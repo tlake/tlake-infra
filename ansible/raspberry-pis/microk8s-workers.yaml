@@ -1,0 +1,5 @@
+- name: Make workers join the kubernetes cluster
+  hosts: k8sworkers
+  tasks:
+    - name: Join {{ k8smanager }}
+      shell: /snap/bin/microk8s.join {{ k8smanager }}/{{ token }}
