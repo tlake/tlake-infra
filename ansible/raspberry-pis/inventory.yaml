@@ -16,15 +16,19 @@ k8s:
 k8smanager:
   hosts:
     cinderblanket:
+      ansible_host: 192.168.0.131
       token: raspberrythicketraspberrythicket
 
 k8sworkers:
   hosts:
     butterbeak:
+      ansible_host: 192.168.0.132
       token: raspberrythicketraspberrythicketbutterbeak
     cosmosblock:
+      ansible_host: 192.168.0.133
       token: raspberrythicketraspberrythicketcosmosblock
     candydearth:
+      ansible_host: 192.168.0.134
       token: raspberrythicketraspberrythicketcandydearth
   vars:
     k8smanager: 192.168.0.131:25000
