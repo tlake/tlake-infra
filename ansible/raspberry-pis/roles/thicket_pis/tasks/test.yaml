@@ -1,0 +1,2 @@
+- name: "do an echo"
+  shell: "echo 'testing testing'"

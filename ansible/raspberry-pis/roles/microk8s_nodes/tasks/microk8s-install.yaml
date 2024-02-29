@@ -1,5 +1,5 @@
 - name: Install Kubernetes (MicroK8s)
-  hosts: thicketpis
+  hosts: thicket_pis
   tasks:
     - name: Install snap
       become: true
