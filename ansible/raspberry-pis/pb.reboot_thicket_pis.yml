@@ -1,0 +1,10 @@
+---
+- name: reboot thicket pis
+  hosts: thicket_pis
+  serial: 1
+  vars_files:
+    - vault/main.yaml
+  tasks:
+    - become: true
+      reboot:
+        reboot_timeout: 200

@@ -1,0 +1,7 @@
+---
+- name: create microk8s cluster
+  hosts: thicket_pis
+  roles:
+    - microk8s_nodes
+  vars_files:
+    - vault/main.yaml
