@@ -1,0 +1,17 @@
+- name: ensure /etc/hostname contains inventory_hostname
+  ansible.builtin.lineinfile:
+    path: /etc/hostname
+    regexp: '^{{ inventory_hostname }}'
+    state: absent
+  check_mode: yes
+  changed_when: false
+  register: out
+
+- name: write inventory_hostname to /etc/hostname
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/hostname
+    content: "{{ inventory_hostname }}"
+  when: not out.found
+  notify:
+    - "reboot pi"

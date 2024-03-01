@@ -1,0 +1,14 @@
+- name: update package lists
+  become: true
+  apt:
+    update_cache: true
+
+- name: upgrade packages
+  become: true
+  apt:
+    autoclean: true
+    autoremove: true
+    upgrade: true
+    update_cache: true
+    cache_valid_time: 86400
+

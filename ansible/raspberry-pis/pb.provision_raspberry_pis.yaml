@@ -1,0 +1,7 @@
+---
+- name: "Provision Raspberry Pis"
+  hosts: "thicket_pis"
+  roles:
+    - "raspberry_pis"
+  vars_files:
+    - "vault/main.yaml"
