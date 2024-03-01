@@ -4,22 +4,17 @@ homelab:
 
 thicket_pis:
   hosts:
-    cinderblanket:
-    butterbeak:
-    cosmosblock:
-    candydearth:
+    thicket[0:3]:
 
 k8s:
   children:
-    k8smasters:
-    k8sworkers:
+    k8s_managers:
+    k8s_workers:
 
-k8smanager:
+k8s_managers:
   hosts:
-    cinderblanket:
+    thicket0:
 
-k8sworkers:
+k8s_workers:
   hosts:
-    butterbeak:
-    cosmosblock:
-    candydearth:
+    thicket[1:3]:
