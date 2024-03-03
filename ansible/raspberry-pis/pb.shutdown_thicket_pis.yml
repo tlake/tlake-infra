@@ -1,0 +1,8 @@
+---
+- name: shutdown thicket pis
+  hosts: thicket_pis
+  vars_files:
+    - vault/main.yml
+  tasks:
+    - become: true
+      community.general.shutdown:
