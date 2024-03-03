@@ -1,7 +1,7 @@
 ---
-- name: "Test Playbook"
-  hosts: "thicket_pis"
+- name: Test Playbook
+  hosts: thicket_pis
   roles:
-    - "thicket_pis"
+    - thicket_pis
   vars_files:
-    - "vault/main.yaml"
+    - vault/main.yml

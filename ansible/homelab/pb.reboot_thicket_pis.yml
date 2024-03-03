@@ -3,7 +3,7 @@
   hosts: thicket_pis
   serial: 1
   vars_files:
-    - vault/main.yaml
+    - vault/main.yml
   tasks:
     - become: true
       reboot:

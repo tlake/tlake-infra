@@ -4,4 +4,4 @@
   roles:
     - microk8s_nodes
   vars_files:
-    - vault/main.yaml
+    - vault/main.yml

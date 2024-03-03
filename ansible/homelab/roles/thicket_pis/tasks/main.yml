@@ -1,2 +1,2 @@
 - name: "Do a little test"
-  import_tasks: "test.yaml"
+  import_tasks: "test.yml"

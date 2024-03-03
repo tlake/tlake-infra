@@ -4,4 +4,4 @@
   roles:
     - raspberry_pis
   vars_files:
-    - vault/main.yaml
+    - vault/main.yml
