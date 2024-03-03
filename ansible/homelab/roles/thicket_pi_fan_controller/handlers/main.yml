@@ -1,0 +1,5 @@
+---
+- name: reboot pi
+  become: true
+  reboot:
+    reboot_timeout: 200

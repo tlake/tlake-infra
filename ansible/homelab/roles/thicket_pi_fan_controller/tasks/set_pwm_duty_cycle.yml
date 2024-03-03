@@ -1,0 +1,11 @@
+---
+# use pigs to talk to the pigpio daemon and set the pwm duty cycle.
+#
+# this assumes that the pi is controlling two fans, as in a cluster
+# case, and that one fan's pwm input wire is connected to gpio pin
+# 12 and the other fan's pwm input wire is connected to gpio pin 13.
+#
+# http://abyz.me.uk/rpi/pigpio/pigs.html#HP
+
+- name: set pwm fans duty cycle to 70%
+  ansible.builtin.shell: "for p in 12 13 ; do pigs hp ${p} 100 700000 ; done"

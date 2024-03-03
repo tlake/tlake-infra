@@ -1,0 +1,20 @@
+---
+# These controls are deprecated, since they only enable a single
+# fan to turn full on or full off at a single temperature
+# threshold. Kept for just-in-case.
+
+
+#- name: enable pwm0 (gpio 12) at 70 degrees
+#become: true
+#ansible.builtin.shell: raspi-config nonint do_fan 0 12 70
+#notify: reboot pi
+
+#- name: enable pwm1 (gpio 13) at to 70 degrees
+#  become: true
+#  ansible.builtin.shell: raspi-config nonint do_fan 0 13 70
+#  notify: reboot pi
+
+#- name: disable raspi-config pwm fan control
+#become: true
+#ansible.builtin.shell: raspi-config nonint do_fan 1
+#notify: reboot pi

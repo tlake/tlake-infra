@@ -1,0 +1,8 @@
+---
+- name: configure pwm fan control
+  hosts: thicket_fan_controllers
+  roles:
+    - thicket_pi_fan_controller
+  vars_files:
+    - vault/main.yml
+  
