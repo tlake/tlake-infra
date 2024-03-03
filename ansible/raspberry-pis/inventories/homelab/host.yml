@@ -1,6 +1,15 @@
 homelab:
   children:
+    raspberry_pis:
+
+raspberry_pis:
+  children:
     thicket_pis:
+    one_off_pis:
+
+one_off_pies:
+  hosts:
+    mansionsyrup:
 
 thicket_pis:
   hosts:
