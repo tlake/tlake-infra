@@ -9,3 +9,11 @@
 
 - name: set pwm fans duty cycle to 60%
   ansible.builtin.shell: "for p in 12 13 ; do pigs hp ${p} 100 600000 ; done"
+
+- name: persist fan state after reboot via cron
+  ansible.builtin.cron:
+    name: FAN_PWM_STATE
+    job: "for p in 12 13 ; do pigs hp ${p} 100 600000 ; done"
+    special_time: reboot
+    state: present
+    user: "{{ ansible_user }}"
