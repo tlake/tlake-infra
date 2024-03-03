@@ -15,8 +15,8 @@ ansible-playbook -i inventories/homelab.yml pb.ping.yml
 | Playbook                         | Description |
 |----------------------------------|-------------|
 | pb.provision_raspberry_pis.yml   | basic raspberry pi configuration, starting from first boot after os flash |
-| pb.create_microk8s_cluster.yml   | get microk8s running on the thicket pis, join them into a cluster |
 | pb.configure_pwm_fan_control.yml | get the case fans running at less than full bore |
+| pb.create_microk8s_cluster.yml   | get microk8s running on the thicket pis, join them into a cluster |
 
 
 ## Utility playbooks
