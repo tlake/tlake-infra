@@ -13,7 +13,7 @@ resource "cloudflare_record" "www_tlake_io" {
   proxied = true
   value  = "tlake.io"
   type   = "CNAME"
-  ttl    = var.default_ttl
+  ttl    = var.cloudflare_proxy_ttl
 }
 
 #################
@@ -27,7 +27,7 @@ resource "cloudflare_record" "www_tlake_io" {
 #  name   = ""
 #  value  = "tlake.github.io"
 #  type   = "ALIAS"
-#  ttl    = var.default_ttl
+#  ttl    = var.cloudflare_proxy_ttl
 #}
 #
 #resource "cloudflare_record" "alias_txt_tlake_io" {
@@ -35,7 +35,7 @@ resource "cloudflare_record" "www_tlake_io" {
 #  name   = ""
 #  value  = "ALIAS for tlake.github.io"
 #  type   = "TXT"
-#  ttl    = var.default_ttl
+#  ttl    = var.cloudflare_proxy_ttl
 #}
 
 #################
@@ -68,7 +68,7 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
   proxied = true
   value  = var.home_ip_address
   type   = "A"
-  ttl    = var.default_ttl
+  ttl    = var.cloudflare_proxy_ttl
 }
 
 
@@ -83,7 +83,7 @@ resource "cloudflare_record" "tlake_io_subdomain_porkbun_routes" {
   proxied = true
   value  = var.porkbun_ip_address
   type   = "A"
-  ttl    = var.default_ttl
+  ttl    = var.cloudflare_proxy_ttl
 }
 
 #################

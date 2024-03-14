@@ -10,6 +10,11 @@ variable "cloudflare_api_token" {
   type = string
 }
 
+variable "cloudflare_proxy_ttl" {
+  default = 1
+  type = number
+}
+
 variable "dnsimple_account" {
   type = string
 }
