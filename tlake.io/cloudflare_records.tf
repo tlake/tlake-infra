@@ -18,73 +18,75 @@ resource "cloudflare_record" "www_tlake_io" {
 #################
 ## ALIAS
 #################
-#
-#resource "dnsimple_record" "alias_tlake_io" {
-#  domain = var.dnsimple_domain
+
+# TODO: figure out how to replace alias in cf since it doesn't exist
+
+#resource "cloudflare_record" "alias_tlake_io" {
+#  zone_id = cloudflare_zone.tlake_io.id
 #  name   = ""
 #  value  = "tlake.github.io"
 #  type   = "ALIAS"
 #  ttl    = var.default_ttl
 #}
 #
-#resource "dnsimple_record" "alias_txt_tlake_io" {
-#  domain = var.dnsimple_domain
+#resource "cloudflare_record" "alias_txt_tlake_io" {
+#  zone_id = cloudflare_zone.tlake_io.id
 #  name   = ""
 #  value  = "ALIAS for tlake.github.io"
 #  type   = "TXT"
 #  ttl    = var.default_ttl
 #}
-#
+
 #################
 ## A
 #################
-#
-#resource "dnsimple_record" "tlake_io_subdomain_home_routes" {
-#  for_each = toset([
-#    "actual",
-#    "ando-mcfoundry",
-#    "bitwarden",
-#    "calibre-web",
-#    "cloud",
-#    "docker-registry",
-#    "firefly",
-#    "firefly-importer",
-#    "foundry",
-#    "ghostfolio",
-#    "gitea",
-#    "gitlab",
-#    "lazylibrarian",
-#    "mc",
-#    "minecraft",
-#    "portainer",
-#    "stable-diffusion",
-#  ])
-#
-#  domain = var.dnsimple_domain
-#  name = each.value
-#  value  = var.home_ip_address
-#  type   = "A"
-#  ttl    = var.default_ttl
-#}
-#
-#
-#resource "dnsimple_record" "tlake_io_subdomain_porkbun_routes" {
-#  for_each = toset([
-#    "blog",
-#    "email",
-#  ])
-#
-#  domain = var.dnsimple_domain
-#  name   = each.value
-#  value  = var.porkbun_ip_address
-#  type   = "A"
-#  ttl    = var.default_ttl
-#}
-#
+
+resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
+  for_each = toset([
+    "actual",
+    "ando-mcfoundry",
+    "bitwarden",
+    "calibre-web",
+    "cloud",
+    "docker-registry",
+    "firefly",
+    "firefly-importer",
+    "foundry",
+    "ghostfolio",
+    "gitea",
+    "gitlab",
+    "lazylibrarian",
+    "mc",
+    "minecraft",
+    "portainer",
+    "stable-diffusion",
+  ])
+
+  zone_id = cloudflare_zone.tlake_io.id
+  name = each.value
+  value  = var.home_ip_address
+  type   = "A"
+  ttl    = var.default_ttl
+}
+
+
+resource "cloudflare_record" "tlake_io_subdomain_porkbun_routes" {
+  for_each = toset([
+    "blog",
+    "email",
+  ])
+
+  zone_id = cloudflare_zone.tlake_io.id
+  name   = each.value
+  value  = var.porkbun_ip_address
+  type   = "A"
+  ttl    = var.default_ttl
+}
+
 #################
 ## MISC
 #################
-#
+
 #locals {
 #  txt_challenges = [
 #    { record_name: "_acme-challenge",     record_value: "5zj3Pr2eRPPyw5S4euvnZ98qubjcLqAbO2aEz53h-lo", },
@@ -97,14 +99,14 @@ resource "cloudflare_record" "www_tlake_io" {
 #    { record_name: "_acme-challenge.www", record_value: "TEJuZs7UoIaRFrylsCKW9wtsP-ICR8li7zD8wCCHPeM", },
 #  ]
 #}
-#
-#resource "dnsimple_record" "tlake_io_txt_challenges" {
-#  count = length(local.txt_challenges)
-#
-#  domain = var.dnsimple_domain
-#  name   = local.txt_challenges[count.index]["record_name"]
-#  value  = local.txt_challenges[count.index]["record_value"]
-#  type   = "TXT"
-#  ttl    = 1
-#}
-#
+
+resource "cloudflare_record" "tlake_io_txt_challenges" {
+  count = length(local.txt_challenges)
+
+  zone_id = cloudflare_zone.tlake_io.id
+  name   = local.txt_challenges[count.index]["record_name"]
+  value  = local.txt_challenges[count.index]["record_value"]
+  type   = "TXT"
+  ttl    = 1
+}
+
