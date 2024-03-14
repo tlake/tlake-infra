@@ -1,2 +1,3 @@
-# tlake-deployment
-Infrastructure-as-code repository for deployment of my personal tlake ecosystem of applications.
+# tlake-infra
+
+DNS, AWS, Ansible, etc.
