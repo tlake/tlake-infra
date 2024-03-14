@@ -2,6 +2,14 @@ variable "default_ttl" {
   type = number
 }
 
+variable "cloudflare_account_id" {
+  type = string
+}
+
+variable "cloudflare_api_token" {
+  type = string
+}
+
 variable "dnsimple_account" {
   type = string
 }
