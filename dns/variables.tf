@@ -12,7 +12,7 @@ variable "cloudflare_api_token" {
 
 variable "cloudflare_proxy_ttl" {
   default = 1
-  type = number
+  type    = number
 }
 
 variable "dnsimple_account" {

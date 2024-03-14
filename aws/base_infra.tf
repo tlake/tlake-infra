@@ -104,7 +104,7 @@ resource "aws_security_group" "tlake_ec2_apps" {
 
   ingress = [
     {
-      cidr_blocks      = [ "0.0.0.0/0" ]
+      cidr_blocks      = ["0.0.0.0/0"]
       description      = "portainer agent"
       from_port        = 9001
       ipv6_cidr_blocks = []
@@ -115,7 +115,7 @@ resource "aws_security_group" "tlake_ec2_apps" {
       to_port          = 9001
     },
     {
-      cidr_blocks      = [ "0.0.0.0/0" ]
+      cidr_blocks      = ["0.0.0.0/0"]
       description      = "transmission"
       from_port        = 9091
       ipv6_cidr_blocks = []
