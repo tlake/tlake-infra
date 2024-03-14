@@ -5,7 +5,7 @@ terraform {
     organization = "tlake"
 
     workspaces {
-      name = "tlake-deployment__aws"
+      name = "tlake-infra-aws"
     }
   }
 
