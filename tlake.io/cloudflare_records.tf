@@ -10,6 +10,7 @@ resource "cloudflare_zone" "tlake_io" {
 resource "cloudflare_record" "www_tlake_io" {
   zone_id = cloudflare_zone.tlake_io.id
   name   = "www"
+  proxied = true
   value  = "tlake.io"
   type   = "CNAME"
   ttl    = var.default_ttl
@@ -64,6 +65,7 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
 
   zone_id = cloudflare_zone.tlake_io.id
   name = each.value
+  proxied = true
   value  = var.home_ip_address
   type   = "A"
   ttl    = var.default_ttl
@@ -78,6 +80,7 @@ resource "cloudflare_record" "tlake_io_subdomain_porkbun_routes" {
 
   zone_id = cloudflare_zone.tlake_io.id
   name   = each.value
+  proxied = true
   value  = var.porkbun_ip_address
   type   = "A"
   ttl    = var.default_ttl
