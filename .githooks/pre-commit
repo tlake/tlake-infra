@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+cyan='\033[36m'
+no_color='\033[0m'
+
+echo -ne "${cyan}"
+
+if ! command -v terraform &> /dev/null
+then
+    echo "pre-commit: terraform not found locally, skipping task."
+else
+    echo "pre-commit: running tf fmt..."
+    terraform fmt dns/
+    terraform fmt aws/
+    echo "pre-commit: done."
+    echo
+    echo "pre-commit: Please review any .tf changes in dns/ and aws/,"
+    echo "pre-commit: then add and commit them if they're correct."
+    echo
+fi
+
+if ! command -v terraform-docs &> /dev/null
+then
+    echo "pre-commit: terraform-docs not found locally, skipping task."
+else
+    echo "pre-commit: running tf fmt..."
+    terraform-docs dns
+    terraform-docs aws
+    echo "pre-commit: done."
+    echo
+    echo "pre-commit: Please review any README.md changes in dns/ and aws/,"
+    echo "pre-commit: then add and commit them if they're correct."
+    echo
+fi
