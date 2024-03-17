@@ -1,0 +1,53 @@
+# Minecraft Service Template
+
+version: "3"
+
+services:
+  app:
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.udp.routers.minecraft_udp.entrypoints: "minecraft"
+        traefik.tcp.routers.minecraft_udp.rule: "HostSNI(`minecraft.tlake.io,mc.tlake.io`)"
+        traefik.udp.routers.minecraft_udp.service: "minecraft_udp"
+        traefik.udp.services.minecraft_udp.loadbalancer.server.address: "artemicion:25565"
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.platform.arch == x86_64"
+          - "node.hostname == artemicion"
+    environment:
+      MEMORY: "2G"
+      VERSION: $SERVER_VERSION
+      EULA: "TRUE"
+      SERVER_NAME: $SERVER_NAME
+      MOTD: $MOTD
+      SEED: $SEED
+      DIFFICULTY: "hard"
+      ENABLE_STATUS: "true"
+      ENFORCE_WHITELIST: "true"
+      EXISTING_WHITELIST_FILE: "MERGE"
+      #WHITELIST: |
+      EXISTING_OPS_FILE: "MERGE"
+      #OPS: |
+      SNOOPER_ENABLED: "false"
+    image: "itzg/minecraft-server:java20"
+    networks:
+      - "home"
+    ports:
+      - "25565:25565"
+    volumes:
+      - "data:/data"
+
+networks:
+  # This assumes that the "home" network is an already-existing
+  # user-defined overlay network that Traefik routes across.
+  home:
+    external:
+      name: "home"
+
+volumes:
+  data:

@@ -1,0 +1,52 @@
+# PiHole Service Template
+
+version: "3"
+
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+services:
+  app:
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.pihole.entrypoints: "web, websecure"
+        traefik.http.routers.pihole.rule: "Host(`pihole.tlake.io`)"
+        traefik.http.routers.pihole.tls: "true"
+        traefik.http.routers.pihole.tls.certresolver: "production"
+        traefik.http.services.pihole.loadbalancer.server.port: 10302
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.platform.arch == armv7l"
+    environment:
+      TZ: ${TZ}
+      WEBPASSWORD: ${WEBPASSWORD}
+    image: "pihole/pihole:latest"
+    networks:
+      - "home"
+    ports:
+      - "10300:53/tcp"
+      - "10300:53/udp"
+      - "10301:67/udp"
+      - "10302:80/tcp"
+    # Volumes store your data between container upgrades
+    volumes:
+      - 'etc:/etc/pihole'
+      - 'dnsmasq:/etc/dnsmasq.d'
+    # Recommended but not required (DHCP needs NET_ADMIN)
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    cap_add:
+      - NET_ADMIN
+
+networks:
+  # This assumes that the "home" network is an already-existing
+  # user-defined overlay network that Traefik routes across.
+  home:
+    external:
+      name: "home"
+
+volumes:
+  etc:
+  dnsmasq:

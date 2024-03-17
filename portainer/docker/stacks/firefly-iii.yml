@@ -1,0 +1,272 @@
+# Firefly III Service Template
+
+version: "3.3"
+
+# The Firefly III Data Importer will ask you for the Firefly III URL and a "Client ID".
+# You can generate the Client ID at http://localhost/profile (after registering)
+# The Firefly III URL is: https://firefly.tlake.io
+#
+# Other URL's will give 500 | Server Error
+
+services:
+  app:
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.firefly_app.entrypoints: "web, websecure"
+        traefik.http.routers.firefly_app.rule: "Host(`firefly.tlake.io`)"
+        traefik.http.routers.firefly_app.tls: "true"
+        traefik.http.routers.firefly_app.tls.certresolver: "production"
+        traefik.http.services.firefly_app.loadbalancer.server.port: 8080
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.platform.arch == armv7l"
+    depends_on:
+      - "db"
+    environment:
+      APP_ENV: $APP_ENV
+      APP_DEBUG: $APP_DEBUG
+      SITE_OWNER: $SITE_OWNER
+      APP_KEY: $APP_KEY
+      DEFAULT_LANGUAGE: $DEFAULT_LANGUAGE
+      DEFAULT_LOCALE: $DEFAULT_LOCALE
+      TZ: $TZ
+      TRUSTED_PROXIES: $TRUSTED_PROXIES
+      LOG_CHANNEL: $LOG_CHANNEL
+      APP_LOG_LEVEL: $APP_LOG_LEVEL
+      AUDIT_LOG_LEVEL: $AUDIT_LOG_LEVEL
+      AUDIT_LOG_CHANNEL: $AUDIT_LOG_CHANNEL
+      PAPERTRAIL_HOST: $PAPERTRAIL_HOST
+      PAPERTRAIL_PORT: $PAPERTRAIL_PORT
+      DB_CONNECTION: $DB_CONNECTION
+      DB_HOST: $DB_HOST
+      DB_PORT: $DB_PORT
+      DB_DATABASE: $DB_DATABASE
+      DB_USERNAME: $DB_USERNAME
+      DB_PASSWORD: $DB_PASSWORD
+      DB_SOCKET: $DB_SOCKET
+      MYSQL_USE_SSL: $MYSQL_USE_SSL
+      MYSQL_SSL_VERIFY_SERVER_CERT: $MYSQL_SSL_VERIFY_SERVER_CERT
+      MYSQL_SSL_CAPATH: $MYSQL_SSL_CAPATH
+      MYSQL_SSL_CA: $MYSQL_SSL_CA
+      MYSQL_SSL_CERT: $MYSQL_SSL_CERT
+      MYSQL_SSL_KEY: $MYSQL_SSL_KEY
+      MYSQL_SSL_CIPHER: $MYSQL_SSL_CIPHER
+      PGSQL_SSL_MODE: $PGSQL_SSL_MODE
+      PGSQL_SSL_ROOT_CERT: $PGSQL_SSL_ROOT_CERT
+      PGSQL_SSL_CERT: $PGSQL_SSL_CERT
+      PGSQL_SSL_KEY: $PGSQL_SSL_KEY
+      PGSQL_SSL_CRL_FILE: $PGSQL_SSL_CRL_FILE
+      PGSQL_SCHEMA: $PGSQL_SCHEMA
+      CACHE_DRIVER: $CACHE_DRIVER
+      SESSION_DRIVER: $SESSION_DRIVER
+      REDIS_SCHEME: $REDIS_SCHEME
+      REDIS_PATH: $REDIS_PATH
+      REDIS_HOST: $REDIS_HOST
+      REDIS_PORT: $REDIS_PORT
+      REDIS_USERNAME: $REDIS_USERNAME
+      REDIS_PASSWORD: $REDIS_PASSWORD
+      REDIS_DB: $REDIS_DB
+      REDIS_CACHE_DB: $REDIS_CACHE_DB
+      COOKIE_PATH: $COOKIE_PATH
+      COOKIE_DOMAIN: $COOKIE_DOMAIN
+      COOKIE_SECURE: $COOKIE_SECURE
+      COOKIE_SAMESITE: $COOKIE_SAMESITE
+      MAIL_MAILER: $MAIL_MAILER
+      MAIL_HOST: $MAIL_HOST
+      MAIL_PORT: $MAIL_PORT
+      MAIL_FROM: $MAIL_FROM
+      MAIL_USERNAME: $MAIL_USERNAME
+      MAIL_PASSWORD: $MAIL_PASSWORD
+      MAIL_ENCRYPTION: $MAIL_ENCRYPTION
+      MAIL_SENDMAIL_COMMAND: $MAIL_SENDMAIL_COMMAND
+      MAILGUN_DOMAIN: $MAILGUN_DOMAIN
+      MAILGUN_SECRET: $MAILGUN_SECRET
+      MAILGUN_ENDPOINT: $MAILGUN_ENDPOINT
+      MANDRILL_SECRET: $MANDRILL_SECRET
+      SPARKPOST_SECRET: $SPARKPOST_SECRET
+      SEND_ERROR_MESSAGE: $SEND_ERROR_MESSAGE
+      SEND_REPORT_JOURNALS: $SEND_REPORT_JOURNALS
+      ENABLE_EXTERNAL_MAP: $ENABLE_EXTERNAL_MAP
+      ENABLE_EXTERNAL_RATES: $ENABLE_EXTERNAL_RATES
+      MAP_DEFAULT_LAT: $MAP_DEFAULT_LAT
+      MAP_DEFAULT_LONG: $MAP_DEFAULT_LONG
+      MAP_DEFAULT_ZOOM: $MAP_DEFAULT_ZOOM
+      VALID_URL_PROTOCOLS: $VALID_URL_PROTOCOLS
+      AUTHENTICATION_GUARD: $AUTHENTICATION_GUARD
+      AUTHENTICATION_GUARD_HEADER: $AUTHENTICATION_GUARD_HEADER
+      AUTHENTICATION_GUARD_EMAIL: $AUTHENTICATION_GUARD_EMAIL
+      PASSPORT_PRIVATE_KEY: $PASSPORT_PRIVATE_KEY
+      PASSPORT_PUBLIC_KEY: $PASSPORT_PUBLIC_KEY
+      CUSTOM_LOGOUT_URL: $CUSTOM_LOGOUT_URL
+      DISABLE_FRAME_HEADER: $DISABLE_FRAME_HEADER
+      DISABLE_CSP_HEADER: $DISABLE_CSP_HEADER
+      TRACKER_SITE_ID: $TRACKER_SITE_ID
+      TRACKER_URL: $TRACKER_URL
+      ALLOW_WEBHOOKS: $ALLOW_WEBHOOKS
+      STATIC_CRON_TOKEN: $STATIC_CRON_TOKEN
+      DKR_BUILD_LOCALE: $DKR_BUILD_LOCALE
+      DKR_CHECK_SQLITE: $DKR_CHECK_SQLITE
+      DKR_RUN_MIGRATION: $DKR_RUN_MIGRATION
+      DKR_RUN_UPGRADE: $DKR_RUN_UPGRADE
+      DKR_RUN_VERIFY: $DKR_RUN_VERIFY
+      DKR_RUN_REPORT: $DKR_RUN_REPORT
+      DKR_RUN_PASSPORT_INSTALL: $DKR_RUN_PASSPORT_INSTALL
+      APP_NAME: $APP_NAME
+      BROADCAST_DRIVER: $BROADCAST_DRIVER
+      QUEUE_DRIVER: $QUEUE_DRIVER
+      CACHE_PREFIX: $CACHE_PREFIX
+      PUSHER_KEY: $PUSHER_KEY
+      IPINFO_TOKEN: $IPINFO_TOKEN
+      PUSHER_SECRET: $PUSHER_SECRET
+      PUSHER_ID: $PUSHER_ID
+      DEMO_USERNAME: $DEMO_USERNAME
+      DEMO_PASSWORD: $DEMO_PASSWORD
+      FIREFLY_III_LAYOUT: $FIREFLY_III_LAYOUT
+      APP_URL: $APP_URL
+    hostname: "app"
+    image: "fireflyiii/core:latest"
+    networks:
+      - "firefly_iii"
+      - "home"
+    ports:
+      - "8001:8080"
+    volumes:
+      - "firefly_iii_upload:/var/www/html/storage/upload"
+
+  db:
+    deploy:
+      mode: "replicated"
+      replicas: 1
+      placement:
+        constraints:
+          - "node.platform.arch == armv7l"
+      restart_policy:
+        condition: "any"
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: $MYSQL_RANDOM_ROOT_PASSWORD
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
+    hostname: "db"
+    #image: "linuxserver/mariadb:arm32v7-latest"
+    image: "linuxserver/mariadb:arm32v7-version-110.4.17mariabionic"
+    networks:
+      - "firefly_iii"
+    volumes:
+      - "firefly_iii_db:/var/lib/mysql"
+  
+  importer:
+    depends_on:
+      - "app"
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.firefly_importer.entrypoints: "web, websecure"
+        traefik.http.routers.firefly_importer.rule: "Host(`firefly-importer.tlake.io`)"
+        traefik.http.routers.firefly_importer.tls: "true"
+        traefik.http.routers.firefly_importer.tls.certresolver: "production"
+        traefik.http.services.firefly_importer.loadbalancer.server.port: 8080
+      mode: "replicated"
+      replicas: 1
+      placement:
+        constraints:
+          - "node.platform.arch == armv7l"
+      restart_policy:
+        condition: "any"
+    environment:
+      FIREFLY_III_URL: $FIREFLY_III_URL
+      VANITY_URL: $VANITY_URL
+      FIREFLY_III_ACCESS_TOKEN: $FIREFLY_III_ACCESS_TOKEN
+      FIREFLY_III_CLIENT_ID: $FIREFLY_III_CLIENT_ID
+      NORDIGEN_ID: $NORDIGEN_ID
+      NORDIGEN_KEY: $NORDIGEN_KEY
+      NORDIGEN_SANDBOX: $NORDIGEN_SANDBOX
+      SPECTRE_APP_ID: $SPECTRE_APP_ID
+      SPECTRE_SECRET: $SPECTRE_SECRET
+      USE_CACHE: $USE_CACHE
+      IGNORE_DUPLICATE_ERRORS: $IGNORE_DUPLICATE_ERRORS
+      AUTO_IMPORT_SECRET: $AUTO_IMPORT_SECRET
+      CAN_POST_AUTOIMPORT: $CAN_POST_AUTOIMPORT
+      CAN_POST_FILES: $CAN_POST_FILES
+      IMPORT_DIR_ALLOWLIST: $IMPORT_DIR_ALLOWLIST
+      VERIFY_TLS_SECURITY: $VERIFY_TLS_SECURITY
+      JSON_CONFIGURATION_DIR: $JSON_CONFIGURATION_DIR
+      CONNECTION_TIMEOUT: $CONNECTION_TIMEOUT
+      APP_ENV: $APP_ENV
+      APP_DEBUG: $APP_DEBUG
+      LOG_CHANNEL: $LOG_CHANNEL
+      LOG_RETURN_JSON: $LOG_RETURN_JSON
+      LOG_LEVEL: $LOG_LEVEL
+      TRUSTED_PROXIES: $TRUSTED_PROXIES
+      TZ: $TZ
+      ASSET_URL: $ASSET_URL
+      ENABLE_MAIL_REPORT: $ENABLE_MAIL_REPORT
+      EXPECT_SECURE_URL: $EXPECT_SECURE_URL
+      MAIL_MAILER: $MAIL_MAILER
+      MAIL_DESTINATION: $MAIL_DESTINATION
+      MAIL_FROM_ADDRESS: $MAIL_FROM_ADDRESS
+      MAIL_HOST: $MAIL_HOST
+      MAIL_PORT: $MAIL_PORT
+      MAIL_USERNAME: $MAIL_USERNAME
+      MAIL_PASSWORD: $MAIL_PASSWORD
+      MAIL_ENCRYPTION: $MAIL_ENCRYPTION
+      MAILGUN_DOMAIN: $MAILGUN_DOMAIN
+      MAILGUN_SECRET: $MAILGUN_SECRET
+      MAILGUN_ENDPOINT: $MAILGUN_ENDPOINT
+      POSTMARK_TOKEN: $POSTMARK_TOKEN
+      BROADCAST_DRIVER: $BROADCAST_DRIVER
+      CACHE_DRIVER: $CACHE_DRIVER
+      QUEUE_CONNECTION: $QUEUE_CONNECTION
+      SESSION_DRIVER: $SESSION_DRIVER
+      SESSION_LIFETIME: $SESSION_LIFETIME
+      IS_EXTERNAL: $IS_EXTERNAL
+      REDIS_HOST: $REDIS_HOST
+      REDIS_PASSWORD: $REDIS_PASSWORD
+      REDIS_PORT: $REDIS_PORT
+      REDIS_DB: $REDIS_DB
+      REDIS_CACHE_DB: $REDIS_CACHE_DB
+      TRACKER_SITE_ID: $TRACKER_SITE_ID
+      TRACKER_URL: $TRACKER_URL
+      APP_NAME: $APP_NAME
+      APP_URL: $APP_URL
+    hostname: "importer"
+    image: "fireflyiii/data-importer:latest"
+    networks:
+      - "firefly_iii"
+      - "home"
+    ports:
+      - "8002:8080"
+
+  cron:
+    deploy:
+      mode: "replicated"
+      replicas: 1
+      placement:
+        constraints:
+          - "node.platform.arch == armv7l"
+      restart_policy:
+        condition: "any"
+    # To make this work, set STATIC_CRON_TOKEN in your .env file or as an environment variable and replace REPLACEME below
+    # The STATIC_CRON_TOKEN must be *exactly* 32 characters long
+    image: "alpine:latest"
+    command: sh -c "echo \"0 3 * * * wget -qO- http://app:8080/api/v1/cron/REPLACEME\" | crontab - && crond -f -L /dev/stdout"
+    networks:
+      - "firefly_iii"
+
+networks:
+  # This assumes that the "home" network is an already-existing
+  # user-defined overlay network that Traefik routes across.
+  home:
+    external:
+      name: "home"
+  firefly_iii:
+    driver: "overlay"
+
+volumes:
+  firefly_iii_upload:
+  firefly_iii_db:

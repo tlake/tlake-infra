@@ -1,0 +1,114 @@
+# ebooks Service Template
+
+version: "3"
+
+services:
+  calibre:
+    deploy:
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.platform.arch == x86_64"
+          - "node.hostname == bolt"
+    environment:
+      CALIBRE_USE_DARK_PALETTE: 1
+      PUID: 1000
+      PGID: 1000
+      TZ: "America/Los_Angeles"
+    #image: "lscr.io/linuxserver/calibre:7.5.1"
+    image: "lscr.io/linuxserver/calibre:6.0.0"
+    #image: "lscr.io/linuxserver/calibre:5.44.0"
+    #image: "lscr.io/linuxserver/calibre:5.32.0"
+    networks:
+      - "internal"
+    ports:
+      - "10010:8080"
+      - "10011:8081"
+      - "10012:8181"
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - "calibre_config:/config"
+      - "calibre_library:/books"
+      - "lazylibrarian_downloads:/import"
+
+  calibreweb:
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.calibre_web.entrypoints: "web, websecure"
+        traefik.http.routers.calibre_web.rule: "Host(`calibre-web.tlake.io`)"
+        traefik.http.routers.calibre_web.tls: "true"
+        traefik.http.routers.calibre_web.tls.certresolver: "production"
+        traefik.http.services.calibre_web.loadbalancer.server.port: 8083
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.platform.arch == x86_64"
+          - "node.hostname == bolt"
+    environment:
+      DOCKER_MODS: "linuxserver/mods:universal-calibre"
+      PUID: 1000
+      PGID: 1000
+      TZ: "America/Los_Angeles"
+    image: "lscr.io/linuxserver/calibre-web:0.6.21"
+    networks:
+      - "home"
+      - "internal"
+    ports:
+      - "10013:8083"
+    volumes:
+      - "calibre_library:/books"
+      - "calibreweb_config:/config"
+
+  lazylibrarian:
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.lazylibrarian.entrypoints: "web, websecure"
+        traefik.http.routers.lazylibrarian.rule: "Host(`lazylibrarian.tlake.io`)"
+        traefik.http.routers.lazylibrarian.tls: "true"
+        traefik.http.routers.lazylibrarian.tls.certresolver: "production"
+        traefik.http.services.lazylibrarian.loadbalancer.server.port: 5299
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.platform.arch == x86_64"
+          - "node.hostname == bolt"
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: "America/Los_Angeles"
+      DOCKER_MODS: "linuxserver/mods:universal-calibre|linuxserver/mods:lazylibrarian-ffmpeg|linuxserver/calibre-web:calibre" #optional
+    image: "lscr.io/linuxserver/lazylibrarian:latest"
+    networks:
+      - "home"
+    ports:
+      - "5299:5299"
+    volumes:
+      - "calibre_library:/books"
+      - "lazylibrarian_config:/config"
+      - "lazylibrarian_downloads:/downloads"
+
+networks:
+  home:
+    external:
+      name: "home"
+  internal:
+
+
+volumes:
+  calibre_config:
+  calibre_library:
+  calibreweb_config:
+  lazylibrarian_config:
+  lazylibrarian_downloads:

@@ -1,0 +1,71 @@
+# FoundryVTT Service Template
+
+version: "3"
+
+services:
+  # Given stack name of "foundryvtt", will create a service "foundryvtt_app"
+  app:
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.middlewares.foundry.headers.browserxssfilter: "true"
+        traefik.http.middlewares.foundry.headers.forcestsheader: "true"
+        traefik.http.middlewares.foundry.headers.framedeny: "true"
+        traefik.http.middlewares.foundry.headers.stsincludesubdomains: "true"
+        traefik.http.middlewares.foundry.headers.stspreload: "true"
+        traefik.http.middlewares.foundry.headers.stsseconds: "31536000"
+        traefik.http.routers.foundry.entrypoints: "web, websecure"
+        traefik.http.routers.foundry.rule: "Host(`foundry.tlake.io`)"
+        traefik.http.routers.foundry.tls: "true"
+        traefik.http.routers.foundry.tls.certresolver: "production"
+        traefik.http.routers.foundry.middlewares: "foundry"
+        traefik.http.services.foundry.loadbalancer.server.port: 30000
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.hostname == bolt"
+          #- "node.platform.arch == x86_64"
+    environment:
+      CONTAINER_CACHE: "/data/container_cache"
+      CONTAINER_CACHE_SIZE: 10
+      FOUNDRY_ADMIN_KEY: $FOUNDRY_ADMIN_KEY
+      FOUNDRY_COMPRESS_WEBSOCKET: "true"
+      FOUNDRY_CSS_THEME: "fantasy"
+      FOUNDRY_HOSTNAME: $FOUNDRY_HOSTNAME
+      FOUNDRY_LICENSE_KEY: $FOUNDRY_LICENSE_KEY
+      FOUNDRY_MINIFY_STATIC_FILES: "true"
+      FOUNDRY_TELEMETRY: "false"
+      FOUNDRY_WORLD: "import_campaign"
+      TIMEZONE: "America/Los_Angeles"
+    # set container's hostname to avoid agreeing to the eula every startup
+    hostname: "foundry_host"
+    image: "felddy/foundryvtt:11.315" # working just great
+    #image: "felddy/foundryvtt:11.299" # worked fine, modules untested
+    #image: "felddy/foundryvtt:10.312" # failed again even from 10.303
+    #image: "felddy/foundryvtt:10.303" # worked fine, modules untested
+    #image: "felddy/foundryvtt:10.312" # failed when jumping from 10.282
+    #image: "felddy/foundryvtt:10.282" # worked fine, modules untested
+    #image: "felddy/foundryvtt:9.280" # unstable, possibly due to modules
+    #image: "felddy/foundryvtt:9.249" # last known good version
+    networks:
+      - "home"
+    volumes:
+      - "app_container_cache:/data/container_cache"
+      - "app_data:/data"
+      #- "app_installation:/home/foundry"
+
+networks:
+  # This assumes that the "home" network is an already-existing
+  # user-defined overlay network that Traefik routes across.
+  home:
+    external:
+      name: "home"
+
+volumes:
+  # Given stack name "foundryvtt", should create a volume "foundryvtt_app_container_cache"
+  app_container_cache:
+  app_data:
+  #app_installation:

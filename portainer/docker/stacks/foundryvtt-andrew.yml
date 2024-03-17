@@ -1,0 +1,65 @@
+# FoundryVTT Service Template
+
+version: "3"
+
+services:
+  # Given stack name of "foundryvtt_andrew", will create a service "foundryvtt_andrew_app"
+  app:
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.middlewares.andomcfoundry.headers.browserxssfilter: "true"
+        traefik.http.middlewares.andomcfoundry.headers.forcestsheader: "true"
+        traefik.http.middlewares.andomcfoundry.headers.framedeny: "true"
+        traefik.http.middlewares.andomcfoundry.headers.stsincludesubdomains: "true"
+        traefik.http.middlewares.andomcfoundry.headers.stspreload: "true"
+        traefik.http.middlewares.andomcfoundry.headers.stsseconds: "31536000"
+        traefik.http.routers.andomcfoundry.entrypoints: "web, websecure"
+        traefik.http.routers.andomcfoundry.rule: "Host(`ando-mcfoundry.tlake.io`)"
+        traefik.http.routers.andomcfoundry.tls: "true"
+        traefik.http.routers.andomcfoundry.tls.certresolver: "production"
+        traefik.http.routers.andomcfoundry.middlewares: "andomcfoundry"
+        traefik.http.services.andomcfoundry.loadbalancer.server.port: 30000
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.hostname == bolt"
+          #- "node.platform.arch == x86_64"
+    environment:
+      CONTAINER_CACHE: "/container_cache"
+      CONTAINER_CACHE_SIZE: 10
+      FOUNDRY_ADMIN_KEY: $FOUNDRY_ADMIN_KEY
+      FOUNDRY_COMPRESS_WEBSOCKET: "true"
+      FOUNDRY_CSS_THEME: "fantasy"
+      FOUNDRY_HOSTNAME: $FOUNDRY_HOSTNAME
+      FOUNDRY_LICENSE_KEY: $FOUNDRY_LICENSE_KEY
+      FOUNDRY_MINIFY_STATIC_FILES: "true"
+      FOUNDRY_TELEMETRY: "false"
+      TIMEZONE: "America/New_York"
+    # set container's hostname to avoid agreeing to the eula every startup
+    hostname: "ando_mcfoundry_host"
+    image: "felddy/foundryvtt:11.315"
+    networks:
+      - "home"
+    ports:
+      - "30001:30000"
+    volumes:
+      - "app_container_cache:/container_cache"
+      - "app_data:/data"
+      #- "app_installation:/home/foundry"
+
+networks:
+  # This assumes that the "home" network is an already-existing
+  # user-defined overlay network that Traefik routes across.
+  home:
+    external:
+      name: "home"
+
+volumes:
+  # Given stack name "foundryvtt_andrew", should create a volume "foundryvtt_andrew_app_container_cache"
+  app_container_cache:
+  app_data:
+  #app_installation:

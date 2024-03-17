@@ -1,0 +1,76 @@
+# Calibre Service Template
+
+version: "3"
+
+services:
+  app:
+    deploy:
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.platform.arch == x86_64"
+          - "node.hostname == bolt"
+    environment:
+      CALIBRE_USE_DARK_PALETTE: 1
+      PUID: 1000
+      PGID: 1000
+      TZ: "America/Los_Angeles"
+    #image: "lscr.io/linuxserver/calibre:7.5.1"
+    image: "lscr.io/linuxserver/calibre:6.0.0"
+    #image: "lscr.io/linuxserver/calibre:5.44.0"
+    #image: "lscr.io/linuxserver/calibre:5.32.0"
+    networks:
+      - "internal"
+    ports:
+      - "10010:8080"
+      - "10011:8081"
+      - "10012:8181"
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - "app_library:/config/Calibre Library"
+      - "app_config:/config"
+
+  web:
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.calibre_web.entrypoints: "web, websecure"
+        traefik.http.routers.calibre_web.rule: "Host(`calibre-web.tlake.io`)"
+        traefik.http.routers.calibre_web.tls: "true"
+        traefik.http.routers.calibre_web.tls.certresolver: "production"
+        traefik.http.services.calibre_web.loadbalancer.server.port: 8083
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.platform.arch == x86_64"
+          - "node.hostname == bolt"
+    environment:
+      TZ: "America/Los_Angeles"
+    image: "lscr.io/linuxserver/calibre-web:0.6.21"
+    networks:
+      - "home"
+      - "internal"
+    ports:
+      - "10013:8083"
+    volumes:
+      - "app_library:/books"
+      - "web_config:/config"
+
+networks:
+  home:
+    external:
+      name: "home"
+  internal:
+
+
+volumes:
+  app_library:
+  app_config:
+  web_config:

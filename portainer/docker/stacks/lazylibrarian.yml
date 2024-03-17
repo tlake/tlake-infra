@@ -1,0 +1,48 @@
+# LazyLibrarian Service Template
+
+version: "3"
+
+services:
+  app:
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.lazylibrarian.entrypoints: "web, websecure"
+        traefik.http.routers.lazylibrarian.rule: "Host(`lazylibrarian.tlake.io`)"
+        traefik.http.routers.lazylibrarian.tls: "true"
+        traefik.http.routers.lazylibrarian.tls.certresolver: "production"
+        traefik.http.services.lazylibrarian.loadbalancer.server.port: 5299
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.platform.arch == x86_64"
+          - "node.hostname == bolt"
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: "America/Los_Angeles"
+      DOCKER_MODS: "linuxserver/mods:universal-calibre|linuxserver/mods:lazylibrarian-ffmpeg" #optional
+    image: "lscr.io/linuxserver/lazylibrarian:latest"
+    networks:
+      - "home"
+    ports:
+      - "5299:5299"
+    volumes:
+      - "config:/config"
+      - "downloads:/downloads"
+      - "books:/books" #optional
+
+networks:
+  # This assumes that the "home" network is an already-existing
+  # user-defined overlay network that Traefik routes across.
+  home:
+    external:
+      name: "home"
+
+volumes:
+  config:
+  downloads:
+  books:

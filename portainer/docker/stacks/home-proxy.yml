@@ -1,0 +1,47 @@
+# Home Proxy Template
+
+version: "3"
+
+services:
+  # Given stack name of "home_proxy", will create a service "home_proxy_app"
+  app:
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.middlewares.home-proxy.headers.browserxssfilter: "true"
+        traefik.http.middlewares.home-proxy.headers.forcestsheader: "true"
+        traefik.http.middlewares.home-proxy.headers.framedeny: "true"
+        traefik.http.middlewares.home-proxy.headers.stsincludesubdomains: "true"
+        traefik.http.middlewares.home-proxy.headers.stspreload: "true"
+        traefik.http.middlewares.home-proxy.headers.stsseconds: "31536000"
+        traefik.http.routers.home-proxy.entrypoints: "web, websecure"
+        traefik.http.routers.home-proxy.middlewares: "home-proxy"
+        traefik.http.routers.home-proxy.rule: "Host(`foundry.cahudson.dev`)"
+        traefik.http.routers.home-proxy.tls: "true"
+        traefik.http.services.home-proxy.loadbalancer.server.port: 80
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.hostname == bolt"
+    image: "nginx:stable-alpine"
+    networks:
+      - "home"
+    ports:
+      - "11080:80"
+      - "11443:443"
+    volumes:
+      - "app_config:/etc/nginx/:ro"
+
+networks:
+  # This assumes that the "home" network is an already-existing
+  # user-defined overlay network that Traefik routes across.
+  home:
+    external:
+      name: "home"
+
+volumes:
+  # Given stack name "home_proxy", should create a volume "home_proxy_app_config"
+  app_config:

@@ -1,0 +1,67 @@
+# Traefik Service Template
+
+version: "3"
+
+services:
+  app:
+    # Enables the web UI and tells Traefik to listen to docker
+    #command:
+      #- "--configFile=/etc/traefik/traefik.yml"
+      #- "--api.dashboard=true"
+      #- "--api.insecure=true"
+      #- "--certificatesresolvers.production.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
+      #- "--certificatesresolvers.production.acme.email=
+      #- "--certificatesresolvers.production.acme.httpchallenge.entrypoint=web"
+      #- "--certificatesresolvers.production.acme.storage=/ssl-certs/acme.json"
+      #- "--certificatesresolvers.staging.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      #- "--certificatesresolvers.staging.acme.email=
+      #- "--certificatesresolvers.staging.acme.httpchallenge.entrypoint=web"
+      #- "--certificatesresolvers.staging.acme.storage=/ssl-certs/acme.json"
+      #- "--entrypoints.web.address=:80"
+      #- "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      #- "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      #- "--entrypoints.websecure.address=:443"
+      #- "--global.checknewversion=true"
+      #- "--global.sendanonymoususage=false"
+      #- "--log.level=DEBUG"
+      #- "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      #- "--providers.docker.exposedbydefault=false"
+      #- "--providers.docker.network=home"
+      #- "--providers.docker.swarmmode=true"
+    deploy:
+      placement:
+        constraints:
+          - "node.role == manager"
+          - "node.platform.arch == armv7l"
+    # The official v2 Traefik docker image
+    image: "traefik:v2.5"
+    networks:
+      - "home"
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The HTTPS port
+      - "443:443"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+      # Minecraft UDP port
+      - "25565:25565/udp"
+    volumes:
+      # To house SSL certificates
+      - "app_certs:/etc/certs"
+      # To house the static config file
+      - "app_static_config:/etc/traefik"
+      # To house the dynamic config file
+      - "app_dynamic_config:/etc/dynamic-config"
+      # So that Traefik can listen to the Docker events
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+networks:
+  home:
+    external:
+      name: "home"
+
+volumes:
+  app_certs:
+  app_dynamic_config:
+  app_static_config:

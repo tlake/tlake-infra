@@ -1,0 +1,28 @@
+# Terraform IP Fixer Service Template
+
+version: "3"
+
+services:
+  # Given stack name "dnsimple_terraform_ip_fixer", should create a service "dnsimple_terraform_ip_fixer_app"
+  app:
+    deploy:
+      mode: "replicated"
+      replicas: 1
+      restart_policy:
+        condition: "any"
+      placement:
+        constraints:
+          - "node.platform.arch == armv7l"
+    environment:
+      TFC_TOKEN: $TFC_TOKEN
+      TFC_WORKSPACE_ID: $TFC_WORKSPACE_ID
+    image: "docker-registry.tlake.io/tlake/dnsimple-terraform-ip-fixer:latest"
+    networks:
+      - "home"
+
+networks:
+  # This assumes that the "home" network is an already-existing
+  # user-defined overlay network that Traefik routes across.
+  home:
+    external:
+      name: "home"
