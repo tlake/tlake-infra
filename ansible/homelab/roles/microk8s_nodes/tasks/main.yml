@@ -4,3 +4,4 @@
 #- import_tasks: microk8s-install.yml
 #- import_tasks: microk8s-manager.yml
 #- import_tasks: microk8s-workers.yml
+- import_tasks: microk8s-addons.yml
