@@ -1,0 +1,4 @@
+---
+#- import_tasks: raspi_config_enable_pwm_fan.yml
+- import_tasks: install_pigpio.yml
+- import_tasks: set_pwm_duty_cycle.yml

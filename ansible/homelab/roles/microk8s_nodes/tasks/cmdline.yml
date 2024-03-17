@@ -1,0 +1,23 @@
+- name: read cmdline.txt
+  slurp: "src={{ cmdline_txt_path }}"
+  register: result_cmdline
+
+- name: generate regular expression for existing arguments
+  set_fact:
+    regex_existing: '{{ "\b" + key|string + "(?:=" + ("[\w]*" if update|default(true) else value|string) + ")?(?![\w=])" }}'
+    key_value_pair: '{{ "" if remove|default(false) else ("" + key|string + (("=" + value|string) if value is defined else "")) }}'
+
+- name: generate regular expression for new arguments
+  set_fact:
+    regex_add_missing: '{{ "^((?!(?:.|\n)*" + regex_existing + ")((?:.|\n)*))$" }}'
+
+- name: update cmdline.txt
+  copy:
+    content: '{{ result_cmdline.content
+        | b64decode
+        | regex_replace(regex_existing, key_value_pair)
+        | regex_replace(regex_add_missing, key_value_pair + ("\1" if remove|default(false) else " \1"))
+        | regex_replace("\s+", " ") | trim
+      }}'
+    dest: "{{ cmdline_txt_path }}"
+

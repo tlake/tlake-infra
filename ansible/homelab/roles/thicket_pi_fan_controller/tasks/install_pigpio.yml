@@ -1,0 +1,28 @@
+---
+- name: gather service facts
+  become: true
+  ansible.builtin.service_facts:
+
+- name: stop running pigpiod
+  become: true
+  ansible.builtin.shell: killall pigpiod
+  when: ansible_facts.services["pigpiod.service"]["state"] == "running"
+
+- name: update apt
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: install pigpiod
+  become: true
+  ansible.builtin.apt:
+    name:
+      - pigpio
+    state: present
+
+- name: enable pigpiod
+  become: true
+  ansible.builtin.systemd_service:
+    name: pigpiod
+    state: started
+    enabled: true

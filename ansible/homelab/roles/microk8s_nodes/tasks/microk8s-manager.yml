@@ -1,0 +1,3 @@
+- name: Generate token for {{ item }}
+  shell: /snap/bin/microk8s.add-node --token-ttl 300 --token {{ token }}{{ item }}
+  loop: "{{ groups[ 'k8sworkers' ] }}"

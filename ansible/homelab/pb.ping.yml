@@ -1,0 +1,7 @@
+- name: ping the thicket
+  gather_facts: no
+  hosts: all
+  tasks:
+    - action: ansible.builtin.ping
+  vars_files:
+    - vault/main.yml

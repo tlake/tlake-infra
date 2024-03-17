@@ -1,0 +1,38 @@
+- set_fact:
+    cmdline_txt_path: "/boot/firmware/cmdline.txt"
+
+- name: enable cgroup memory
+  include_tasks: cmdline.yml
+  args:
+    apply:
+      become: true
+  vars:
+    key: cgroup_enable
+    value: memory
+    update: false
+    # will add the argument if the key-value-pair doesn't exist
+  notify: reboot pi
+
+- name: set cgroup memory 1
+  include_tasks: cmdline.yml
+  args:
+    apply:
+      become: true
+  vars:
+    key: cgroup_memory
+    value: 1
+    update: true
+    # will replace the value of the first matching key, if found;
+    # will add it if it's not found
+  notify: reboot pi
+
+- shell: export LC_ALL=C.UTF-8
+- shell: export LANG=C.UTF-8
+- shell: echo "LC_ALL=en_US.UTF-8" | sudo tee -a /etc/environment
+- shell: echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen
+- shell: echo "LANG=en_US.UTF-8" | sudo tee -a /etc/locale.conf
+
+- name: configure locale
+  become: true
+  shell: locale-gen en_US.UTF-8
+  notify: reboot pi

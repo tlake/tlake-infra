@@ -1,0 +1,2 @@
+- name: Join {{ k8smanager }}
+  shell: /snap/bin/microk8s.join {{ k8smanager }}/{{ token }}

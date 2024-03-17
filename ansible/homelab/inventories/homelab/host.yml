@@ -1,0 +1,38 @@
+# relationships
+
+homelab:
+  children:
+    raspberry_pis:
+
+raspberry_pis:
+  children:
+    thicket_pis:
+    one_off_pis:
+
+k8s:
+  children:
+    k8s_managers:
+    k8s_workers:
+
+
+# groups and hosts
+
+one_off_pies:
+  hosts:
+    mansionsyrup:
+
+thicket_pis:
+  hosts:
+    thicket[0:3]:
+
+thicket_fan_controllers:
+  hosts:
+    thicket0:
+
+k8s_managers:
+  hosts:
+    thicket0:
+
+k8s_workers:
+  hosts:
+    thicket[1:3]:

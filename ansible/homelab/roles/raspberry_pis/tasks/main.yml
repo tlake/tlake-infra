@@ -1,0 +1,4 @@
+---
+- import_tasks: "set_hostname.yml"
+- import_tasks: "expand_filesystem.yml"
+- import_tasks: "packages.yml"

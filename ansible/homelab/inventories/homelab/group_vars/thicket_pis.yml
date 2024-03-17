@@ -1,0 +1,4 @@
+ansible_user: "pi"
+ansible_ssh_pass: "{{ thicket_pis_ssh_password }}"
+k8s_join_token_base: "{{ k8s_join_token_base }}"
+k8s_manager_address: "192.168.0.131:25000"
