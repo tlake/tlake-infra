@@ -36,3 +36,26 @@
   become: true
   shell: locale-gen en_US.UTF-8
   notify: reboot pi
+
+- name: update apt
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: install nfs-common
+  become: true
+  ansible.builtin.apt:
+    name:
+      - nfs-common
+    state: present
+
+- name: mount mansionsyrup:/nas/data/thicket-k8s-data in fstab
+  become: true
+  ansible.posix.mount:
+    backup: true
+    boot: true
+    fstype: nfs
+    opts: rw,sync
+    path: /mnt/nas-data
+    src: mansionsyrup:/nas/data/thicket-k8s-data
+    state: mounted

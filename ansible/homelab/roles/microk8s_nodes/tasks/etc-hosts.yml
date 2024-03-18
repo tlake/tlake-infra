@@ -11,3 +11,12 @@
   register: etchostsupdate
   when: ansible_hostname != item #or ansible_hostname == item
   with_items: "{{ ansible_play_hosts }}"
+
+- name: add mansionsyrup to /etc/hosts
+  become: true
+  lineinfile:
+    path: "/etc/hosts"
+    regexp: ".*\tmansionsyrup"
+    line: "192.168.0.120\tmansionsyrup"
+    state: present
+    backup: yes
