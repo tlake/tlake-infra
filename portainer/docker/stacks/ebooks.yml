@@ -6,7 +6,7 @@ services:
   calibre:
     deploy:
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:
@@ -77,7 +77,7 @@ services:
         traefik.http.routers.lazylibrarian.tls.certresolver: "production"
         traefik.http.services.lazylibrarian.loadbalancer.server.port: 5299
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:
