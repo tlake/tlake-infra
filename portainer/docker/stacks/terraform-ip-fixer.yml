@@ -3,7 +3,7 @@
 version: "3"
 
 services:
-  # Given stack name "dnsimple_terraform_ip_fixer", should create a service "dnsimple_terraform_ip_fixer_app"
+  # Given stack name "terraform_ip_fixer", should create a service "terraform_ip_fixer_app"
   app:
     deploy:
       mode: "replicated"
@@ -12,7 +12,7 @@ services:
         condition: "any"
       placement:
         constraints:
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
     environment:
       TFC_TOKEN: $TFC_TOKEN
       TFC_WORKSPACE_ID: $TFC_WORKSPACE_ID

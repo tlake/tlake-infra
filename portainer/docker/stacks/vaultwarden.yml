@@ -19,7 +19,7 @@ services:
         condition: "any"
       placement:
         constraints:
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
     environment:
       ADMIN_TOKEN: $ADMIN_TOKEN
       DEBIAN_FRONTEND: "noninteractive"
@@ -28,7 +28,7 @@ services:
       ROCKET_ENV: "staging"
       ROCKET_PORT: 80
       ROCKET_WORKERS: 10
-      SIGNUPS_ALLOWED: "false"
+      SIGNUPS_ALLOWED: "true"
       UDEV: "off"
       WEBSOCKET_ENABLED: "true"
     image: "vaultwarden/server:latest"

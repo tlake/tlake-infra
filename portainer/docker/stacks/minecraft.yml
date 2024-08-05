@@ -30,9 +30,22 @@ services:
       ENABLE_STATUS: "true"
       ENFORCE_WHITELIST: "true"
       EXISTING_WHITELIST_FILE: "MERGE"
-      #WHITELIST: |
+      WHITELIST: |
+        mechamoogle
+        mechatwogle
+        Gravytrain
+        SlarfMcMuffin
+        Saint_Krampus
+        doomsauce
+        mooseinduced
+        cg923
+        FirstStreet
+        Tsmartski
+        b0ycar
+        ADryEraser
       EXISTING_OPS_FILE: "MERGE"
-      #OPS: |
+      OPS: |
+        mechamoogle
       SNOOPER_ENABLED: "false"
     image: "itzg/minecraft-server:java20"
     networks:

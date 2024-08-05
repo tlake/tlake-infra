@@ -24,7 +24,7 @@ services:
         condition: "any"
       placement:
         constraints:
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
     depends_on:
       - "db"
     environment:
@@ -144,7 +144,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
       restart_policy:
         condition: "any"
     environment:
@@ -175,7 +175,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
       restart_policy:
         condition: "any"
     environment:
@@ -248,7 +248,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
       restart_policy:
         condition: "any"
     # To make this work, set STATIC_CRON_TOKEN in your .env file or as an environment variable and replace REPLACEME below

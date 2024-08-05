@@ -10,7 +10,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
       restart_policy:
         condition: "any"
     environment:
@@ -19,11 +19,6 @@ services:
       MYSQL_PASSWORD: $MYSQL_PASSWORD
       MYSQL_USER: $MYSQL_USER
     image: "nextcloud:24.0.10-fpm-alpine"
-    #image: "nextcloud:23.0.12-fpm-alpine"
-    #image: "nextcloud:22.2.10-fpm-alpine"
-    #image: "nextcloud:22.0-fpm-alpine"
-    #image: "nextcloud:21.0-fpm-alpine"
-    #image: "nextcloud:20.0.4-fpm-alpine"
     networks:
       - "home"
       - "internal"
@@ -44,7 +39,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
       restart_policy:
         condition: "any"
     environment:
@@ -86,7 +81,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
       restart_policy:
         condition: "any"
     image: "nginx:1.19.6-alpine"
