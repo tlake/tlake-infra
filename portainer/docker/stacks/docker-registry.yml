@@ -18,7 +18,7 @@ services:
         condition: "any"
       placement:
         constraints:
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
     image: "docker.io/registry:2.8.3"
     networks:
       - "home"

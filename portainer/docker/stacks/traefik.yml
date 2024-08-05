@@ -10,11 +10,11 @@ services:
       #- "--api.dashboard=true"
       #- "--api.insecure=true"
       #- "--certificatesresolvers.production.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
-      #- "--certificatesresolvers.production.acme.email=
+      #- "--certificatesresolvers.production.acme.email=tanner.lake@protonmail.com"
       #- "--certificatesresolvers.production.acme.httpchallenge.entrypoint=web"
       #- "--certificatesresolvers.production.acme.storage=/ssl-certs/acme.json"
       #- "--certificatesresolvers.staging.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      #- "--certificatesresolvers.staging.acme.email=
+      #- "--certificatesresolvers.staging.acme.email=tanner.lake@protonmail.com"
       #- "--certificatesresolvers.staging.acme.httpchallenge.entrypoint=web"
       #- "--certificatesresolvers.staging.acme.storage=/ssl-certs/acme.json"
       #- "--entrypoints.web.address=:80"
@@ -32,7 +32,7 @@ services:
       placement:
         constraints:
           - "node.role == manager"
-          - "node.platform.arch == armv7l"
+          - "node.platform.arch == aarch64"
     # The official v2 Traefik docker image
     image: "traefik:v2.5"
     networks:
