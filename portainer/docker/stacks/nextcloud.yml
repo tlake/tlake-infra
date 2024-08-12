@@ -18,7 +18,7 @@ services:
       MYSQL_HOST: $MYSQL_HOST
       MYSQL_PASSWORD: $MYSQL_PASSWORD
       MYSQL_USER: $MYSQL_USER
-    image: "nextcloud:24.0.10-fpm-alpine"
+    image: "nextcloud:24.0.12-fpm-alpine"
     networks:
       - "home"
       - "internal"
