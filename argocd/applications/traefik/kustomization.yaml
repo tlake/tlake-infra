@@ -5,7 +5,10 @@ resources:
 - cluster-role.yaml
 - cluster-role-binding.yaml
 - service-account.yaml
-- daemon-set.yaml
+#- daemon-set.yaml
+- deployment.yaml
+- persistent-volumes.yaml
+- service.yaml
 
 namespace: traefik
 
