@@ -6,7 +6,7 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - port: 8080
+    - port: 80
       targetPort: dashboard
   selector:
     app: traefik
@@ -23,6 +23,8 @@ spec:
   ports:
     - targetPort: web
       port: 80
+    - targetPort: websecure
+      port: 443
   selector:
     app: traefik
 
