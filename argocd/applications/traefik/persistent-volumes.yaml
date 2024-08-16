@@ -1,6 +1,34 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
+  name: traefik-certs-claim
+spec:
+  storageClassName: nfs-client
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: traefik-dynamic-config-claim
+spec:
+  storageClassName: nfs-client
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
   name: traefik-static-config-claim
 spec:
   storageClassName: nfs-client
@@ -9,3 +37,4 @@ spec:
   resources:
     requests:
       storage: 10Mi
+
