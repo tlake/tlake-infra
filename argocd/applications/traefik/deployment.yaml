@@ -28,16 +28,16 @@ spec:
             - name: dashboard
               containerPort: 8080
           volumeMounts:
-            - name: traefik-app-certs
+            - name: traefik-certs
               mountPath: "/etc/certs"
             - name: traefik-dynamic-config
               mountPath: "/etc/dynamic-config"
             - name: traefik-static-config
               mountPath: "/etc/traefik"
       volumes:
-        - name: traefik-app-certs
+        - name: traefik-certs
           persistentVolumeClaim:
-            claimName: traefik-app-certs-claim
+            claimName: traefik-certs-claim
         - name: traefik-dynamic-config
           persistentVolumeClaim:
             claimName: traefik-dynamic-config-claim
