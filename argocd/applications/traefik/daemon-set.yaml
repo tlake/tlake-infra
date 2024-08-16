@@ -5,7 +5,7 @@
 #spec:
 #  template:
 #    spec:
-#      serviceAccountName: traefik-ingress-controller
+#      serviceAccountName: traefik-service-account
 #      terminationGracePeriodSeconds: 60
 #      containers:
 #      - image: traefik:v2.2
