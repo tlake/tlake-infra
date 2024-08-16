@@ -2,28 +2,67 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: traefik-ingress-controller
+
 rules:
+  # these rules taken from traefik docs
+  # https://doc.traefik.io/traefik/getting-started/quick-start-with-kubernetes/
   - apiGroups:
       - ""
     resources:
       - services
-      - endpoints
       - secrets
     verbs:
       - get
       - list
       - watch
   - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs:
+      - list
+      - watch
+  - apiGroups:
       - extensions
+      - networking.k8s.io
     resources:
       - ingresses
+      - ingressclasses
     verbs:
       - get
       - list
       - watch
   - apiGroups:
-    - extensions
+      - extensions
+      - networking.k8s.io
     resources:
-    - ingresses/status
+      - ingresses/status
     verbs:
-    - update
+      - update
+
+  # following configuration taken from https://blog.tomarrell.com/post/traefik_v2_on_kubernetes
+  # experiment for very initial setup/deployment
+#  - apiGroups:
+#      - ""
+#    resources:
+#      - services
+#      - endpoints
+#      - secrets
+#    verbs:
+#      - get
+#      - list
+#      - watch
+#  - apiGroups:
+#      - extensions
+#    resources:
+#      - ingresses
+#    verbs:
+#      - get
+#      - list
+#      - watch
+#  - apiGroups:
+#    - extensions
+#    resources:
+#    - ingresses/status
+#    verbs:
+#    - update

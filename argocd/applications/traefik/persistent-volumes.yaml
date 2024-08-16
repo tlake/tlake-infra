@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: traefik-static-config
+spec:
+  storageClassName: nfs-01
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
