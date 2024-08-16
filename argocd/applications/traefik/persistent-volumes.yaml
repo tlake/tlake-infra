@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: traefik-static-config
 spec:
-  storageClassName: nfs-01
+  storageClassName: nfs-client
   accessModes:
     - ReadWriteMany
   resources:
