@@ -3,8 +3,7 @@ kind: Kustomization
 
 resources:
 - deployment.yaml
-- ingress.yaml
-- service.yaml
+- routing.yaml
 
 namespace: whoami
 
