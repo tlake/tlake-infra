@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: CHANGE_APP_IDENTIFIER
+
+spec:
+  ports:
+    - name: web
+      port: 80
+      targetPort: web
+
+  selector:
+    app: CHANGE_APP_IDENTIFIER
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  name: CHANGE_APP_IDENTIFIER
+spec:
+  rules:
+    - host: CHANGE_HOST
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: CHANGE_APP_IDENTIFIER
+              port:
+                name: web
+

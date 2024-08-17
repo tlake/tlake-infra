@@ -1,0 +1,26 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: CHANGE_APP_IDENTIFIER
+  labels:
+    app: CHANGE_APP_IDENTIFIER
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: CHANGE_APP_IDENTIFIER
+  template:
+    metadata:
+      labels:
+        app: CHANGE_APP_IDENTIFIER
+    spec:
+      containers:
+        - name: CHANGE_APP_IDENTIFIER
+          env:
+            - name: CHANGE_ENVVAR_NAME
+              value: "CHANGE_ENVVAR_VALUE"
+          image: "CHANGE_IMAGE_REF"
+          ports:
+            - name: web
+              containerPort: CHANGE_PORT_NUMBER
