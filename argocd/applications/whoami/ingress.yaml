@@ -7,12 +7,12 @@ metadata:
 spec:
   rules:
     - host: whoami.tlake.io
-      #      http:
-      #        paths:
-      #        - path: /
-      #          pathType: Prefix
-      #          backend:
-      #            service:
-      #              name: whoami
-      #              port:
-      #                name: web
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: whoami
+              port:
+                name: web
