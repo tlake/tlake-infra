@@ -19,11 +19,11 @@ spec:
         - name: actualbudget
           env:
             - name: ACTUAL_UPLOAD_FILE_SYNC_SIZE_LIMIT_MB
-              value: 200
+              value: "200"
             - name: ACTUAL_UPLOAD_SYNC_ENCRYPTED_FILE_SYNC_SIZE_LIMIT_MB
-              value: 500
+              value: "500"
             - name: ACTUAL_UPLOAD_FILE_SIZE_LIMIT_MB
-              value: 20
+              value: "20"
           image: "docker.io/actualbudget/actual-server:24.8.0"
           ports:
             - name: web
