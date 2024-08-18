@@ -1,0 +1,55 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "vaultwarden"
+  labels:
+    app: "vaultwarden"
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "vaultwarden"
+  template:
+    metadata:
+      labels:
+        app: "vaultwarden"
+    spec:
+      containers:
+        - name: "vaultwarden"
+          env:
+            - name: "ADMIN_TOKEN"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "admin_token"
+            - name: "DEBIAN_FRONTEND"
+              value: "noninteractive"
+            - name: "LC_ALL"
+              value: "C.UTF-8"
+            - name: "PATH"
+              value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            - name: "ROCKET_ENV"
+              value: "staging"
+            - name: "ROCKET_PORT"
+              value: 80
+            - name: "ROCKET_WORKERS"
+              value: 10
+            - name: "SIGNUPS_ALLOWED"
+              value: "true"
+            - name: "UDEV"
+              value: "off"
+            - name: "WEBSOCKET_ENABLED"
+              value: "true"
+          image: "vaultwarden/server:latest"
+          ports:
+            - name: "app"
+              containerPort: 80
+          volumeMounts:
+            - name: "app_data"
+              mountPath: "/data"
+      volumes:
+        - name: "app_data"
+          persistentVolumeClaim:
+            claimName: "app_data"
+
