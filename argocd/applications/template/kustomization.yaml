@@ -3,9 +3,10 @@ kind: Kustomization
 
 resources:
 - deployment.yaml
+- persistent-volumes.yaml
 - routing.yaml
 
-namespace: CHANGE_APP_IDENTIFIER
+namespace: "CHANGE_APP_IDENTIFIER"
 
 commonLabels:
-  app: CHANGE_APP_IDENTIFIER
+  app: "CHANGE_APP_IDENTIFIER"
