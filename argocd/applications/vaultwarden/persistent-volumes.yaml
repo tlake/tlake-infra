@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "app_data"
+  name: "app-data"
 spec:
   storageClassName: "nfs-client"
   accessModes:

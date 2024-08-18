@@ -46,10 +46,10 @@ spec:
             - name: "app"
               containerPort: 80
           volumeMounts:
-            - name: "app_data"
+            - name: "app-data"
               mountPath: "/data"
       volumes:
-        - name: "app_data"
+        - name: "app-data"
           persistentVolumeClaim:
-            claimName: "app_data"
+            claimName: "app-data"
 
