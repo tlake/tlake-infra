@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - deployment.yaml
-- persistentVolumes.yaml
+- persistent-volumes.yaml
 - routing.yaml
 
 namespace: actualbudget
