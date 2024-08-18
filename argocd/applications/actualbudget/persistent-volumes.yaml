@@ -1,12 +1,12 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: data
+  name: "data"
 spec:
-  storageClassName: nfs-client
+  storageClassName: "nfs-client"
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Mi
+      storage: "10Mi"
 

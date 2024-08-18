@@ -26,13 +26,13 @@ spec:
               value: "20"
           image: "docker.io/actualbudget/actual-server:24.8.0"
           ports:
-            - name: "web"
+            - name: "app"
               containerPort: 5006
           volumeMounts:
             - name: "data"
               mountPath: "/data"
       volumes:
-        - name: data
+        - name: "data"
           persistentVolumeClaim:
-            claimName: data
+            claimName: "data"
 

@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: actualbudget
+  name: "actualbudget"
 
 spec:
   ports:
-    - name: web
+    - name: "http-traffic"
       port: 80
-      targetPort: web
+      targetPort: "app"
 
   selector:
-    app: actualbudget
+    app: "actualbudget"
 
 ---
 
@@ -18,8 +18,8 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   annotations:
-  name: actualbudget-web
-  namespace: actualbudget
+  name: "actualbudget-web"
+  namespace: "actualbudget"
 
 spec:
   entryPoints:
@@ -29,8 +29,8 @@ spec:
     - match: Host(`actualbudget.tlake.io`)
       kind: Rule
       services:
-        - name: actualbudget
-          port: web
+        - name: "actualbudget"
+          port: "http-traffic"
 
 ---
 
@@ -38,8 +38,8 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   annotations:
-  name: actualbudget-websecure
-  namespace: actualbudget
+  name: "actualbudget-websecure"
+  namespace: "actualbudget"
 
 spec:
   entryPoints:
@@ -49,9 +49,9 @@ spec:
     - match: Host(`actualbudget.tlake.io`)
       kind: Rule
       services:
-        - name: actualbudget
-          port: web
+        - name: "actualbudget"
+          port: "http-traffic"
 
   tls:
-    certResolver: staging
+    certResolver: "staging"
 

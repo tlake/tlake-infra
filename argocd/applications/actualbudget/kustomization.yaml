@@ -6,7 +6,7 @@ resources:
 - persistent-volumes.yaml
 - routing.yaml
 
-namespace: actualbudget
+namespace: "actualbudget"
 
 commonLabels:
-  app: actualbudget
+  app: "actualbudget"
