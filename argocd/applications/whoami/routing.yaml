@@ -14,22 +14,41 @@ spec:
 
 ---
 
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-  name: whoami-ingress
+  name: whoami-web
+  namespace: whoami
+
 spec:
-  rules:
-    - host: whoami.tlake.io
-      http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: whoami
-              port:
-                name: web
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`whoami.tlake.io`)
+      kind: Rule
+      services:
+        - name: whoami
+          port: web
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: whoami-websecure
+  namespace: whoami
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`whoami.tlake.io`)
+      kind: Rule
+      services:
+        - name: whoami
+          port: web
 
