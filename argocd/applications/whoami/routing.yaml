@@ -29,7 +29,9 @@ spec:
     - match: Host(`whoami.tlake.io`)
       kind: Rule
       services:
-        - name: whoami
+        - kind: Service
+          name: whoami
+          namespace: whoami
           port: web
 
 ---
@@ -45,11 +47,12 @@ spec:
   entryPoints:
     - websecure
 
-  routes:
     - match: Host(`whoami.tlake.io`)
       kind: Rule
       services:
-        - name: whoami
+        - kind: Service
+          name: whoami
+          namespace: whoami
           port: web
 
   tls:
