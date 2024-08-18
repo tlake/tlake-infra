@@ -32,9 +32,9 @@ spec:
             - name: "ROCKET_ENV"
               value: "staging"
             - name: "ROCKET_PORT"
-              value: 80
+              value: "80"
             - name: "ROCKET_WORKERS"
-              value: 10
+              value: "10"
             - name: "SIGNUPS_ALLOWED"
               value: "true"
             - name: "UDEV"
