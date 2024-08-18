@@ -6,7 +6,7 @@ resources:
 - persistent-volumes.yaml
 - routing.yaml
 
-namespace: "CHANGE_APP_IDENTIFIER"
+namespace: "vaultwarden"
 
 commonLabels:
-  app: "CHANGE_APP_IDENTIFIER"
+  app: "vaultwarden"
