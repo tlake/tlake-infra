@@ -18,12 +18,31 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   annotations:
-  name: actualbudget-ingress
+  name: actualbudget-web
   namespace: actualbudget
 
 spec:
   entryPoints:
     - web
+
+  routes:
+    - match: Host(`actualbudget.tlake.io`)
+      kind: Rule
+      services:
+        - name: actualbudget
+          port: web
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: actualbudget-websecure
+  namespace: actualbudget
+
+spec:
+  entryPoints:
     - websecure
 
   routes:
@@ -35,3 +54,4 @@ spec:
 
   tls:
     certResolver: staging
+
