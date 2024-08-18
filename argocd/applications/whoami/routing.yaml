@@ -47,6 +47,7 @@ spec:
   entryPoints:
     - websecure
 
+  routes:
     - match: Host(`whoami.tlake.io`)
       kind: Rule
       services:
