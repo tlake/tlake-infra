@@ -230,14 +230,14 @@ metadata:
   namespace: default
 
 spec:
-  serverName: foobar
-  insecureSkipVerify: true
-  rootCAsSecrets:
-    - foobar
-    - foobar
-  certificatesSecrets:
-    - foobar
-    - foobar
-  peerCertURI: foobar
+  #  serverName: foobar
+  #  insecureSkipVerify: true
+  #  rootCAsSecrets:
+  #    - foobar
+  #    - foobar
+  #  certificatesSecrets:
+  #    - foobar
+  #    - foobar
+  #  peerCertURI: foobar
   dialTimeout: 42s
   dialKeepAlive: 42s
