@@ -52,3 +52,6 @@ spec:
         - name: whoami
           port: web
 
+  tls:
+    certResolver: staging
+
