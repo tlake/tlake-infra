@@ -18,8 +18,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
-    traefik.ingress.kubernetes.io/router.tls.certresolver: staging
+    traefik.ingress.kubernetes.io/routers.actualbudget.entrypoints: "web,websecure"
+    traefik.ingress.kubernetes.io/routers.actualbudget.tls.certresolver: staging
   name: actualbudget-ingress
 spec:
   rules:
