@@ -1,30 +1,38 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: actualbudget
+  name: "actualbudget"
   labels:
-    app: actualbudget
+    app: "actualbudget"
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: actualbudget
+      app: "actualbudget"
   template:
     metadata:
       labels:
-        app: actualbudget
+        app: "actualbudget"
     spec:
       containers:
-        - name: actualbudget
+        - name: "actualbudget"
           env:
-            - name: ACTUAL_UPLOAD_FILE_SYNC_SIZE_LIMIT_MB
+            - name: "ACTUAL_UPLOAD_FILE_SYNC_SIZE_LIMIT_MB"
               value: "200"
-            - name: ACTUAL_UPLOAD_SYNC_ENCRYPTED_FILE_SYNC_SIZE_LIMIT_MB
+            - name: "ACTUAL_UPLOAD_SYNC_ENCRYPTED_FILE_SYNC_SIZE_LIMIT_MB"
               value: "500"
-            - name: ACTUAL_UPLOAD_FILE_SIZE_LIMIT_MB
+            - name: "ACTUAL_UPLOAD_FILE_SIZE_LIMIT_MB"
               value: "20"
           image: "docker.io/actualbudget/actual-server:24.8.0"
           ports:
-            - name: web
+            - name: "web"
               containerPort: 5006
+          volumeMounts:
+            - name: "data"
+              mountPath: "/data"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: data
+
