@@ -57,7 +57,7 @@ spec:
                   name: "config"
                   key: "postgres_user"
             - name: "DATABASE_URL"
-              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@]postgres:5432/$(POStGRES_DB)"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@]postgres:5432/$(POSTGRES_DB)"
           image: "vaultwarden/server:latest"
           ports:
             - name: "app"
@@ -90,36 +90,6 @@ spec:
           volumeMounts:
             - name: "postgres-data"
               mountPath: "/var/lib/postgresql/data"
-
-#        - name: "mariadb"
-#          env:
-#            - name: "MYSQL_ROOT_PASSWORD"
-#              valueFrom:
-#                secretKeyRef:
-#                  name: "config"
-#                  key: "mysql_root_password"
-#            - name: "MYSQL_PASSWORD"
-#              valueFrom:
-#                secretKeyRef:
-#                  name: "config"
-#                  key: "mysql_password"
-#            - name: "MYSQL_DATABASE"
-#              valueFrom:
-#                secretKeyRef:
-#                  name: "config"
-#                  key: "mysql_database"
-#            - name: "MYSQL_USER"
-#              valueFrom:
-#                secretKeyRef:
-#                  name: "config"
-#                  key: "mysql_user"
-#          image: "mariadb:latest"
-#          ports:
-#            - name: "db"
-#              containerPort: 3306
-#          volumeMounts:
-#            - name: "mariadb-data"
-#              mountPath: "/var/lib/mysql"
 
       volumes:
         - name: "app-data"
