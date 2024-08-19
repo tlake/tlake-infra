@@ -17,13 +17,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: "mariadb"
+  name: "postgres"
 spec:
   selector:
-    app: "mariadb"
+    app: "postgres"
   ports:
     - name: "db"
-      port: 3306
+      port: 5432
       protocol: TCP
       targetPort: "db"
 

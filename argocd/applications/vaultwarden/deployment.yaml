@@ -7,10 +7,6 @@ metadata:
 
 spec:
   replicas: 1
-  securityContext:
-    fsGroup: 1003
-    runAsUser: 1003
-    runAsGroup: 1003
   selector:
     matchLabels:
       app: "vaultwarden"
@@ -45,23 +41,23 @@ spec:
               value: "off"
             - name: "WEBSOCKET_ENABLED"
               value: "true"
-            - name: "MYSQL_PASSWORD"
+            - name: "POSTGRES_DB"
               valueFrom:
                 secretKeyRef:
                   name: "config"
-                  key: "mysql_password"
-            - name: "MYSQL_DATABASE"
+                  key: "postgres_database"
+            - name: "POSTGRES_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: "config"
-                  key: "mysql_database"
-            - name: "MYSQL_USER"
+                  key: "postgres_password"
+            - name: "POSTGRES_USER"
               valueFrom:
                 secretKeyRef:
                   name: "config"
-                  key: "mysql_user"
+                  key: "postgres_user"
             - name: "DATABASE_URL"
-              value: "mysql://$(MYSQL_USER):$(MYSQL_PASSWORD)@mariadb/$(MYSQL_DATABASE)"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@]postgres:5432/$(POStGRES_DB)"
           image: "vaultwarden/server:latest"
           ports:
             - name: "app"
@@ -70,35 +66,60 @@ spec:
             - name: "app-data"
               mountPath: "/data"
 
-        - name: "mariadb"
+        - name: "postgres"
           env:
-            - name: "MYSQL_ROOT_PASSWORD"
+            - name: "POSTGRES_DB"
               valueFrom:
                 secretKeyRef:
                   name: "config"
-                  key: "mysql_root_password"
-            - name: "MYSQL_PASSWORD"
+                  key: "postgres_database"
+            - name: "POSTGRES_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: "config"
-                  key: "mysql_password"
-            - name: "MYSQL_DATABASE"
+                  key: "postgres_password"
+            - name: "POSTGRES_USER"
               valueFrom:
                 secretKeyRef:
                   name: "config"
-                  key: "mysql_database"
-            - name: "MYSQL_USER"
-              valueFrom:
-                secretKeyRef:
-                  name: "config"
-                  key: "mysql_user"
-          image: "mariadb:latest"
+                  key: "postgres_user"
+          image: "postgres:latest"
           ports:
             - name: "db"
-              containerPort: 3306
+              containerPort: 5432
           volumeMounts:
-            - name: "mariadb-data"
-              mountPath: "/var/lib/mysql"
+            - name: "postgres-data"
+              mountPath: "/var/lib/postgresql/data"
+
+#        - name: "mariadb"
+#          env:
+#            - name: "MYSQL_ROOT_PASSWORD"
+#              valueFrom:
+#                secretKeyRef:
+#                  name: "config"
+#                  key: "mysql_root_password"
+#            - name: "MYSQL_PASSWORD"
+#              valueFrom:
+#                secretKeyRef:
+#                  name: "config"
+#                  key: "mysql_password"
+#            - name: "MYSQL_DATABASE"
+#              valueFrom:
+#                secretKeyRef:
+#                  name: "config"
+#                  key: "mysql_database"
+#            - name: "MYSQL_USER"
+#              valueFrom:
+#                secretKeyRef:
+#                  name: "config"
+#                  key: "mysql_user"
+#          image: "mariadb:latest"
+#          ports:
+#            - name: "db"
+#              containerPort: 3306
+#          volumeMounts:
+#            - name: "mariadb-data"
+#              mountPath: "/var/lib/mysql"
 
       volumes:
         - name: "app-data"
