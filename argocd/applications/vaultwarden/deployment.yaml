@@ -70,7 +70,7 @@ spec:
           env:
             - name: "MYSQL_ROOT_PASSWORD"
               valueFrom:
-                secretkeyRef:
+                secretKeyRef:
                   name: "config"
                   key: "mysql_root_password"
             - name: "MYSQL_PASSWORD"
