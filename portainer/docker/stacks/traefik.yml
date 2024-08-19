@@ -35,7 +35,7 @@ services:
           - "node.platform.arch == aarch64"
     # The official v2 Traefik docker image
     #image: "traefik:v2.5"
-    image: "traefik:v3.1"
+    image: "traefik:v3.0"
     networks:
       - "home"
     ports:
