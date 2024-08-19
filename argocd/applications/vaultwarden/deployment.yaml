@@ -91,7 +91,7 @@ spec:
           image: "mariadb:latest"
           volumeMounts:
             - name: "mariadb-data"
-              mountpath: "/var/lib/mysql"
+              mountPath: "/var/lib/mysql"
 
       volumes:
         - name: "app-data"
