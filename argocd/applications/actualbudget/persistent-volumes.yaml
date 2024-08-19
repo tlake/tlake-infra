@@ -1,12 +1,9 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  #name: "data"
-  #name: "data-k8s"
-  name: "data-nfs"
+  name: "data"
 spec:
-  #storageClassName: "microk8s-hostpath"
-  storageClassName: "nfs-client"
+  storageClassName: "microk8s-hostpath"
   accessModes:
     - ReadWriteOncePod
   resources:
