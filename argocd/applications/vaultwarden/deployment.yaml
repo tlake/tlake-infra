@@ -125,7 +125,7 @@ spec:
         - name: "app-data"
           persistentVolumeClaim:
             claimName: "app-data"
-        - name: "mariadb-data"
+        - name: "postgres-data"
           persistentVolumeClaim:
-            claimName: "mariadb-data"
+            claimName: "postgres-data"
 
