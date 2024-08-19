@@ -15,7 +15,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "mariadb-data"
+  name: "postgres-data"
 spec:
   storageClassName: "nfs-client"
   accessModes:
