@@ -45,7 +45,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: "config"
-                  key: "postgres_database"
+                  key: "postgres_db"
             - name: "POSTGRES_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -72,7 +72,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: "config"
-                  key: "postgres_database"
+                  key: "postgres_db"
             - name: "POSTGRES_PASSWORD"
               valueFrom:
                 secretKeyRef:
