@@ -41,6 +41,23 @@ spec:
               value: "off"
             - name: "WEBSOCKET_ENABLED"
               value: "true"
+            - name: "MYSQL_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "mysql_password"
+            - name: "MYSQL_DATABASE"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "mysql_database"
+            - name: "MYSQL_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "mysql_user"
+            - name: "DATABASE_URL"
+              value: "mysql://$(MYSQL_USER):$(MYSQL_PASSWORD)@mariadb/$(MYSQL_DATABASE)"
           image: "vaultwarden/server:latest"
           ports:
             - name: "app"
@@ -48,8 +65,39 @@ spec:
           volumeMounts:
             - name: "app-data"
               mountPath: "/data"
+
+        - name: "mariadb"
+          env:
+            - name: "MYSQL_ROOT_PASSWORD"
+              valueFrom:
+                secretkeyRef:
+                  name: "config"
+                  key: "mysql_root_password"
+            - name: "MYSQL_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "mysql_password"
+            - name: "MYSQL_DATABASE"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "mysql_database"
+            - name: "MYSQL_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "mysql_user"
+          image: "mariadb:latest"
+          volumeMounts:
+            - name: "mariadb-data"
+              mountpath: "/var/lib/mysql"
+
       volumes:
         - name: "app-data"
           persistentVolumeClaim:
             claimName: "app-data"
+        - name: "mariadb-data"
+          persistentVolumeClaim:
+            claimName: "mariadb-data"
 
