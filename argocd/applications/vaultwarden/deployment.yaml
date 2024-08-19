@@ -7,6 +7,10 @@ metadata:
 
 spec:
   replicas: 1
+  securityContext:
+    fsGroup: 1003
+    runAsUser: 1003
+    runAsGroup: 1003
   selector:
     matchLabels:
       app: "vaultwarden"
