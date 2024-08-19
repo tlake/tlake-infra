@@ -34,5 +34,7 @@ spec:
       volumes:
         - name: "data"
           persistentVolumeClaim:
-            claimName: "data"
+            #claimName: "data"
+            claimName: "data-k8s"
+            #claimName: "data-nfs"
 
