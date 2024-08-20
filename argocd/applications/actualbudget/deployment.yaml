@@ -34,6 +34,8 @@ spec:
 
         - name: "rsync"
           env:
+            - name: "RSYNC_CRONTAB"
+              value: "crontab"
             - name: "TZ"
               value: "America/Los_Angeles"
           image: "ogivuk/rsync:latest"
