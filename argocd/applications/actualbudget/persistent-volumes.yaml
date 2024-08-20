@@ -5,8 +5,7 @@ metadata:
 spec:
   storageClassName: "microk8s-hostpath"
   accessModes:
-    - ReadWriteOncePod
-    - ReadOnlyMany
+    - ReadWriteMany
   resources:
     requests:
       storage: "10Mi"
@@ -34,7 +33,7 @@ metadata:
 spec:
   storageClassName: "nfs-client"
   accessModes:
-    - ReadWriteOncePod
+    - ReadOnlyMany
   resources:
     requests:
       storage: "2Mi"
