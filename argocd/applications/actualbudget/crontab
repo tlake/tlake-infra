@@ -1,1 +1,1 @@
-0 */6 * * * rsync -a /data/source/* /data/destination/
+50 * * * * rsync -a /data/source/* /data/destination/
