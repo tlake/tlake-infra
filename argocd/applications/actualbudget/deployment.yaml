@@ -42,7 +42,7 @@ spec:
               mountPath: "/data/destination"
             - name: "data"
               mountPath: "/data/source"
-              readOnly: "true"
+              readOnly: true
             - name: "rsync"
               mountPath: "/rsync"
 
