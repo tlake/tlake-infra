@@ -26,7 +26,7 @@ spec:
     - web
 
   routes:
-    - match: Host(`actualbudget.tlake.io`)
+    - match: "Host(`actual.tlake.io`) || Host(`actualbudget.tlake.io`)"
       kind: Rule
       services:
         - name: "actualbudget"
@@ -46,7 +46,7 @@ spec:
     - websecure
 
   routes:
-    - match: Host(`actualbudget.tlake.io`)
+    - match: "Host(`actual.tlake.io`) || Host(`actualbudget.tlake.io`)"
       kind: Rule
       services:
         - name: "actualbudget"
