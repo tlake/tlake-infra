@@ -31,8 +31,31 @@ spec:
           volumeMounts:
             - name: "data"
               mountPath: "/data"
+
+        - name: "rsync"
+          env:
+            - name: "TZ"
+              value: "America/Los_Angeles"
+          image: "ogivuk/rsync:latest"
+          volumeMounts:
+            - name: "backup"
+              mountPath: "/data/destination"
+            - name: "data"
+              mountPath: "/data/source"
+              readOnly: "true"
+            - name: "rsync"
+              mountPath: "/rsync"
+
       volumes:
         - name: "data"
           persistentVolumeClaim:
             claimName: "data"
+
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup"
+
+        - name: "rsync"
+          persistentVolumeClaim:
+            claimName: "rsync"
 

@@ -6,7 +6,36 @@ spec:
   storageClassName: "microk8s-hostpath"
   accessModes:
     - ReadWriteOncePod
+    - ReadOnlyMany
   resources:
     requests:
       storage: "10Mi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "backup"
+spec:
+  storageClassName: "nfs-client"
+  accessModes:
+    - ReadWriteOncePod
+  resources:
+    requests:
+      storage: "10Mi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "rsync"
+spec:
+  storageClassName: "nfs-client"
+  accessModes:
+    - ReadWriteOncePod
+  resources:
+    requests:
+      storage: "2Mi"
 
