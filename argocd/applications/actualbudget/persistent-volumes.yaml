@@ -19,7 +19,7 @@ metadata:
 spec:
   storageClassName: "nfs-client"
   accessModes:
-    - ReadWriteOncePod
+    - ReadWriteMany
   resources:
     requests:
       storage: "10Mi"
