@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "CHANGE_APP_IDENTIFIER"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "CHANGE_APP_IDENTIFIER"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "CHANGE_APP_IDENTIFIER-web"
+  namespace: "CHANGE_APP_IDENTIFIER"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`CHANGE_HOST`)
+      kind: Rule
+      services:
+        - name: "CHANGE_APP_IDENTIFIER"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "CHANGE_APP_IDENTIFIER-websecure"
+  namespace: "CHANGE_APP_IDENTIFIER"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`CHANGE_HOST`)
+      kind: Rule
+      services:
+        - name: "CHANGE_APP_IDENTIFIER"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+
