@@ -1,34 +1,66 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: "CHANGE_APP_IDENTIFIER"
+  name: "calibre"
   labels:
-    app: "CHANGE_APP_IDENTIFIER"
+    app: "calibre"
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: "CHANGE_APP_IDENTIFIER"
+      app: "calibre"
   template:
     metadata:
       labels:
-        app: "CHANGE_APP_IDENTIFIER"
+        app: "calibre"
+
     spec:
       containers:
-        - name: "CHANGE_APP_IDENTIFIER"
+        - name: "calibre"
           env:
-            - name: "CHANGE_ENVVAR_NAME"
-              value: "CHANGE_ENVVAR_VALUE"
-          image: "CHANGE_IMAGE_REF"
+            - name: "TZ"
+              value: "America/Los_Angeles"
+          image: "lscr.io/linuxserver/calibre-web:0.6.21"
           ports:
             - name: "app"
-              containerPort: CHANGE_PORT_NUMBER
+              containerPort: 8083
           volumeMounts:
-            - name: "CHANGE_VOLUME_NAME"
-              mountPath: "/CHANGE_MOUNT_PATH"
+            - name: "library"
+              mountPath: "/books"
+            - name: "config"
+              mountPath: "/config"
+
+        - name: "rsync"
+          env:
+            - name: "RSYNC_CRONTAB"
+              value: "crontab"
+            - name: "TZ"
+              value: "America/Los_Angeles"
+          image: "ogivuk/rsync:latest"
+          volumeMounts:
+            - name: "library"
+              mountPath: "/data/source"
+              readOnly: true
+            - name: "backup"
+              mountPath: "/data/destination"
+            - name: "rsync"
+              mountPath: "/rsync"
+
       volumes:
-        - name: "CHANGE_VOLUME_NAME"
+        - name: "library"
           persistentVolumeClaim:
-            claimName: "CHANGE_VOLUME_NAME"
+            claimName: "library"
+
+        - name: "config"
+          persistentVolumeClaim:
+            claimName: "config"
+
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup"
+
+        - name: "rsync"
+          persistentVolumeClaim:
+            claimName: "rsync"
 

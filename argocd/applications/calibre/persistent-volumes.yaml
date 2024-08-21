@@ -1,7 +1,21 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "CHANGE_VOLUME_NAME"
+  name: "library"
+spec:
+  storageClassName: "microk8s-hostpath"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "10Mi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "config"
 spec:
   storageClassName: "nfs-client"
   accessModes:
@@ -9,4 +23,32 @@ spec:
   resources:
     requests:
       storage: "10Mi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "backup"
+spec:
+  storageClassName: "nfs-client"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "10Mi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "rsync"
+spec:
+  storageClassName: "nfs-client"
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: "2Mi"
 

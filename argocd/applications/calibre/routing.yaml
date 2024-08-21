@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "CHANGE_APP_IDENTIFIER"
+  name: "calibre"
 
 spec:
   ports:
@@ -10,7 +10,7 @@ spec:
       targetPort: "app"
 
   selector:
-    app: "CHANGE_APP_IDENTIFIER"
+    app: "calibre"
 
 ---
 
@@ -18,18 +18,18 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   annotations:
-  name: "CHANGE_APP_IDENTIFIER-web"
-  namespace: "CHANGE_APP_IDENTIFIER"
+  name: "calibre-web"
+  namespace: "calibre"
 
 spec:
   entryPoints:
     - web
 
   routes:
-    - match: Host(`CHANGE_HOST`)
+    - match: "Host(`calibre.tlake.io`) || Host(`calibre-web.tlake.io`)"
       kind: Rule
       services:
-        - name: "CHANGE_APP_IDENTIFIER"
+        - name: "calibre"
           port: "http-traffic"
 
 ---
@@ -38,18 +38,18 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   annotations:
-  name: "CHANGE_APP_IDENTIFIER-websecure"
-  namespace: "CHANGE_APP_IDENTIFIER"
+  name: "calibre-websecure"
+  namespace: "calibre"
 
 spec:
   entryPoints:
     - websecure
 
   routes:
-    - match: Host(`CHANGE_HOST`)
+    - match: "Host(`calibre.tlake.io`) || Host(`calibre-web.tlake.io`)"
       kind: Rule
       services:
-        - name: "CHANGE_APP_IDENTIFIER"
+        - name: "calibre"
           port: "http-traffic"
 
   tls:
