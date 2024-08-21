@@ -40,7 +40,10 @@ spec:
           image: "ogivuk/rsync:latest"
           volumeMounts:
             - name: "library"
-              mountPath: "/data/source"
+              mountPath: "/data/source/books"
+              readOnly: true
+            - name: "config"
+              mountPath: "/data/source/config"
               readOnly: true
             - name: "backup"
               mountPath: "/data/destination"
