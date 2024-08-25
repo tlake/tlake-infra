@@ -21,6 +21,8 @@ spec:
           env:
             - name: "TZ"
               value: "America/Los_Angeles"
+            - name: "DOCKER_MODS"
+              value: "linuxserver/mods:universal-calibre"
           image: "lscr.io/linuxserver/calibre-web:0.6.21"
           ports:
             - name: "app"
