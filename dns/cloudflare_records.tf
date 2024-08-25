@@ -14,12 +14,12 @@ resource "cloudflare_zone" "zones" {
 }
 
 resource "cloudflare_record" "www_tlake_io" {
-  zone_id = cloudflare_zone.zones["tlake.io"].id
+  content = "tlake.io"
   name    = "www"
   proxied = true
-  value   = "tlake.io"
-  type    = "CNAME"
   ttl     = var.cloudflare_proxy_ttl
+  type    = "CNAME"
+  zone_id = cloudflare_zone.zones["tlake.io"].id
 }
 
 #################
@@ -29,19 +29,19 @@ resource "cloudflare_record" "www_tlake_io" {
 # TODO: figure out how to replace alias in cf since it doesn't exist
 
 #resource "cloudflare_record" "alias_tlake_io" {
-#  zone_id = cloudflare_zone.zones["tlake.io"].id
+#  content  = "tlake.github.io"
 #  name   = ""
-#  value  = "tlake.github.io"
-#  type   = "ALIAS"
 #  ttl    = var.cloudflare_proxy_ttl
+#  type   = "ALIAS"
+#  zone_id = cloudflare_zone.zones["tlake.io"].id
 #}
 #
 #resource "cloudflare_record" "alias_txt_tlake_io" {
-#  zone_id = cloudflare_zone.zones["tlake.io"].id
+#  content  = "ALIAS for tlake.github.io"
 #  name   = ""
-#  value  = "ALIAS for tlake.github.io"
-#  type   = "TXT"
 #  ttl    = var.cloudflare_proxy_ttl
+#  type   = "TXT"
+#  zone_id = cloudflare_zone.zones["tlake.io"].id
 #}
 
 #################
@@ -72,12 +72,12 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
     "vaultwarden",
   ])
 
-  zone_id = cloudflare_zone.zones["tlake.io"].id
+  content = var.home_ip_address
   name    = each.value
   proxied = true
-  value   = var.home_ip_address
-  type    = "A"
   ttl     = var.cloudflare_proxy_ttl
+  type    = "A"
+  zone_id = cloudflare_zone.zones["tlake.io"].id
 }
 
 
@@ -87,12 +87,12 @@ resource "cloudflare_record" "tlake_io_subdomain_porkbun_routes" {
     "email",
   ])
 
-  zone_id = cloudflare_zone.zones["tlake.io"].id
+  content = var.porkbun_ip_address
   name    = each.value
   proxied = true
-  value   = var.porkbun_ip_address
-  type    = "A"
   ttl     = var.cloudflare_proxy_ttl
+  type    = "A"
+  zone_id = cloudflare_zone.zones["tlake.io"].id
 }
 
 #################
@@ -102,10 +102,10 @@ resource "cloudflare_record" "tlake_io_subdomain_porkbun_routes" {
 resource "cloudflare_record" "tlake_io_txt_challenges" {
   count = length(local.txt_challenges)
 
-  zone_id = cloudflare_zone.zones["tlake.io"].id
+  content = local.txt_challenges[count.index]["record_value"]
   name    = local.txt_challenges[count.index]["record_name"]
-  value   = local.txt_challenges[count.index]["record_value"]
-  type    = "TXT"
   ttl     = 1
+  type    = "TXT"
+  zone_id = cloudflare_zone.zones["tlake.io"].id
 }
 
