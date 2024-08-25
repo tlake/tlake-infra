@@ -3,11 +3,16 @@ kind: Kustomization
 
 namespace: argocd
 resources:
-- https://raw.githubusercontent.com/argoproj/argo-cd/v2.7.2/manifests/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.7.2/manifests/install.yaml
+
+  # Uncomment this after Traefik is installed and configured with its CRDs.
+  # This will create the IngressRoute that allows Traefik to route requests
+  # to the argocd-server pod.
+  #- traefik-ingress.yaml
 
 patches:
-- path: patch-expose-service.yaml
-  target:
-    kind: Service
-    name: argocd-server
+  - path: patch-expose-service.yaml
+    target:
+      kind: Service
+      name: argocd-server
 
