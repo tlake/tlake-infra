@@ -51,7 +51,9 @@ resource "cloudflare_record" "www_tlake_io" {
 resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
   for_each = toset([
     "actual",
+    "actualbudget",
     "ando-mcfoundry",
+    "argocd",
     "bitwarden",
     "calibre-web",
     "cloud",
@@ -67,6 +69,7 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
     "minecraft",
     "portainer",
     "stable-diffusion",
+    "vaultwarden",
   ])
 
   zone_id = cloudflare_zone.zones["tlake.io"].id
