@@ -55,6 +55,7 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
     "ando-mcfoundry",
     "argocd",
     "bitwarden",
+    "calibre",
     "calibre-web",
     "cloud",
     "docker-registry",
@@ -67,7 +68,10 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
     "lazylibrarian",
     "mc",
     "minecraft",
+    "oci-registry",
+    "ociregistry",
     "portainer",
+    "registry",
     "stable-diffusion",
     "vaultwarden",
   ])
