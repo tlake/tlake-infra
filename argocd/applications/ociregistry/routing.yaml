@@ -26,7 +26,11 @@ spec:
     - web
 
   routes:
-    - match: Host(`registry.tlake.io`)
+    - match: >
+        Host(`docker-registry.tlake.io`) ||
+        Host(`oci-registry.tlake.io`) ||
+        Host(`ociregistry.tlake.io`) ||
+        Host(`registry.tlake.io`)
       kind: Rule
       services:
         - name: "ociregistry"
@@ -46,7 +50,11 @@ spec:
     - websecure
 
   routes:
-    - match: Host(`registry.tlake.io`)
+    - match: >
+        Host(`docker-registry.tlake.io`) ||
+        Host(`oci-registry.tlake.io`) ||
+        Host(`ociregistry.tlake.io`) ||
+        Host(`registry.tlake.io`)
       kind: Rule
       services:
         - name: "ociregistry"
