@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: Deployment
 metadata:
-  name: argocd-server
+  name: argocd-dex-server
   namespace: argocd
 spec:
   template:
     spec:
       containers:
-        - name: argocd-server
+        - name: dex
           env:
-            - name: ARGOCD_SERVER_INSECURE
+            - name: ARGOCD_DEX_SERVER_DISABLE_TLS
               value: "true"
               valueFrom:
                 $patch: delete
                 configMapKeyRef:
-                  key: server.insecure
-                  name: argocd-cmd-params-ca
+                  key: dexserver.disable.tls
+                  name: argocd-cmd-params-cm
                   optional: true
 

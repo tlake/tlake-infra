@@ -15,9 +15,19 @@ patches:
     target:
       kind: Service
       name: argocd-server
-  - 
+
   - path: patch-argocd-server-insecure.yaml
     target:
       kind: Deployment
       name: argocd-server
+
+  - path: patch-argocd-dex-server-insecure.yaml
+    target:
+      kind: Deployment
+      name: argocd-dex-server
+
+  - path: patch-argocd-repo-server-insecure.yaml
+    target:
+      kind: Deployment
+      name: argocd-repo-server
 
