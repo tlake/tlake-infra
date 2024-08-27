@@ -15,4 +15,9 @@ patches:
     target:
       kind: Service
       name: argocd-server
+  - 
+  - path: patch-argocd-server-insecure.yaml
+    target:
+      kind: Deployment
+      name: argocd-server
 
