@@ -1,0 +1,9 @@
+- name: add traefik helm repository
+  delegate_to: thicket0
+  run_once: true
+  shell: /snap/bin/microk8s.helm3 repo add traefik https://traefik.github.io/charts --force-update
+
+- name: install traefik helm chart
+  delegate_to: thicket0
+  run_once: true
+  shell: /snap/bin/microk8s.helm3 upgrade -i traefik traefik/traefik

@@ -1,0 +1,40 @@
+#- name: add nfs-subdir-external-provisioner helm repository
+#  run_once: true
+#  delegate_to: thicket0
+#  kubernetes.core.helm_repository:
+#    binary_path: /snap/bin/microk8s.helm
+#    force_update: true
+#    name: nfs-subdir-external-provisioner
+#    repo_url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+
+#- name: install nfs-subdir-external-provider helm chart
+#  run_once: true
+#  delegate_to: thicket0
+#  kubernetes.core.helm:
+#    binary_path: /snap/bin/microk8s.helm
+#    chart_ref: nfs-subdir-external-provisioner/nfs-subdir-external-provisioner
+#    name: nfs-subdir-external-provisioner
+#    release_namespace: default
+#    values:
+#      "nfs.server": mansionsyrup
+#      "nfs.path": /nas/data/thicket-k8s-data
+
+#- name: create argocd namespace
+#  delegate_to: thicket0
+#  run_once: true
+#  shell: /snap/bin/microk8s.kubectl create namespace argocd
+
+- name: install argocd
+  delegate_to: thicket0
+  run_once: true
+  shell: /snap/bin/microk8s.kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+- name: add nfs-subdir-external-provisioner helm repository
+  delegate_to: thicket0
+  run_once: true
+  shell: /snap/bin/microk8s.helm3 repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/ --force-update
+
+- name: install nfs-subdir-external-provider helm chart
+  delegate_to: thicket0
+  run_once: true
+  shell: /snap/bin/microk8s.helm3 upgrade -i nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=mansionsyrup --set nfs.path=/nas/data/thicket-k8s-data --set storageClass.defaultClass=true

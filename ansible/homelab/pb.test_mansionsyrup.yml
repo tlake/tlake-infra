@@ -1,0 +1,7 @@
+---
+- name: test mansionsyrup
+  hosts: mansionsyrup
+  roles:
+    - raspberry_pis
+  vars_files:
+    - vault/main.yml
