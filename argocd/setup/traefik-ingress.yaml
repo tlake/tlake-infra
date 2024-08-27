@@ -9,7 +9,7 @@ spec:
     - web
 
   routes:
-    - match: "Host(`argocd.tlake.io`)"
+    - match: "Host(`argocd.tlake.io`) || Host(`argocd.local`)"
       kind: Rule
       services:
         - name: "argocd-server"
@@ -28,11 +28,11 @@ spec:
     - websecure
 
   routes:
-    - match: "Host(`argocd.tlake.io`)"
+    - match: "Host(`argocd.tlake.io`) || Host(`argocd.local`)"
       kind: Rule
       services:
         - name: "argocd-server"
-          port:  "https"
+          port:  "http"
 
   tls:
     certResolver: "staging"
