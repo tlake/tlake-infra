@@ -4,6 +4,7 @@
 
 resource "cloudflare_zone" "zones" {
   for_each = toset([
+    "exo-archive.org",
     "tlake.io",
     "mechamoogle.com",
     "tannerjlake.com",
