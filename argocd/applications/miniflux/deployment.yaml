@@ -36,10 +36,6 @@ spec:
             - name: "CREATE_ADMIN"
               value: "1"
 
-            - name: "DATABASE_URL"
-              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
-              #value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
-
             - name: "METRICS_COLLECTOR"
               value: "1"
 
@@ -60,6 +56,10 @@ spec:
                 secretKeyRef:
                   name: "config"
                   key: "postgres_user"
+
+            - name: "DATABASE_URL"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
+              #value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
 
             - name: "RUN_MIGRATIONS"
               value: "1"
