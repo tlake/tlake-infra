@@ -71,7 +71,6 @@ spec:
 
         - name: "miniflux_postgres"
           env:
-            - na
             - name: "POSTGRES_DB"
               valueFrom:
                 secretKeyRef:
