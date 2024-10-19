@@ -58,7 +58,7 @@ spec:
                   key: "postgres_user"
 
             - name: "DATABASE_URL"
-              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@miniflux-postgres:5433/$(POSTGRES_DB)"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
               #value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
 
             - name: "RUN_MIGRATIONS"
@@ -69,7 +69,7 @@ spec:
             - name: "app"
               containerPort: 8080
 
-        - name: "miniflux-postgres"
+        - name: "postgres"
           env:
             - name: "POSTGRES_DB"
               valueFrom:
@@ -83,9 +83,6 @@ spec:
                   name: "config"
                   key: "postgres_password"
 
-            - name: "POSTGRES_PORT"
-              value: "5433"
-
             - name: "POSTGRES_USER"
               valueFrom:
                 secretKeyRef:
@@ -95,7 +92,7 @@ spec:
           image: "postgres:latest"
           ports:
             - name: "db"
-              containerPort: 5433
+              containerPort: 5432
           volumeMounts:
             - name: "postgres-data"
               mountPath: "/var/lib/postgresql/data"
@@ -124,7 +121,7 @@ spec:
                   key: "postgres_user"
 
             - name: "DATABASE_URL"
-              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@miniflux-postgres:5433/$(POSTGRES_DB)"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@miniflux-postgres:5432/$(POSTGRES_DB)"
 
       volumes:
         - name: "postgres-data"
