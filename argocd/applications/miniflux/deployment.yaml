@@ -100,6 +100,30 @@ spec:
             - name: "postgres-data"
               mountPath: "/var/lib/postgresql/data"
 
+        - name: "busybox"
+          image: "busybox:latest"
+          env:
+            - name: "POSTGRES_DB"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_db"
+
+            - name: "POSTGRES_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_password"
+
+            - name: "POSTGRES_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_user"
+
+            - name: "DATABASE_URL"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@miniflux-postgres:5433/$(POSTGRES_DB)"
+
       volumes:
         - name: "postgres-data"
           persistentVolumeClaim:
