@@ -23,7 +23,7 @@ spec:
     app: "miniflux"
   ports:
     - name: "db"
-      port: 5432
+      port: 5433
       protocol: TCP
       targetPort: "db"
 
