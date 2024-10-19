@@ -34,13 +34,13 @@ spec:
               value: "rss.tlake.io"
 
             - name: "CREATE_ADMIN"
-              value: 1
+              value: "1"
 
             - name: "DATABASE_URL"
               value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
 
             - name: "METRICS_COLLECTOR"
-              value: 1
+              value: "1"
 
             - name: "POSTGRES_DB"
               valueFrom:
@@ -61,7 +61,7 @@ spec:
                   key: "postgres_user"
 
             - name: "RUN_MIGRATIONS"
-              value: 1
+              value: "1"
 
           image: "miniflux/miniflux:2.2.1"
           ports:
