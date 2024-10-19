@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "miniflux"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "miniflux"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "miniflux-web"
+  namespace: "miniflux"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`CHANGE_HOST`)
+      kind: Rule
+      services:
+        - name: "miniflux"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "miniflux-websecure"
+  namespace: "miniflux"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`rss.tlake.io`)
+      kind: Rule
+      services:
+        - name: "miniflux"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+
