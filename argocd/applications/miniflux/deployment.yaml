@@ -100,8 +100,10 @@ spec:
             - name: "postgres-data"
               mountPath: "/var/lib/postgresql/data"
 
-        - name: "busybox"
-          image: "busybox:latest"
+        - name: "alpine"
+          image: "alpine:latest"
+          command: [ "/bin/sh", "-c", "--" ]
+          args: [ "while true; do sleep 30; done;" ]
           env:
             - name: "POSTGRES_DB"
               valueFrom:
