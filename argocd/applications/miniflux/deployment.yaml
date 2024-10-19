@@ -31,7 +31,7 @@ spec:
                   key: "miniflux_admin_user"
 
             - name: "BASE_URL"
-              value: "rss.tlake.io"
+              value: "https://rss.tlake.io"
 
             - name: "CREATE_ADMIN"
               value: "1"
