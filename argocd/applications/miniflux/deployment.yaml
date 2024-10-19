@@ -58,7 +58,7 @@ spec:
                   key: "postgres_user"
 
             - name: "DATABASE_URL"
-              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@miniflux_postgres:5432/$(POSTGRES_DB)"
               #value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
 
             - name: "RUN_MIGRATIONS"
@@ -69,8 +69,9 @@ spec:
             - name: "app"
               containerPort: 8080
 
-        - name: "postgres"
+        - name: "miniflux_postgres"
           env:
+            - na
             - name: "POSTGRES_DB"
               valueFrom:
                 secretKeyRef:
