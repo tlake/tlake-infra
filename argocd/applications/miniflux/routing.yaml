@@ -41,7 +41,7 @@ spec:
     - web
 
   routes:
-    - match: Host(`CHANGE_HOST`)
+    - match: Host(`rss.tlake.io`)
       kind: Rule
       services:
         - name: "miniflux"
