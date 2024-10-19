@@ -20,7 +20,7 @@ metadata:
   name: "miniflux_postgres"
 spec:
   selector:
-    app: "miniflux_postgres"
+    app: "miniflux-postgres"
   ports:
     - name: "db"
       port: 5432
