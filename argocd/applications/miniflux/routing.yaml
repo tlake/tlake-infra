@@ -17,7 +17,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: "miniflux_postgres"
+  name: "miniflux-postgres"
 spec:
   selector:
     app: "miniflux-postgres"
