@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: "vaultwarden"
+  namespace: "vaultwarden"
 
 spec:
   ports:
@@ -17,15 +18,22 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app: "vaultwarden"
   name: "postgres"
+  namespace: "vaultwarden"
+
 spec:
-  selector:
-    app: "postgres"
   ports:
     - name: "db"
       port: 5432
       protocol: TCP
       targetPort: "db"
+
+  selector:
+    app: "vaultwarden"
+
+  type: NodePort
 
 ---
 

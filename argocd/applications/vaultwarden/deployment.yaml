@@ -1,7 +1,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: "vaultwarden"
+  name: "vaultwarden-app"
   labels:
     app: "vaultwarden"
 
@@ -67,6 +67,32 @@ spec:
             - name: "app-data"
               mountPath: "/data"
 
+      volumes:
+        - name: "app-data"
+          persistentVolumeClaim:
+            claimName: "app-data"
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "vaultwarden-db"
+  labels:
+    app: "vaultwarden"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "vaultwarden"
+  template:
+    metadata:
+      labels:
+        app: "vaultwarden"
+    spec:
+      containers:
         - name: "postgres"
           env:
             - name: "POSTGRES_DB"
