@@ -60,14 +60,14 @@ spec:
         #            - name: "DATABASE_URL"
         #              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
         #              #value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
-
-            - name: "RUN_MIGRATIONS"
-              value: "1"
-
-          image: "miniflux/miniflux:2.2.1"
-          ports:
-            - name: "app"
-              containerPort: 8080
+        #
+        #            - name: "RUN_MIGRATIONS"
+        #              value: "1"
+        #
+        #          image: "miniflux/miniflux:2.2.1"
+        #          ports:
+        #            - name: "app"
+        #              containerPort: 8080
 
         - name: "postgres"
           env:
