@@ -67,7 +67,7 @@ spec:
                   key: "postgres_user"
 
             - name: "DATABASE_URL"
-              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@miniflux-postgres:5432/$(POSTGRES_DB)?sslmode=disable"
 
             - name: "RUN_MIGRATIONS"
               value: "1"
