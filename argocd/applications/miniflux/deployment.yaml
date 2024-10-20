@@ -16,58 +16,61 @@ spec:
         app: "miniflux"
     spec:
       containers:
-        #        - name: "miniflux"
-        #          env:
-        #            - name: "ADMIN_PASSWORD"
-        #              valueFrom:
-        #                secretKeyRef:
-        #                  name: "config"
-        #                  key: "miniflux_admin_password"
-        #
-        #            - name: "ADMIN_USERNAME"
-        #              valueFrom:
-        #                secretKeyRef:
-        #                  name: "config"
-        #                  key: "miniflux_admin_user"
-        #
-        #            - name: "BASE_URL"
-        #              value: "https://rss.tlake.io"
-        #
-        #            - name: "CREATE_ADMIN"
-        #              value: "1"
-        #
-        #            - name: "METRICS_COLLECTOR"
-        #              value: "1"
-        #
-        #            - name: "POSTGRES_DB"
-        #              valueFrom:
-        #                secretKeyRef:
-        #                  name: "config"
-        #                  key: "postgres_db"
-        #
-        #            - name: "POSTGRES_PASSWORD"
-        #              valueFrom:
-        #                secretKeyRef:
-        #                  name: "config"
-        #                  key: "postgres_password"
-        #
-        #            - name: "POSTGRES_USER"
-        #              valueFrom:
-        #                secretKeyRef:
-        #                  name: "config"
-        #                  key: "postgres_user"
-        #
-        #            - name: "DATABASE_URL"
-        #              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
-        #              #value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
-        #
-        #            - name: "RUN_MIGRATIONS"
-        #              value: "1"
-        #
-        #          image: "miniflux/miniflux:2.2.1"
-        #          ports:
-        #            - name: "app"
-        #              containerPort: 8080
+        - name: "miniflux"
+          env:
+            - name: "ADMIN_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "miniflux_admin_password"
+
+            - name: "ADMIN_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "miniflux_admin_user"
+
+            - name: "BASE_URL"
+              value: "https://rss.tlake.io"
+
+            - name: "CREATE_ADMIN"
+              value: "1"
+
+            - name: "DEBUG"
+              value: "1"
+
+            - name: "METRICS_COLLECTOR"
+              value: "1"
+
+            - name: "POSTGRES_DB"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_db"
+
+            - name: "POSTGRES_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_password"
+
+            - name: "POSTGRES_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_user"
+
+            - name: "DATABASE_URL"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
+              #value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
+
+            - name: "RUN_MIGRATIONS"
+              value: "1"
+
+          image: "miniflux/miniflux:2.2.1"
+          ports:
+            - name: "app"
+              containerPort: 8080
 
         - name: "postgres"
           env:
