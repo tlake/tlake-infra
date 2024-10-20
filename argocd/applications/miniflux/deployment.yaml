@@ -1,7 +1,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: "miniflux"
+  name: "miniflux-app"
   labels:
     app: "miniflux"
 
@@ -72,6 +72,26 @@ spec:
             - name: "app"
               containerPort: 8080
 
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "miniflux-db"
+  labels:
+    app: "miniflux"
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "miniflux"
+  template:
+    metadata:
+      labels:
+        app: "miniflux"
+    spec:
+      containers:
         - name: "postgres"
           env:
             - name: "POSTGRES_DB"
