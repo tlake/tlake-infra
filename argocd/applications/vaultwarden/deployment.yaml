@@ -59,7 +59,7 @@ spec:
                   key: "postgres_user"
             - name: "DATABASE_URL"
               value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
-          image: "vaultwarden/server:latest"
+          image: "vaultwarden/server:1.32"
           ports:
             - name: "app"
               containerPort: 80
