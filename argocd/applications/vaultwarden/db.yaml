@@ -1,0 +1,77 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-postgres"
+  name: "vaultwarden-postgres"
+  namespace: "vaultwarden"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "vaultwarden"
+  template:
+    metadata:
+      labels:
+        app: "vaultwarden"
+        service: "vaultwarden-postgres"
+      name: "vaultwarden-postgres"
+      namespace: "vaultwarden"
+    spec:
+      containers:
+        - name: "postgres"
+          env:
+            - name: "POSTGRES_DB"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_db"
+            - name: "POSTGRES_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_password"
+            - name: "POSTGRES_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_user"
+          image: "postgres:16"
+          ports:
+            - name: "db"
+              containerPort: 5432
+          volumeMounts:
+            - name: "postgres-data"
+              mountPath: "/var/lib/postgresql/data"
+
+      volumes:
+        - name: "app-data"
+          persistentVolumeClaim:
+            claimName: "app-data"
+        - name: "postgres-data"
+          persistentVolumeClaim:
+            claimName: "postgres-data"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-postgres"
+  name: "vaultwarden-postgres"
+  namespace: "vaultwarden"
+spec:
+  selector:
+    app: "vaultwarden"
+    service: "vaultwarden-postgres"
+  ports:
+    - name: "db"
+      port: 5432
+      protocol: TCP
+      targetPort: "db"
+
