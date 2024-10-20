@@ -110,7 +110,7 @@ spec:
                 secretKeyRef:
                   name: "config"
                   key: "postgres_user"
-          image: "postgres:latest"
+          image: "postgres:16"
           ports:
             - name: "db"
               containerPort: 5432
