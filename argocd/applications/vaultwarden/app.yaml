@@ -64,7 +64,7 @@ spec:
                   name: "config"
                   key: "postgres_user"
             - name: "DATABASE_URL"
-              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@vaultwarden-postgres:5432/$(POSTGRES_DB)"
           image: "vaultwarden/server:1.32.2"
           ports:
             - name: "app"
@@ -104,7 +104,9 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  annotations:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
   name: "vaultwarden-web"
   namespace: "vaultwarden"
 
@@ -116,7 +118,7 @@ spec:
     - match: Host(`bitwarden.tlake.io`)
       kind: Rule
       services:
-        - name: "vaultwarden"
+        - name: "vaultwarden-app"
           port: "http-traffic"
 
 ---
@@ -124,7 +126,9 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  annotations:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
   name: "vaultwarden-websecure"
   namespace: "vaultwarden"
 
@@ -136,7 +140,7 @@ spec:
     - match: Host(`bitwarden.tlake.io`)
       kind: Rule
       services:
-        - name: "vaultwarden"
+        - name: "vaultwarden-app"
           port: "http-traffic"
 
   tls:
