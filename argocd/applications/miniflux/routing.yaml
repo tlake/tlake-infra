@@ -18,6 +18,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app: "miniflux"
   name: "postgres"
   namespace: "miniflux"
 
@@ -30,6 +32,8 @@ spec:
 
   selector:
     app: "miniflux"
+
+  type: NodePort
 
 ---
 
