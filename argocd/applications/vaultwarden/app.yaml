@@ -1,0 +1,148 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
+  name: "vaultwarden-app"
+  namespace: "vaultwarden"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "vaultwarden"
+      service: "vaultwarden-app"
+  template:
+    metadata:
+      labels:
+        app: "vaultwarden"
+        service: "vaultwarden-app"
+      name: "vaultwarden-app"
+      namespace: "vaultwarden"
+    spec:
+      containers:
+        - name: "vaultwarden-app"
+          env:
+            - name: "ADMIN_TOKEN"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "admin_token"
+            - name: "DEBIAN_FRONTEND"
+              value: "noninteractive"
+            - name: "LC_ALL"
+              value: "C.UTF-8"
+            - name: "PATH"
+              value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            - name: "ROCKET_ENV"
+              value: "staging"
+            - name: "ROCKET_PORT"
+              value: "80"
+            - name: "ROCKET_WORKERS"
+              value: "10"
+            - name: "SIGNUPS_ALLOWED"
+              value: "true"
+            - name: "UDEV"
+              value: "off"
+            - name: "WEBSOCKET_ENABLED"
+              value: "true"
+            - name: "POSTGRES_DB"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_db"
+            - name: "POSTGRES_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_password"
+            - name: "POSTGRES_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_user"
+            - name: "DATABASE_URL"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@vaultwarden-postgres:5432/$(POSTGRES_DB)"
+          image: "vaultwarden/server:1.32.2"
+          ports:
+            - name: "app"
+              containerPort: 80
+          volumeMounts:
+            - name: "app-data"
+              mountPath: "/data"
+
+      volumes:
+        - name: "app-data"
+          persistentVolumeClaim:
+            claimName: "app-data"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
+  name: "vaultwarden-app"
+  namespace: "vaultwarden"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
+  name: "vaultwarden-web"
+  namespace: "vaultwarden"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`bitwarden.tlake.io`)
+      kind: Rule
+      services:
+        - name: "vaultwarden-app"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
+  name: "vaultwarden-websecure"
+  namespace: "vaultwarden"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`bitwarden.tlake.io`)
+      kind: Rule
+      services:
+        - name: "vaultwarden-app"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+
