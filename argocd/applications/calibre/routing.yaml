@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "vaultwarden"
+  name: "calibre"
 
 spec:
   ports:
@@ -10,22 +10,7 @@ spec:
       targetPort: "app"
 
   selector:
-    app: "vaultwarden"
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: "postgres"
-spec:
-  selector:
-    app: "postgres"
-  ports:
-    - name: "db"
-      port: 5432
-      protocol: TCP
-      targetPort: "db"
+    app: "calibre"
 
 ---
 
@@ -33,18 +18,18 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   annotations:
-  name: "vaultwarden-web"
-  namespace: "vaultwarden"
+  name: "calibre-web"
+  namespace: "calibre"
 
 spec:
   entryPoints:
     - web
 
   routes:
-    - match: Host(`bitwarden.tlake.io`)
+    - match: "Host(`calibre.tlake.io`) || Host(`calibre-web.tlake.io`)"
       kind: Rule
       services:
-        - name: "vaultwarden"
+        - name: "calibre"
           port: "http-traffic"
 
 ---
@@ -53,18 +38,18 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   annotations:
-  name: "vaultwarden-websecure"
-  namespace: "vaultwarden"
+  name: "calibre-websecure"
+  namespace: "calibre"
 
 spec:
   entryPoints:
     - websecure
 
   routes:
-    - match: Host(`bitwarden.tlake.io`)
+    - match: "Host(`calibre.tlake.io`) || Host(`calibre-web.tlake.io`)"
       kind: Rule
       services:
-        - name: "vaultwarden"
+        - name: "calibre"
           port: "http-traffic"
 
   tls:

@@ -1,0 +1,71 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "calibre"
+  labels:
+    app: "calibre"
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "calibre"
+  template:
+    metadata:
+      labels:
+        app: "calibre"
+
+    spec:
+      containers:
+        - name: "calibre"
+          env:
+            - name: "TZ"
+              value: "America/Los_Angeles"
+            - name: "DOCKER_MODS"
+              value: "linuxserver/mods:universal-calibre"
+          image: "lscr.io/linuxserver/calibre-web:0.6.21"
+          ports:
+            - name: "app"
+              containerPort: 8083
+          volumeMounts:
+            - name: "library"
+              mountPath: "/books"
+            - name: "config"
+              mountPath: "/config"
+
+        - name: "rsync"
+          env:
+            - name: "RSYNC_CRONTAB"
+              value: "crontab"
+            - name: "TZ"
+              value: "America/Los_Angeles"
+          image: "ogivuk/rsync:latest"
+          volumeMounts:
+            - name: "library"
+              mountPath: "/data/source/books"
+              readOnly: true
+            - name: "config"
+              mountPath: "/data/source/config"
+              readOnly: true
+            - name: "backup"
+              mountPath: "/data/destination"
+            - name: "rsync"
+              mountPath: "/rsync"
+
+      volumes:
+        - name: "library"
+          persistentVolumeClaim:
+            claimName: "library"
+
+        - name: "config"
+          persistentVolumeClaim:
+            claimName: "config"
+
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup"
+
+        - name: "rsync"
+          persistentVolumeClaim:
+            claimName: "rsync"
+

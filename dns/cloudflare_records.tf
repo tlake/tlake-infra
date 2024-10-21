@@ -4,6 +4,7 @@
 
 resource "cloudflare_zone" "zones" {
   for_each = toset([
+    "exo-archive.org",
     "tlake.io",
     "mechamoogle.com",
     "tannerjlake.com",
@@ -55,6 +56,7 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
     "ando-mcfoundry",
     "argocd",
     "bitwarden",
+    "calibre",
     "calibre-web",
     "cloud",
     "docker-registry",
@@ -67,7 +69,11 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
     "lazylibrarian",
     "mc",
     "minecraft",
+    "oci-registry",
+    "ociregistry",
     "portainer",
+    "registry",
+    "rss",
     "stable-diffusion",
     "vaultwarden",
   ])
@@ -92,6 +98,32 @@ resource "cloudflare_record" "tlake_io_subdomain_porkbun_routes" {
   proxied = true
   ttl     = var.cloudflare_proxy_ttl
   type    = "A"
+  zone_id = cloudflare_zone.zones["tlake.io"].id
+}
+
+#################
+## AAAA
+#################
+
+resource "cloudflare_record" "exo_archive_org_github_pages_ipv6" {
+  for_each = toset(data.github_ip_ranges.this.pages_ipv6)
+
+  content = each.value
+  name    = "@"
+  proxied = true
+  ttl     = var.cloudflare_proxy_ttl
+  type    = "AAAA"
+  zone_id = cloudflare_zone.zones["exo-archive.org"].id
+}
+
+resource "cloudflare_record" "tlake_io_github_pages_ipv6" {
+  for_each = toset(data.github_ip_ranges.this.pages_ipv6)
+
+  content = each.value
+  name    = "@"
+  proxied = true
+  ttl     = var.cloudflare_proxy_ttl
+  type    = "AAAA"
   zone_id = cloudflare_zone.zones["tlake.io"].id
 }
 

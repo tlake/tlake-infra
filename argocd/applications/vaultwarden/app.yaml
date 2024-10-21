@@ -1,9 +1,11 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: "vaultwarden"
   labels:
     app: "vaultwarden"
+    service: "vaultwarden-app"
+  name: "vaultwarden-app"
+  namespace: "vaultwarden"
 
 spec:
   replicas: 1
@@ -11,13 +13,17 @@ spec:
   selector:
     matchLabels:
       app: "vaultwarden"
+      service: "vaultwarden-app"
   template:
     metadata:
       labels:
         app: "vaultwarden"
+        service: "vaultwarden-app"
+      name: "vaultwarden-app"
+      namespace: "vaultwarden"
     spec:
       containers:
-        - name: "vaultwarden"
+        - name: "vaultwarden-app"
           env:
             - name: "ADMIN_TOKEN"
               valueFrom:
@@ -58,8 +64,8 @@ spec:
                   name: "config"
                   key: "postgres_user"
             - name: "DATABASE_URL"
-              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
-          image: "vaultwarden/server:latest"
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@vaultwarden-postgres:5432/$(POSTGRES_DB)"
+          image: "vaultwarden/server:1.32.2"
           ports:
             - name: "app"
               containerPort: 80
@@ -67,36 +73,76 @@ spec:
             - name: "app-data"
               mountPath: "/data"
 
-        - name: "postgres"
-          env:
-            - name: "POSTGRES_DB"
-              valueFrom:
-                secretKeyRef:
-                  name: "config"
-                  key: "postgres_db"
-            - name: "POSTGRES_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: "config"
-                  key: "postgres_password"
-            - name: "POSTGRES_USER"
-              valueFrom:
-                secretKeyRef:
-                  name: "config"
-                  key: "postgres_user"
-          image: "postgres:latest"
-          ports:
-            - name: "db"
-              containerPort: 5432
-          volumeMounts:
-            - name: "postgres-data"
-              mountPath: "/var/lib/postgresql/data"
-
       volumes:
         - name: "app-data"
           persistentVolumeClaim:
             claimName: "app-data"
-        - name: "postgres-data"
-          persistentVolumeClaim:
-            claimName: "postgres-data"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
+  name: "vaultwarden-app"
+  namespace: "vaultwarden"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
+  name: "vaultwarden-web"
+  namespace: "vaultwarden"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`bitwarden.tlake.io`)
+      kind: Rule
+      services:
+        - name: "vaultwarden-app"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "vaultwarden"
+    service: "vaultwarden-app"
+  name: "vaultwarden-websecure"
+  namespace: "vaultwarden"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`bitwarden.tlake.io`)
+      kind: Rule
+      services:
+        - name: "vaultwarden-app"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
 

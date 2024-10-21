@@ -6,7 +6,7 @@ resources:
 - db.yaml
 - persistent-volumes.yaml
 
-namespace: "vaultwarden"
+namespace: "miniflux"
 
 commonLabels:
-  app: "vaultwarden"
+  app: "miniflux"
