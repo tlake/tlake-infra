@@ -5,6 +5,7 @@ resources:
 - app.yaml
 - db.yaml
 - persistent-volumes.yaml
+- proxy.yaml
 
 namespace: "nextcloud"
 
