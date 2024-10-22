@@ -15,8 +15,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | 4.40.0 |
-| <a name="provider_github"></a> [github](#provider\_github) | 6.2.3 |
+| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | >= 4.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | ~> 6.0 |
 
 ### Modules
 
