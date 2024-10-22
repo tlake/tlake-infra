@@ -126,8 +126,8 @@ metadata:
 
 spec:
   ports:
-    - name: "http-traffic"
-      port: 80
+    - name: "fpm"
+      port: 9000
       targetPort: "app"
 
   selector:
