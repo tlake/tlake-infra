@@ -72,8 +72,8 @@ spec:
 
           image: "nextcloud:29.0-fpm-alpine"
           ports:
-            - name: "app"
-              containerPort: 80
+            - name: "fpm"
+              containerPort: 9000
               protocol: "TCP"
 
           volumeMounts:
@@ -128,7 +128,7 @@ spec:
   ports:
     - name: "fpm"
       port: 9000
-      targetPort: "app"
+      targetPort: "fpm"
 
   selector:
     app: "nextcloud"
