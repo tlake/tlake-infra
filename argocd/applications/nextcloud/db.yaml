@@ -9,10 +9,13 @@ metadata:
 
 spec:
   replicas: 1
+  revisionHistoryLimit: 1
+
   selector:
     matchLabels:
       app: "nextcloud"
       service: "nextcloud-postgres"
+
   template:
     metadata:
       labels:
@@ -20,6 +23,7 @@ spec:
         service: "nextcloud-postgres"
       name: "nextcloud-postgres"
       namespace: "nextcloud"
+
     spec:
       containers:
         - name: "nextcloud-postgres"
