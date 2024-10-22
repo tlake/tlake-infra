@@ -1,0 +1,166 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-app"
+  name: "nextcloud-app"
+  namespace: "nextcloud"
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: "nextcloud"
+      service: "nextcloud-app"
+
+  template:
+    metadata:
+      labels:
+        app: "nextcloud"
+        service: "nextcloud-app"
+      name: "nextcloud-app"
+      namespace: "nextcloud"
+
+    spec:
+      containers:
+        - name: "nextcloud-app"
+          env:
+            - name: "POSTGRES_DB"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_db"
+
+            - name: "POSTGRES_HOST"
+              value: "nextcloud-postgres"
+
+            - name: "POSTGRES_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_password"
+
+            - name: "POSTGRES_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_user"
+
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          image: "nextcloud:29.0-fpm-alpine"
+          ports:
+            - name: "app"
+              containerPort: 80
+              protocol: "TCP"
+
+          volumeMounts:
+            - mountPath: "/var/www/html"
+              name: "nextcloud-storage"
+
+            - mountPath: "/var/www/html/custom_apps"
+              name: "nextcloud-custom-apps"
+
+            - mountPath: "/var/www/html/config"
+              name: "nextcloud-config"
+
+            - mountPath: "/var/www/html/data"
+              name: "nextcloud-data"
+
+            - mountPath: "/var/www/html/themes"
+              name: "nextcloud-themes"
+
+      volumes:
+        - name: "nextcloud-storage"
+          persistentVolumeClaim:
+            claimName: "nextcloud-storage"
+
+        - name: "nextcloud-custom-apps"
+          persistentVolumeClaim:
+            claimName: "nextcloud-custom-apps"
+
+        - name: "nextcloud-config"
+          persistentVolumeClaim:
+            claimName: "nextcloud-config"
+
+        - name: "nextcloud-data"
+          persistentVolumeClaim:
+            claimName: "nextcloud-data"
+
+        - name: "nextcloud-themes"
+          persistentVolumeClaim:
+            claimName: "nextcloud-themes"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-app"
+  name: "nextcloud-app"
+  namespace: "nextcloud"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "nextcloud"
+    service: "nextcloud-app"
+
+  type: NodePort
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-app"
+  name: "nextcloud-web"
+  namespace: "nextcloud"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`cloud.tlake.io`)
+      kind: Rule
+      services:
+        - name: "nextcloud-app"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-app"
+  name: "nextcloud-websecure"
+  namespace: "nextcloud"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`cloud.tlake.io`)
+      kind: Rule
+      services:
+        - name: "nextcloud-app"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+
