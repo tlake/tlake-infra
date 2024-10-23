@@ -1,20 +1,6 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "nextcloud-transfer"
-spec:
-  storageClassName: "nfs-client"
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: "500Gi"
-
----
-
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
   name: "nextcloud-data"
 spec:
   storageClassName: "nfs-client"
