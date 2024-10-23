@@ -41,17 +41,8 @@ spec:
             - mountPath: "/var/www/html"
               name: "nextcloud-storage"
 
-            - mountPath: "/var/www/html/custom_apps"
-              name: "nextcloud-custom-apps"
-
-            - mountPath: "/var/www/html/config"
-              name: "nextcloud-config"
-
             - mountPath: "/var/www/html/data"
               name: "nextcloud-data"
-
-            - mountPath: "/var/www/html/themes"
-              name: "nextcloud-themes"
 
       volumes:
         - name: "nextcloud-nginx-config"
@@ -62,21 +53,9 @@ spec:
           persistentVolumeClaim:
             claimName: "nextcloud-storage"
 
-        - name: "nextcloud-custom-apps"
-          persistentVolumeClaim:
-            claimName: "nextcloud-custom-apps"
-
-        - name: "nextcloud-config"
-          persistentVolumeClaim:
-            claimName: "nextcloud-config"
-
         - name: "nextcloud-data"
           persistentVolumeClaim:
             claimName: "nextcloud-data"
-
-        - name: "nextcloud-themes"
-          persistentVolumeClaim:
-            claimName: "nextcloud-themes"
 
 ---
 
