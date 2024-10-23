@@ -8,8 +8,8 @@ metadata:
   namespace: "nextcloud"
 
 spec:
-  replicas: 0
-  revisionHistoryLimit: 1
+  replicas: 1
+  revisionHistoryLimit: 0
 
   selector:
     matchLabels:
