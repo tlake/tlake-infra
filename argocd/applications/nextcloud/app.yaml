@@ -27,6 +27,8 @@ spec:
     spec:
       containers:
         - name: "nextcloud-transfer"
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "while true; do sleep 30; done;" ]
           image: "alpine:latest"
           volumeMounts:
             - mountPath: "/var/www/html"
