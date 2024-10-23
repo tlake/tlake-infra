@@ -1,0 +1,79 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-rsync"
+  name: "nextcloud-rsync-crontab"
+  namespace: "nextcloud"
+
+data:
+  crontab: |
+    50 * * * * rsync -avzh --exclude /data/source/data /data/source/ /data/destination/
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-rsync"
+  name: "nextcloud-rsync"
+  namespace: "nextcloud"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+
+  selector:
+    matchLabels:
+      app: "nextcloud"
+      service: "nextcloud-rsync"
+
+  template:
+    metadata:
+      labels:
+        app: "nextcloud"
+        service: "nextcloud-rsync"
+      name: "nextcloud-rsync"
+      namespace: "nextcloud"
+
+    spec:
+      containers:
+        - name: "rsync"
+
+          env:
+            - name: "RSYNC_CRONTAB"
+              value: "crontab"
+
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          image: "ogivuk/rsync:latest"
+
+          volumeMounts:
+            - name: "nextcloud-storage"
+              mountPath: "/data/source/nextcloud-storage"
+              readOnly: true
+
+            - name: "nextcloud-storage-backup"
+              mountPath: "/data/destination"
+
+            - name: "crontab"
+              mountPath: "/rsync"
+              subPath: "crontab"
+
+      volumes:
+        - name: "nextcloud-storage"
+          persistentVolumeClaim:
+            claimName: "nextcloud-storage"
+
+        - name: "nextcloud-storage-backup"
+          persistentVolumeClaim:
+            claimName: "nextcloud-storage-backup"
+
+        - name: "crontab"
+          configMap:
+            name: "nextcloud-rsync-crontab"
+
