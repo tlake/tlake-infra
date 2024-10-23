@@ -29,9 +29,6 @@ spec:
         - name: "nextcloud-postgres"
 
           env:
-            - name: "PG_DATA"
-              value: "/var/lib/postgresql/data/pgdata"
-
             - name: "POSTGRES_DB"
               valueFrom:
                 secretKeyRef:

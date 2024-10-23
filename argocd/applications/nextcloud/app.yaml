@@ -3,6 +3,61 @@ apiVersion: apps/v1
 metadata:
   labels:
     app: "nextcloud"
+    service: "nextcloud-transfer"
+  name: "nextcloud-transfer"
+  namespace: "nextcloud"
+
+spec:
+  replicas: 0
+  revisionHistoryLimit: 1
+
+  selector:
+    matchLabels:
+      app: "nextcloud"
+      service: "nextcloud-transfer"
+
+  template:
+    metadata:
+      labels:
+        app: "nextcloud"
+        service: "nextcloud-transfer"
+      name: "nextcloud-transfer"
+      namespace: "nextcloud"
+
+    spec:
+      containers:
+        - name: "nextcloud-transfer"
+          image: "alpine:latest"
+          volumeMounts:
+            - mountPath: "/var/www/html"
+              name: "nextcloud-storage"
+
+            - mountPath: "/var/www/html/data"
+              name: "nextcloud-data"
+
+            - mountPath: "/transfer"
+              name: "nextcloud-transfer"
+
+      volumes:
+        - name: "nextcloud-storage"
+          persistentVolumeClaim:
+            claimName: "nextcloud-storage"
+
+        - name: "nextcloud-data"
+          persistentVolumeClaim:
+            claimName: "nextcloud-data"
+
+        - name: "nextcloud-transfer"
+          persistentVolumeClaim:
+            claimName: "nextcloud-transfer"
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "nextcloud"
     service: "nextcloud-app"
   name: "nextcloud-app"
   namespace: "nextcloud"
