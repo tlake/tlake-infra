@@ -6,6 +6,7 @@ resources:
 - db.yaml
 - persistent-volumes.yaml
 - proxy.yaml
+- rsync.yaml
 - transfer.yaml
 
 namespace: "nextcloud"
