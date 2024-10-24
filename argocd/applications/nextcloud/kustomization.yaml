@@ -8,7 +8,6 @@ resources:
 - proxy.yaml
 - redis.yaml
 - rsync.yaml
-- transfer.yaml
 
 namespace: "nextcloud"
 
