@@ -35,5 +35,5 @@ spec:
           port:  "https"
 
   tls:
-    certResolver: "staging"
+    certResolver: "production"
 
