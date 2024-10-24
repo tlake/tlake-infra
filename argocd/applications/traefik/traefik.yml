@@ -2,32 +2,32 @@ api:
   dashboard: true
   insecure: true
 
-#certificatesResolvers:
-#  production:
-#    acme:
-#      caServer: "https://acme-v02.api.letsencrypt.org/directory"
-#      email: "tanner.lake@protonmail.com"
-#      httpChallenge:
-#        entryPoint: "web"
-#      storage: "/etc/certs/acme.json"
-#  staging:
-#    acme:
-#      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
-#      email: "tanner.lake@protonmail.com"
-#      httpChallenge:
-#        entryPoint: "web"
-#      storage: "/etc/certs/acme.json"
+certificatesResolvers:
+  production:
+    acme:
+      caServer: "https://acme-v02.api.letsencrypt.org/directory"
+      email: "tanner.lake@protonmail.com"
+      httpChallenge:
+        entryPoint: "web"
+      storage: "/etc/certs/acme.json"
+  staging:
+    acme:
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      email: "tanner.lake@protonmail.com"
+      httpChallenge:
+        entryPoint: "web"
+      storage: "/etc/certs/acme.json"
 
 entryPoints:
   web:
     address: ":80"
-#    http:
-#      redirections:
-#        entryPoint:
-#          scheme: "https"
-#          to: "websecure"
-#  websecure:
-#    address: ":443"
+    http:
+      redirections:
+        entryPoint:
+          scheme: "https"
+          to: "websecure"
+  websecure:
+    address: ":443"
   minecraft:
     address: ":25565/udp"
     udp:
@@ -48,3 +48,4 @@ providers:
   kubernetesIngress:
     ingressEndpoint:
       ip: "127.0.0.1"
+

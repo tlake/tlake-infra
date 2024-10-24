@@ -147,5 +147,5 @@ spec:
           port: "http-traffic"
 
   tls:
-    certResolver: "staging"
+    certResolver: "production"
 
