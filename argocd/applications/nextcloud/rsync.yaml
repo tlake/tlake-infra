@@ -61,7 +61,7 @@ spec:
               mountPath: "/data/destination"
 
             - name: "crontab"
-              mountPath: "/rsync"
+              mountPath: "/rsync/crontab"
               subPath: "crontab"
 
       volumes:
