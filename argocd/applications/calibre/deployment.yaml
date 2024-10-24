@@ -7,9 +7,12 @@ metadata:
 
 spec:
   replicas: 1
+  revisionHistoryLimit: 0
+
   selector:
     matchLabels:
       app: "calibre"
+
   template:
     metadata:
       labels:
@@ -18,37 +21,48 @@ spec:
     spec:
       containers:
         - name: "calibre"
+          image: "lscr.io/linuxserver/calibre-web:0.6.21"
+
           env:
             - name: "TZ"
               value: "America/Los_Angeles"
+
             - name: "DOCKER_MODS"
               value: "linuxserver/mods:universal-calibre"
-          image: "lscr.io/linuxserver/calibre-web:0.6.21"
+
           ports:
             - name: "app"
               containerPort: 8083
+
           volumeMounts:
             - name: "library"
               mountPath: "/books"
+
             - name: "config"
               mountPath: "/config"
 
         - name: "rsync"
+          image: "ogivuk/rsync:latest"
+
           env:
             - name: "RSYNC_CRONTAB"
               value: "crontab"
+
             - name: "TZ"
               value: "America/Los_Angeles"
-          image: "ogivuk/rsync:latest"
+
           volumeMounts:
             - name: "library"
               mountPath: "/data/source/books"
               readOnly: true
+
             - name: "config"
               mountPath: "/data/source/config"
               readOnly: true
+
             - name: "backup"
               mountPath: "/data/destination"
+
             - name: "rsync"
               mountPath: "/rsync"
 

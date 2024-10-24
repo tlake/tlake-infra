@@ -9,10 +9,12 @@ metadata:
 
 spec:
   replicas: 1
-  revisionHistoryLimit: 3
+  revisionHistoryLimit: 0
+
   selector:
     matchLabels:
       app: "vaultwarden"
+
   template:
     metadata:
       labels:
@@ -20,29 +22,34 @@ spec:
         service: "vaultwarden-postgres"
       name: "vaultwarden-postgres"
       namespace: "vaultwarden"
+
     spec:
       containers:
         - name: "postgres"
+          image: "postgres:16"
+
           env:
             - name: "POSTGRES_DB"
               valueFrom:
                 secretKeyRef:
                   name: "config"
                   key: "postgres_db"
+
             - name: "POSTGRES_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: "config"
                   key: "postgres_password"
+
             - name: "POSTGRES_USER"
               valueFrom:
                 secretKeyRef:
                   name: "config"
                   key: "postgres_user"
-          image: "postgres:16"
           ports:
             - name: "db"
               containerPort: 5432
+
           volumeMounts:
             - name: "postgres-data"
               mountPath: "/var/lib/postgresql/data"
@@ -51,6 +58,7 @@ spec:
         - name: "app-data"
           persistentVolumeClaim:
             claimName: "app-data"
+
         - name: "postgres-data"
           persistentVolumeClaim:
             claimName: "postgres-data"

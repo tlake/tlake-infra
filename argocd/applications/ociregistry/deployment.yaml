@@ -7,9 +7,12 @@ metadata:
 
 spec:
   replicas: 1
+  revisionHistoryLimit: 0
+
   selector:
     matchLabels:
       app: "ociregistry"
+
   template:
     metadata:
       labels:
@@ -19,9 +22,11 @@ spec:
       containers:
         - name: "ociregistry"
           image: "docker.io/registry:2.8.3"
+
           ports:
             - name: "app"
               containerPort: 5000
+
           volumeMounts:
             - name: "auth"
               mountPath: "/var/lib/htpasswd"
@@ -32,6 +37,7 @@ spec:
         - name: "auth"
           persistentVolumeClaim:
             claimName: "auth"
+
         - name: "data"
           persistentVolumeClaim:
             claimName: "data"

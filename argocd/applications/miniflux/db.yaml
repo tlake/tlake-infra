@@ -9,10 +9,13 @@ metadata:
 
 spec:
   replicas: 1
+  revisionHistoryLimit: 0
+
   selector:
     matchLabels:
       app: "miniflux"
       service: "miniflux-postgres"
+
   template:
     metadata:
       labels:
@@ -20,9 +23,12 @@ spec:
         service: "miniflux-postgres"
       name: "miniflux-postgres"
       namespace: "miniflux"
+
     spec:
       containers:
         - name: "miniflux-postgres"
+          image: "postgres:17"
+
           env:
             - name: "POSTGRES_DB"
               valueFrom:
@@ -42,10 +48,10 @@ spec:
                   name: "config"
                   key: "postgres_user"
 
-          image: "postgres:17"
           ports:
             - name: "db"
               containerPort: 5432
+
           volumeMounts:
             - name: "postgres-data"
               mountPath: "/var/lib/postgresql/data"

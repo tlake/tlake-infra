@@ -9,6 +9,7 @@ metadata:
 
 spec:
   replicas: 1
+  revisionHistoryLimit: 0
 
   selector:
     matchLabels:
@@ -26,6 +27,8 @@ spec:
     spec:
       containers:
         - name: "miniflux-app"
+          image: "miniflux/miniflux:2.2.1"
+
           env:
             - name: "ADMIN_PASSWORD"
               valueFrom:
@@ -72,7 +75,6 @@ spec:
             - name: "RUN_MIGRATIONS"
               value: "1"
 
-          image: "miniflux/miniflux:2.2.1"
           ports:
             - name: "app"
               containerPort: 8080

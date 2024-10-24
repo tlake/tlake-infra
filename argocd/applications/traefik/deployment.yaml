@@ -1,50 +1,62 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: traefik-deployment
+  name: "traefik-deployment"
   labels:
-    app: traefik
+    app: "traefik"
 
 spec:
   replicas: 1
-  revisionHistoryLimit: 3
+  revisionHistoryLimit: 0
+
   selector:
     matchLabels:
-      app: traefik
+      app: "traefik"
+
   template:
     metadata:
       labels:
-        app: traefik
+        app: "traefik"
+
     spec:
-      serviceAccountName: traefik-service-account
+      serviceAccountName: "traefik-service-account"
       containers:
-        - name: traefik
-          image: traefik:v3.1
+        - name: "traefik"
+          image: "traefik:v3.1"
           args:
-            - --api.insecure
-            - --providers.kubernetesingress
+            - "--api.insecure"
+            - "--providers.kubernetesingress"
+
           ports:
-            - name: web
+            - name: "web"
               containerPort: 80
-            - name: websecure
+
+            - name: "websecure"
               containerPort: 443
-            - name: dashboard
+
+            - name: "dashboard"
               containerPort: 8080
+
           volumeMounts:
-            - name: certs
+            - name: "certs"
               mountPath: "/etc/certs"
-            - name: dynamic-config
+
+            - name: "dynamic-config"
               mountPath: "/etc/dynamic-config"
-            - name: static-config
+
+            - name: "static-config"
               mountPath: "/etc/traefik"
+
       volumes:
-        - name: certs
+        - name: "certs"
           persistentVolumeClaim:
-            claimName: certs
-        - name: dynamic-config
+            claimName: "certs"
+
+        - name: "dynamic-config"
           persistentVolumeClaim:
-            claimName: dynamic-config
-        - name: static-config
+            claimName: "dynamic-config"
+
+        - name: "static-config"
           persistentVolumeClaim:
-            claimName: static-config
+            claimName: "static-config"
 
