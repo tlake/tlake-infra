@@ -1,0 +1,63 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-redis"
+  name: "nextcloud-redis"
+  namespace: "nextcloud"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "nextcloud"
+      service: "nextcloud-redis"
+
+  template:
+    metadata:
+      labels:
+        app: "nextcloud"
+        service: "nextcloud-redis"
+      name: "nextcloud-redis"
+      namespace: "nextcloud"
+
+    spec:
+      containers:
+        - name: "nextcloud-redis"
+          image: "redis:alpine"
+
+          env:
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          ports:
+            - name: "redis"
+              containerPort: 6379
+              protocol: "TCP"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-redis"
+  name: "nextcloud-redis"
+  namespace: "nextcloud"
+
+spec:
+  ports:
+    - name: "redis"
+      port: 6379
+      targetPort: "redis"
+
+  selector:
+    app: "nextcloud"
+    service: "nextcloud-redis"
+
+  type: NodePort
+

@@ -64,6 +64,9 @@ spec:
                   name: "config"
                   key: "postgres_user"
 
+            - name: "REDIS_HOST"
+              value: "nextcloud-redis"
+
             - name: "TRUSTED_PROXIES"
               value: "192.168.0.208/29"
 

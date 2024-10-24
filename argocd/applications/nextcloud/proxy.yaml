@@ -28,6 +28,11 @@ spec:
       containers:
         - name: "nextcloud-nginx"
           image: "nginx:1.19.6-alpine"
+
+          env:
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
           ports:
             - name: "proxy"
               containerPort: 80
