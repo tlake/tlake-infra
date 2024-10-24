@@ -1,0 +1,54 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-cron"
+  name: "nextcloud-cron"
+  namespace: "nextcloud"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "nextcloud"
+      service: "nextcloud-cron"
+
+  template:
+    metadata:
+      labels:
+        app: "nextcloud"
+        service: "nextcloud-cron"
+      name: "nextcloud-cron"
+      namespace: "nextcloud"
+
+    spec:
+      containers:
+        - name: "nextcloud-cron"
+          # UPDATE IN app.ymal AS WELL:
+          image: "nextcloud:29.0-fpm-alpine"
+          command:
+            - "/cron.sh"
+
+          env:
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          volumeMounts:
+            - mountPath: "/var/www/html"
+              name: "nextcloud-storage"
+
+            - mountPath: "/var/www/html/data"
+              name: "nextcloud-data"
+
+      volumes:
+        - name: "nextcloud-storage"
+          persistentVolumeClaim:
+            claimName: "nextcloud-storage"
+
+        - name: "nextcloud-data"
+          persistentVolumeClaim:
+            claimName: "nextcloud-data"
+

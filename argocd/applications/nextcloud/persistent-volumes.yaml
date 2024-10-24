@@ -1,0 +1,54 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "nextcloud-data"
+spec:
+  storageClassName: "nfs-client"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "10Mi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "nextcloud-storage"
+spec:
+  storageClassName: "microk8s-hostpath"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "10Mi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "postgres-data"
+spec:
+  storageClassName: "nfs-client"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "10Mi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "nextcloud-storage-backup"
+spec:
+  storageClassName: "nfs-client"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "10Mi"
+

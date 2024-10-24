@@ -1,0 +1,122 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-app"
+  name: "nextcloud-app"
+  namespace: "nextcloud"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "nextcloud"
+      service: "nextcloud-app"
+
+  template:
+    metadata:
+      labels:
+        app: "nextcloud"
+        service: "nextcloud-app"
+      name: "nextcloud-app"
+      namespace: "nextcloud"
+
+    spec:
+      containers:
+        - name: "nextcloud-app"
+          # UPDATE IN cron.ymal AS WELL:
+          image: "nextcloud:29.0-fpm-alpine"
+
+          env:
+            - name: "NEXTCLOUD_TRUSTED_DOMAINS"
+              value: "cloud.tlake.io mansionsyrup:10100 *.ngrok.io 192.168.0.120"
+
+            - name: "OVERWRITEHOST"
+              value: "cloud.tlake.io"
+
+            - name: "OVERWRITEPROTOCOL"
+              value: "https"
+
+            - name: "OVERWRITECLIURL"
+              value: "https://cloud.tlake.io"
+
+            - name: "OVERWRITEWEBROOT"
+              value: "/"
+
+            - name: "POSTGRES_DB"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_db"
+
+            - name: "POSTGRES_HOST"
+              value: "nextcloud-postgres"
+
+            - name: "POSTGRES_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_password"
+
+            - name: "POSTGRES_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_user"
+
+            - name: "REDIS_HOST"
+              value: "nextcloud-redis"
+
+            - name: "TRUSTED_PROXIES"
+              value: "192.168.0.208/29"
+
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          ports:
+            - name: "fpm"
+              containerPort: 9000
+              protocol: "TCP"
+
+          volumeMounts:
+            - mountPath: "/var/www/html"
+              name: "nextcloud-storage"
+
+            - mountPath: "/var/www/html/data"
+              name: "nextcloud-data"
+
+      volumes:
+        - name: "nextcloud-storage"
+          persistentVolumeClaim:
+            claimName: "nextcloud-storage"
+
+        - name: "nextcloud-data"
+          persistentVolumeClaim:
+            claimName: "nextcloud-data"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "nextcloud"
+    service: "nextcloud-app"
+  name: "nextcloud-app"
+  namespace: "nextcloud"
+
+spec:
+  ports:
+    - name: "fpm"
+      port: 9000
+      targetPort: "fpm"
+
+  selector:
+    app: "nextcloud"
+    service: "nextcloud-app"
+
+  type: NodePort
+
