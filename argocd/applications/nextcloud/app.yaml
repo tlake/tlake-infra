@@ -27,6 +27,9 @@ spec:
     spec:
       containers:
         - name: "nextcloud-app"
+          # UPDATE IN cron.ymal AS WELL:
+          image: "nextcloud:29.0-fpm-alpine"
+
           env:
             - name: "NEXTCLOUD_TRUSTED_DOMAINS"
               value: "cloud.tlake.io mansionsyrup:10100 *.ngrok.io 192.168.0.120"
@@ -73,7 +76,6 @@ spec:
             - name: "TZ"
               value: "America/Los_Angeles"
 
-          image: "nextcloud:29.0-fpm-alpine"
           ports:
             - name: "fpm"
               containerPort: 9000

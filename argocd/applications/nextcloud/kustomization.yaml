@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - app.yaml
+- cron.yaml
 - db.yaml
 - persistent-volumes.yaml
 - proxy.yaml
