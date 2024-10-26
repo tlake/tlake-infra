@@ -59,6 +59,7 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
     "calibre",
     "calibre-web",
     "cloud",
+    "collabora",
     "docker-registry",
     "firefly",
     "firefly-importer",
