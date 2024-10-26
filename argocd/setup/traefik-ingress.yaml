@@ -32,7 +32,7 @@ spec:
       kind: Rule
       services:
         - name: "argocd-server"
-          port:  "https"
+          port:  "http"
 
   tls:
     certResolver: "production"
