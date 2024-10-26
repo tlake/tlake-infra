@@ -1,0 +1,121 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "collabora"
+    service: "collabora-app"
+  name: "collabora-app"
+  namespace: "collabora"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "collabora"
+      service: "collabora-app"
+
+  template:
+    metadata:
+      labels:
+        app: "collabora"
+        service: "collabora-app"
+      name: "collabora-app"
+      namespace: "collabora"
+
+    spec:
+      containers:
+        - name: "collabora-app"
+          image: "collabora/code"
+
+          env:
+            - name: "password"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "collabora_admin_password"
+
+            - name: "username"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "collabora_admin_username"
+
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          ports:
+            - name: "app"
+              containerPort: 9980
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "collabora"
+    service: "collabora-app"
+  name: "collabora-app"
+  namespace: "collabora"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "collabora"
+    service: "collabora-app"
+
+  type: NodePort
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "collabora"
+    service: "collabora-app"
+  name: "collabora-web"
+  namespace: "collabora"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`collabora.tlake.io`)
+      kind: Rule
+      services:
+        - name: "collabora-app"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "collabora"
+    service: "collabora-app"
+  name: "collabora-websecure"
+  namespace: "collabora"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`collabora.tlake.io`)
+      kind: Rule
+      services:
+        - name: "collabora-app"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "production"
+
