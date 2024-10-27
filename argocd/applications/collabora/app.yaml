@@ -31,7 +31,7 @@ spec:
 
           env:
             - name: "domain"
-              value: "http://nextcloud-app\.nextcloud\.svc\.cluster\.local|https://cloud\.tlake\.io"
+              value: "http://nextcloud-app\\.nextcloud\\.svc\\.cluster\\.local|https://cloud\\.tlake\\.io"
 
             - name: "extra_params"
               value: "--o:ssl.enable=false  --o:ssl.termination=true"
