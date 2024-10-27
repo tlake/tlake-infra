@@ -30,6 +30,12 @@ spec:
           image: "collabora/code"
 
           env:
+            - name: "domain"
+              value: "http://nextcloud-app\.nextcloud\.svc\.cluster\.local|https://cloud\.tlake\.io"
+
+            - name: "extra_params"
+              value: "--o:ssl.enable=false  --o:ssl.termination=true"
+
             - name: "password"
               valueFrom:
                 secretKeyRef:
@@ -41,6 +47,9 @@ spec:
                 secretKeyRef:
                   name: "config"
                   key: "collabora_admin_username"
+
+            - name: "DONT_GEN_SSL_CERT"
+              value: "true"
 
             - name: "TZ"
               value: "America/Los_Angeles"
