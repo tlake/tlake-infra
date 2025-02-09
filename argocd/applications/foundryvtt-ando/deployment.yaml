@@ -1,4 +1,4 @@
-kind: Deploymentasfdasd
+kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: "foundryvtt-ando"
@@ -69,10 +69,10 @@ spec:
 
           volumeMounts:
             - name: "foundryvtt-ando-container-cache"
-              mountPath: "/container_cache"
+              mountpath: "/container_cache"
 
             - name: "foundryvtt-ando-data"
-              mountPath: "/data"
+              mountpath: "/data"
 
       volumes:
         - name: "foundryvtt-ando-container-cache"
