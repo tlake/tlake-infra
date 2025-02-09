@@ -1,0 +1,155 @@
+kind: Deploymentasfdasd
+apiVersion: apps/v1
+metadata:
+  name: "foundryvtt-ando"
+  labels:
+    app: "foundryvtt-ando"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "foundryvtt-ando"
+
+  template:
+    metadata:
+      labels:
+        app: "foundryvtt-ando"
+
+    spec:
+      containers:
+        - name: "foundryvtt-ando"
+          image: "felddy/foundryvtt:11.315"
+
+          env:
+            - name: "CONTAINER_CACHE"
+              value: "/container_cache"
+            
+            - name: "CONTAINER_CACHE_SIZE"
+              value: "10"
+            
+            - name: "FOUNDRY_ADMIN_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "FOUNDRY_ADMIN_KEY"
+            
+            - name: "FOUNDRY_COMPRESS_WEBSOCKET"
+              value: "true"
+            
+            - name: "FOUNDRY_CSS_THEME"
+              value: "fantasy"
+            
+            - name: "FOUNDRY_HOSTNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "FOUNDRY_HOSTNAME"
+          
+            - name: "FOUNDRY_LICENSE_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "FOUNDRY_LICENSE_KEY"
+          
+            - name: "FOUNDRY_MINIFY_STATIC_FILES"
+              value: "true"
+            
+            - name: "FOUNDRY_TELEMETRY"
+              value: "false"
+            
+            - name: "TIMEZONE"
+              value: "America/New_York"
+
+          ports:
+            - name: "foundryvtt-ando"
+              containerPort: 30000
+
+          volumeMounts:
+            - name: "foundryvtt-ando-container-cache"
+              mountPath: "/container_cache"
+
+            - name: "foundryvtt-ando-data"
+              mountPath: "/data"
+
+      volumes:
+        - name: "foundryvtt-ando-container-cache"
+          persistentVolumeClaim:
+            claimName: "foundryvtt-ando-container-cache"
+
+        - name: "foundryvtt-ando-data"
+          persistentVolumeClaim:
+            claimName: "foundryvtt-ando-data"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "foundryvtt-ando"
+    service: "foundryvtt-ando"
+  name: "foundryvtt-ando"
+  namespace: "foundryvtt-ando"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "foundryvtt-ando"
+
+  selector:
+    app: "foundryvtt-ando"
+    service: "foundryvtt-ando"
+
+  type: NodePort
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "foundryvtt-ando"
+    service: "foundryvtt-ando"
+  name: "foundryvtt-ando-web"
+  namespace: "foundryvtt-ando"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`ando-mcfoundry.tlake.io`)
+      kind: Rule
+      services:
+        - name: "foundryvtt-ando"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "foundryvtt-ando"
+    service: "foundryvtt-ando"
+  name: "foundryvtt-ando-websecure"
+  namespace: "foundryvtt-ando"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`ando-mcfoundry.tlake.io`)
+      kind: Rule
+      services:
+        - name: "foundryvtt-ando"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "production"
+
