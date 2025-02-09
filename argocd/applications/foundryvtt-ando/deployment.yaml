@@ -74,6 +74,8 @@ spec:
             - name: "foundryvtt-ando-data"
               mountPath: "/data"
 
+      hostname: "ando_mcfoundry_host"
+
       volumes:
         - name: "foundryvtt-ando-container-cache"
           persistentVolumeClaim:

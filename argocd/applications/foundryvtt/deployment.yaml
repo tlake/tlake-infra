@@ -77,6 +77,8 @@ spec:
             - name: "foundryvtt-data"
               mountPath: "/data"
 
+      hostname: "foundry_host"
+
       volumes:
         - name: "foundryvtt-container-cache"
           persistentVolumeClaim:
