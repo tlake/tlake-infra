@@ -72,10 +72,10 @@ spec:
 
           volumeMounts:
             - name: "foundryvtt-container-cache"
-              mountpath: "/data/container_cache"
+              mountPath: "/data/container_cache"
 
             - name: "foundryvtt-data"
-              mountpath: "/data"
+              mountPath: "/data"
 
       volumes:
         - name: "foundryvtt-container-cache"
