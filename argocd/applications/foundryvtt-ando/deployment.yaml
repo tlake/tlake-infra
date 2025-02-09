@@ -69,10 +69,10 @@ spec:
 
           volumeMounts:
             - name: "foundryvtt-ando-container-cache"
-              mountpath: "/container_cache"
+              mountPath: "/container_cache"
 
             - name: "foundryvtt-ando-data"
-              mountpath: "/data"
+              mountPath: "/data"
 
       volumes:
         - name: "foundryvtt-ando-container-cache"
