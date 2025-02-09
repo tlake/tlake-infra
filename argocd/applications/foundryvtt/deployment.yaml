@@ -68,7 +68,7 @@ spec:
 
           ports:
             - name: "foundryvtt"
-              containerPort: "30000"
+              containerPort: 30000
 
           volumeMounts:
             - name: "foundryvtt-container-cache"
