@@ -77,7 +77,7 @@ spec:
             - name: "foundryvtt-data"
               mountPath: "/data"
 
-      hostname: "foundry_host"
+      hostname: "foundry-host"
 
       volumes:
         - name: "foundryvtt-container-cache"
