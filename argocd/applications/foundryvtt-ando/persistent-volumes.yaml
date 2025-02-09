@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "foundryvtt-container-cache"
+  name: "foundryvtt-ando-container-cache"
 spec:
   storageClassName: "nfs-client"
   accessModes:
@@ -15,7 +15,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "foundryvtt-data"
+  name: "foundryvtt-ando-data"
 spec:
   storageClassName: "nfs-client"
   accessModes:
