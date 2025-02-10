@@ -102,6 +102,8 @@ spec:
               mountPath: "/rsync"
 
       hostname: "foundry-host"
+      nodeSelector:
+        kubernetes.io/hostname: "thicket1"
 
       volumes:
         - name: "container-cache"
