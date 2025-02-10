@@ -101,7 +101,7 @@ spec:
             - name: "rsync"
               mountPath: "/rsync"
 
-      hostname: "foundry-host"
+      hostname: "mechamoogle-foundry"
       nodeSelector:
         kubernetes.io/hostname: "thicket1"
 

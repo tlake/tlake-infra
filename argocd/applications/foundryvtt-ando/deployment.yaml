@@ -98,7 +98,7 @@ spec:
             - name: "rsync"
               mountPath: "/rsync"
 
-      hostname: "ando-mcfoundry-host"
+      hostname: "ando-foundry"
       nodeSelector:
         kubernetes.io/hostname: "thicket2"
 
