@@ -7,7 +7,7 @@ Playbooks for configuring parts of my homelab; most notably, the Raspberry Thick
 Run ansible playbooks like so (`ping.yml`, for example):
 
 ```
-ansible-playbook -i inventories/homelab.yml pb.ping.yml
+ansible-playbook -i inventories/homelab pb.ping.yml
 ```
 
 ## Thicket playbooks, in order
