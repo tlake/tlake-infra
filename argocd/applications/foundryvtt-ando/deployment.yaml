@@ -20,12 +20,12 @@ spec:
 
     spec:
       containers:
-        - name: "foundryvtt-ando"
+        - name: "foundryvtt"
           image: "felddy/foundryvtt:11.315"
 
           env:
             - name: "CONTAINER_CACHE"
-              value: "/container_cache"
+              value: "/container-cache"
             
             - name: "CONTAINER_CACHE_SIZE"
               value: "10"
@@ -68,22 +68,50 @@ spec:
               containerPort: 30000
 
           volumeMounts:
-            - name: "foundryvtt-ando-container-cache"
-              mountPath: "/container_cache"
+            - name: "container-cache"
+              mountPath: "/container-cache"
 
-            - name: "foundryvtt-ando-data"
+            - name: "data"
               mountPath: "/data"
+
+            - name: "load"
+              mountPath: "/load"
+
+        - name: "rsync"
+          image: "ogivuk/rsync:latest"
+
+          env:
+            - name: "RSYNC_CRONTAB"
+              value: "crontab"
+
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          volumeMounts:
+            - name: "backup"
+              mountPath: "/data/destination"
+
+            - name: "data"
+              mountPath: "/data/source"
+              readOnly: true
+
+            - name: "rsync"
+              mountPath: "/rsync"
 
       hostname: "ando-mcfoundry-host"
 
       volumes:
-        - name: "foundryvtt-ando-container-cache"
+        - name: "container-cache"
           persistentVolumeClaim:
-            claimName: "foundryvtt-ando-container-cache"
+            claimName: "container-cache"
 
-        - name: "foundryvtt-ando-data"
+        - name: "data"
           persistentVolumeClaim:
-            claimName: "foundryvtt-ando-data"
+            claimName: "data"
+
+        - name: "load"
+          persistentVolumeClaim:
+            claimName: "load"
 
 ---
 

@@ -43,20 +43,6 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "load"
-spec:
-  storageClassName: "nfs-client"
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: "20Gi"
-
----
-
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
   name: "rsync"
 spec:
   storageClassName: "nfs-client"
@@ -65,4 +51,18 @@ spec:
   resources:
     requests:
       storage: "2Mi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "load"
+spec:
+  storageClassName: "nfs-client"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "20Gi"
 
