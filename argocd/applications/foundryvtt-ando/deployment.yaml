@@ -113,6 +113,14 @@ spec:
           persistentVolumeClaim:
             claimName: "load"
 
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup"
+
+        - name: "rsync"
+          persistentVolumeClaim:
+            claimName: "rsync"
+
 ---
 
 apiVersion: v1
