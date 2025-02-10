@@ -19,6 +19,16 @@ spec:
         app: "foundryvtt-ando"
 
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - thicket2
+
       containers:
         - name: "foundryvtt"
           image: "felddy/foundryvtt:11.315"
@@ -99,7 +109,6 @@ spec:
               mountPath: "/rsync"
 
       hostname: "ando-foundry"
-      nodeName: "thicket2"
 
       volumes:
         - name: "container-cache"

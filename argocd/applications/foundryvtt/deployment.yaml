@@ -19,6 +19,16 @@ spec:
         app: "foundryvtt"
 
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - thicket1
+
       containers:
         - name: "foundryvtt"
           image: "felddy/foundryvtt:11.315"
@@ -102,7 +112,6 @@ spec:
               mountPath: "/rsync"
 
       hostname: "mechamoogle-foundry"
-      nodeName: "thicket1"
 
       volumes:
         - name: "container-cache"
