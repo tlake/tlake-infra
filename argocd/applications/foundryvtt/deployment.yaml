@@ -25,7 +25,7 @@ spec:
 
           env:
             - name: "CONTAINER_CACHE"
-              value: "/data/container_cache"
+              value: "/container-cache"
             
             - name: "CONTAINER_CACHE_SIZE"
               value: "10"
@@ -71,22 +71,51 @@ spec:
               containerPort: 30000
 
           volumeMounts:
-            - name: "foundryvtt-container-cache"
-              mountPath: "/data/container_cache"
+            - name: "container-cache"
+              mountPath: "/container-cache"
 
-            - name: "foundryvtt-data"
+            - name: "data"
               mountPath: "/data"
+
+        - name: "rsync"
+          image: "ogivuk/rsync:latest"
+
+          env:
+            - name: "RSYNC_CRONTAB"
+              value: "crontab"
+
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          volumeMounts:
+            - name: "backup"
+              mountPath: "/data/destination"
+
+            - name: "data"
+              mountPath: "/data/source"
+              readOnly: true
+
+            - name: "rsync"
+              mountPath: "/rsync"
 
       hostname: "foundry-host"
 
       volumes:
-        - name: "foundryvtt-container-cache"
+        - name: "container-cache"
           persistentVolumeClaim:
-            claimName: "foundryvtt-container-cache"
+            claimName: "container-cache"
 
-        - name: "foundryvtt-data"
+        - name: "data"
           persistentVolumeClaim:
-            claimName: "foundryvtt-data"
+            claimName: "data"
+
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup"
+
+        - name: "rsync"
+          persistentVolumeClaim:
+            claimName: "rsync"
 
 ---
 

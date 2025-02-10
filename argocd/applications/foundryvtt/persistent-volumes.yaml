@@ -1,26 +1,54 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "foundryvtt-container-cache"
+  name: "container-cache"
 spec:
   storageClassName: "nfs-client"
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: "10Mi"
+      storage: "2Gi"
 
 ---
 
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "foundryvtt-data"
+  name: "data"
+spec:
+  storageClassName: "microk8s-hostpath"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "20Gi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "backup"
 spec:
   storageClassName: "nfs-client"
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: "10Mi"
+      storage: "20Gi"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "rsync"
+spec:
+  storageClassName: "nfs-client"
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: "2Mi"
 
