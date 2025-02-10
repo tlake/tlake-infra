@@ -24,10 +24,10 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                - key: kubernetes.io/hostname
+                - key: "kubernetes.io/hostname"
                   operator: In
                   values:
-                    - thicket2
+                    - "thicket2"
 
       containers:
         - name: "foundryvtt"
@@ -150,9 +150,6 @@ spec:
 
   selector:
     app: "foundryvtt-ando"
-    service: "foundryvtt-ando"
-
-  type: NodePort
 
 ---
 
