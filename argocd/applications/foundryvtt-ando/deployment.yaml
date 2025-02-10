@@ -99,8 +99,7 @@ spec:
               mountPath: "/rsync"
 
       hostname: "ando-foundry"
-      nodeSelector:
-        kubernetes.io/hostname: "thicket2"
+      nodeName: "thicket2"
 
       volumes:
         - name: "container-cache"

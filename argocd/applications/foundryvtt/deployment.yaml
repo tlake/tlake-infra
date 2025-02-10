@@ -102,8 +102,7 @@ spec:
               mountPath: "/rsync"
 
       hostname: "mechamoogle-foundry"
-      nodeSelector:
-        kubernetes.io/hostname: "thicket1"
+      nodeName: "thicket1"
 
       volumes:
         - name: "container-cache"
