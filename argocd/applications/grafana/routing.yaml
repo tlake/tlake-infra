@@ -14,7 +14,7 @@ spec:
       kind: Rule
       services:
         - name: "kube-prom-stack-grafana"
-          port: "http-traffic"
+          port: "http-web"
 
 ---
 
@@ -34,7 +34,7 @@ spec:
       kind: Rule
       services:
         - name: "kube-prom-stack-grafana"
-          port: "http-traffic"
+          port: "http-web"
 
   tls:
     certResolver: "production"
