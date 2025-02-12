@@ -25,6 +25,16 @@ spec:
       namespace: "nextcloud"
 
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "kubernetes.io/hostname"
+                  operator: In
+                  values:
+                    - "thicket3"
+
       containers:
         - name: "nextcloud-nginx"
           image: "nginx:1.19.6-alpine"
