@@ -7,5 +7,4 @@ resources:
 namespace: "observability"
 
 commonLabels:
-  app: "kube-prom-stack"
-  app.kubernetes.io/instance: "kube-prom-stack"
+  app: "grafana"
