@@ -25,9 +25,18 @@ spec:
       namespace: "nextcloud"
 
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "kubernetes.io/hostname"
+                  operator: In
+                  values:
+                    - "thicket3"
       containers:
         - name: "nextcloud-app"
-          # UPDATE IN cron.ymal AS WELL:
+          # UPDATE IN cron.yaml AS WELL:
           image: "nextcloud:29.0-fpm-alpine"
 
           env:
