@@ -1,0 +1,203 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "foundryvtt"
+  labels:
+    app: "foundryvtt"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "foundryvtt"
+
+  template:
+    metadata:
+      labels:
+        app: "foundryvtt"
+
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "kubernetes.io/hostname"
+                  operator: In
+                  values:
+                    - "thicket1"
+
+      containers:
+        - name: "foundryvtt"
+          image: "felddy/foundryvtt:11.315"
+
+          env:
+            - name: "CONTAINER_CACHE"
+              value: "/container-cache"
+            
+            - name: "CONTAINER_CACHE_SIZE"
+              value: "10"
+            
+            - name: "FOUNDRY_ADMIN_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "FOUNDRY_ADMIN_KEY"
+            
+            - name: "FOUNDRY_COMPRESS_WEBSOCKET"
+              value: "true"
+            
+            - name: "FOUNDRY_CSS_THEME"
+              value: "fantasy"
+            
+            - name: "FOUNDRY_HOSTNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "FOUNDRY_HOSTNAME"
+          
+            - name: "FOUNDRY_LICENSE_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "FOUNDRY_LICENSE_KEY"
+          
+            - name: "FOUNDRY_MINIFY_STATIC_FILES"
+              value: "true"
+            
+            - name: "FOUNDRY_TELEMETRY"
+              value: "false"
+            
+            - name: "FOUNDRY_WORLD"
+              value: "import_campaign"
+            
+            - name: "TIMEZONE"
+              value: "America/Los_Angeles"
+
+          ports:
+            - name: "foundryvtt"
+              containerPort: 30000
+
+          volumeMounts:
+            - name: "container-cache"
+              mountPath: "/container-cache"
+
+            - name: "data"
+              mountPath: "/data"
+
+            - name: "load"
+              mountPath: "/load"
+
+        - name: "rsync"
+          image: "ogivuk/rsync:latest"
+
+          env:
+            - name: "RSYNC_CRONTAB"
+              value: "crontab"
+
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          volumeMounts:
+            - name: "backup"
+              mountPath: "/data/destination"
+
+            - name: "data"
+              mountPath: "/data/source"
+              readOnly: true
+
+            - name: "rsync"
+              mountPath: "/rsync"
+
+      hostname: "mechamoogle-foundry"
+
+      volumes:
+        - name: "container-cache"
+          persistentVolumeClaim:
+            claimName: "container-cache"
+
+        - name: "data"
+          persistentVolumeClaim:
+            claimName: "data"
+
+        - name: "load"
+          persistentVolumeClaim:
+            claimName: "load"
+
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup"
+
+        - name: "rsync"
+          persistentVolumeClaim:
+            claimName: "rsync"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "foundryvtt"
+    service: "foundryvtt"
+  name: "foundryvtt"
+  namespace: "foundryvtt"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "foundryvtt"
+
+  selector:
+    app: "foundryvtt"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "foundryvtt"
+    service: "foundryvtt"
+  name: "foundryvtt-web"
+  namespace: "foundryvtt"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`foundry.tlake.io`)
+      kind: Rule
+      services:
+        - name: "foundryvtt"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "foundryvtt"
+    service: "foundryvtt"
+  name: "foundryvtt-websecure"
+  namespace: "foundryvtt"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`foundry.tlake.io`)
+      kind: Rule
+      services:
+        - name: "foundryvtt"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "production"
+

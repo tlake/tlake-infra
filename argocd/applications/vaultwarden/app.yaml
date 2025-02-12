@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: "vaultwarden-app"
-          image: "vaultwarden/server:1.32.2"
+          image: "vaultwarden/server:1.32.7"
 
           env:
             - name: "ADMIN_TOKEN"
