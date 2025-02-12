@@ -8,15 +8,15 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | 1.5.5 |
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | >= 4.0 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | ~> 4.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | ~> 6.0 |
 
 ### Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | >= 4.0 |
-| <a name="provider_github"></a> [github](#provider\_github) | ~> 6.0 |
+| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | 4.52.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | 6.5.0 |
 
 ### Modules
 
