@@ -7,4 +7,4 @@
   tasks:
     - become: true
       reboot:
-        reboot_timeout: 200
+        reboot_timeout: 600
