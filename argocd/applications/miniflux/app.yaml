@@ -79,6 +79,11 @@ spec:
             - name: "app"
               containerPort: 8080
 
+          resources:
+            requests:
+              cpu: "3m"
+              memory: "60Mi"
+
 ---
 
 apiVersion: v1

@@ -52,6 +52,11 @@ spec:
 
           image: "ogivuk/rsync:latest"
 
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "50Mi"
+
           volumeMounts:
             - name: "nextcloud-storage"
               mountPath: "/data/source/nextcloud-storage"

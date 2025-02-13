@@ -27,6 +27,11 @@ spec:
             - name: "app"
               containerPort: 5000
 
+          resources:
+            requests:
+              cpu: "1m"
+              memory: "25Mi"
+
           volumeMounts:
             - name: "auth"
               mountPath: "/var/lib/htpasswd"
