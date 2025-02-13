@@ -39,7 +39,7 @@ spec:
           resources:
             requests:
               cpu: "200m"
-              memory: "120MiB"
+              memory: "120Mi"
 
           volumeMounts:
             - name: "data"
@@ -58,7 +58,7 @@ spec:
           resources:
             requests:
               cpu: "1m"
-              memory: "3MiB"
+              memory: "3Mi"
 
           volumeMounts:
             - name: "backup"
