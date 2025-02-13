@@ -58,7 +58,7 @@ spec:
           resources:
             requests:
               cpu: "1m"
-              memory: "2.5MiB"
+              memory: "3MiB"
 
           volumeMounts:
             - name: "backup"
