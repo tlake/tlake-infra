@@ -36,6 +36,11 @@ spec:
             - name: "app"
               containerPort: 5006
 
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "120MiB"
+
           volumeMounts:
             - name: "data"
               mountPath: "/data"
@@ -49,6 +54,11 @@ spec:
 
             - name: "TZ"
               value: "America/Los_Angeles"
+
+          resources:
+            requests:
+              cpu: "1m"
+              memory: "2.5MiB"
 
           volumeMounts:
             - name: "backup"
