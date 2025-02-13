@@ -1,0 +1,41 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "grafana-web"
+  namespace: "observability"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`grafana.tlake.io`)
+      kind: Rule
+      services:
+        - name: "kube-prom-stack-grafana"
+          port: "http-web"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "grafana-websecure"
+  namespace: "observability"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`grafana.tlake.io`)
+      kind: Rule
+      services:
+        - name: "kube-prom-stack-grafana"
+          port: "http-web"
+
+  tls:
+    certResolver: "production"
+

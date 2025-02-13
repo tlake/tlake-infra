@@ -48,6 +48,11 @@ spec:
               containerPort: 80
               protocol: "TCP"
 
+          resources:
+            requests:
+              cpu: "2m"
+              memory: "12Mi"
+
           volumeMounts:
             - mountPath: "/etc/nginx/nginx.conf"
               name: "nextcloud-nginx-config"

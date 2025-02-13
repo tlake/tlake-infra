@@ -67,6 +67,7 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
     "ghostfolio",
     "gitea",
     "gitlab",
+    "grafana",
     "lazylibrarian",
     "mc",
     "minecraft",

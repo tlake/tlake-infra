@@ -30,6 +30,11 @@ spec:
             - name: "DOCKER_MODS"
               value: "linuxserver/mods:universal-calibre"
 
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "450Mi"
+
           ports:
             - name: "app"
               containerPort: 8083
@@ -50,6 +55,11 @@ spec:
 
             - name: "TZ"
               value: "America/Los_Angeles"
+
+          resources:
+            requests:
+              cpu: "1m"
+              memory: "5Mi"
 
           volumeMounts:
             - name: "library"

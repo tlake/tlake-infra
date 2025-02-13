@@ -37,6 +37,11 @@ spec:
             - name: "dashboard"
               containerPort: 8080
 
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "200Mi"
+
           volumeMounts:
             - name: "certs"
               mountPath: "/etc/certs"

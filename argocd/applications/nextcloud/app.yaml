@@ -90,6 +90,11 @@ spec:
               containerPort: 9000
               protocol: "TCP"
 
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "900Mi"
+
           volumeMounts:
             - mountPath: "/var/www/html"
               name: "nextcloud-storage"
