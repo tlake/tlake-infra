@@ -25,6 +25,16 @@ spec:
       namespace: "nextcloud"
 
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "kubernetes.io/hostname"
+                  operator: In
+                  values:
+                    - "thicket3"
+
       containers:
         - name: "nextcloud-nginx"
           image: "nginx:1.19.6-alpine"
@@ -271,7 +281,7 @@ data:
                 deny all;
             }
 
-            location ~ ^\/(?:index|remote|public|cron|core\/ajax\/update|status|ocs\/v[12]|updater\/.+|oc[ms]-provider\/.+)\.php(?:$|\/) {
+            location ~ ^\/(?:index|remote|public|cron|core\/ajax\/update|status|ocs\/v[12]|updater\/.+|oc[ms]-provider\/.+|.+\/richdocumentscode\/proxy)\.php(?:$|\/) {
                 fastcgi_split_path_info ^(.+?\.php)(\/.*|)$;
                 set $path_info $fastcgi_path_info;
                 try_files $fastcgi_script_name =404;
@@ -327,6 +337,10 @@ data:
                 try_files $uri /index.php$request_uri;
                 # Optional: Don't log access to other assets
                 access_log off;
+            }
+
+            location ~ \.mjs$ {
+              types { text/javascript mjs; }
             }
         }
     }
