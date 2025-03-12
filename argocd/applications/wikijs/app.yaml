@@ -1,0 +1,116 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "wikijs"
+  labels:
+    app: "wikijs"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "wikijs"
+
+  template:
+    metadata:
+      labels:
+        app: "wikijs"
+
+    spec:
+      containers:
+        - name: "app"
+          image: "ghcr.io/requarks/wiki:2"
+
+          env:
+            - name: "DB_HOST"
+              value: "wikijs-postgres"
+
+            - name: "DB_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_db"
+
+            - name: "DB_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_password"
+
+            - name: "DB_PORT"
+              value: 5432
+
+            - name: "DB_TYPE"
+              value: "postgres"
+
+            - name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_user"
+
+          ports:
+            - name: "app"
+              containerPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "wikijs"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "wikijs"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "wikijs-web"
+  namespace: "wikijs"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`wiki.tlake.io`)
+      kind: Rule
+      services:
+        - name: "wikijs"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "wikijs-websecure"
+  namespace: "wikijs"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`wiki.tlake.io`)
+      kind: Rule
+      services:
+        - name: "wikijs"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+
