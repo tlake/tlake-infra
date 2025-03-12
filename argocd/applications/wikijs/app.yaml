@@ -42,7 +42,7 @@ spec:
                   key: "postgres_password"
 
             - name: "DB_PORT"
-              value: 5432
+              value: "5432"
 
             - name: "DB_TYPE"
               value: "postgres"
