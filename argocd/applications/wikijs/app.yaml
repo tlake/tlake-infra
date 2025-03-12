@@ -1,9 +1,11 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: "wikijs"
   labels:
     app: "wikijs"
+    service: "wikijs-app"
+  name: "wikijs-app"
+  namespace: "wikijs"
 
 spec:
   replicas: 1
@@ -20,7 +22,7 @@ spec:
 
     spec:
       containers:
-        - name: "app"
+        - name: "wikijs"
           image: "ghcr.io/requarks/wiki:2"
 
           env:
