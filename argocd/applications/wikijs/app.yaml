@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: "wikijs"
-          image: "ghcr.io/requarks/wiki:2"
+          image: "requarks/wiki:2"
 
           env:
             - name: "DB_HOST"
