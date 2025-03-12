@@ -57,6 +57,11 @@ spec:
             - name: "app"
               containerPort: 3000
 
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "75Mi"
+
 ---
 
 apiVersion: v1
