@@ -38,8 +38,8 @@ spec:
       containers:
         - name: "cron"
           # UPDATE IN app.yaml AS WELL:
-          # tag 29.0.13-fpm-alpine linux/arm64/v8
-          image: "nextcloud@sha256:141341a52788dd34af292ce5ba57d78f73741d564aa84826031dca5012def77c"
+          # tag 29.0.13-fpm-alpine
+          image: "nextcloud@sha256:809ce152986caebc1abf1449a4e1d067bdb54fe2728c6b050471f22d31d3186b"
           imagePullPolicy: "IfNotPresent"
           command:
             - "/cron.sh"
