@@ -29,6 +29,7 @@ spec:
         - name: "miniflux-app"
           # version 2.2.1
           image: "miniflux/miniflux@sha256:5950f5395ba02125c0d04b4287e6ab0467715112b9dcdc435ce89a52f595d473"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "ADMIN_PASSWORD"
