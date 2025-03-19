@@ -28,7 +28,7 @@ spec:
       containers:
         - name: "miniflux-postgres"
           # version 17.4
-          image: "postgres:7f29c02ba9eeff4de9a9f414d803faa0e6fe5e8d15ebe217e3e418c82e652b35"
+          image: "postgres@sha256:7f29c02ba9eeff4de9a9f414d803faa0e6fe5e8d15ebe217e3e418c82e652b35"
           imagePullPolicy: "IfNotPresent"
 
           env:
