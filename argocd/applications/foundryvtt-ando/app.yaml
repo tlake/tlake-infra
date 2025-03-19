@@ -82,7 +82,7 @@ spec:
               value: "America/New_York"
 
           ports:
-            - name: "foundryvtt-ando-app"
+            - name: "app"
               containerPort: 30000
 
           resources:
@@ -133,7 +133,7 @@ spec:
   ports:
     - name: "http-traffic"
       port: 80
-      targetPort: "foundryvtt-ando-app"
+      targetPort: "app"
 
   selector:
     app: "foundryvtt-ando"

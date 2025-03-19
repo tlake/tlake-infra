@@ -85,7 +85,7 @@ spec:
               value: "America/Los_Angeles"
 
           ports:
-            - name: "foundryvtt-app"
+            - name: "app"
               containerPort: 30000
 
           resources:
@@ -136,7 +136,7 @@ spec:
   ports:
     - name: "http-traffic"
       port: 80
-      targetPort: "foundryvtt-app"
+      targetPort: "app"
 
   selector:
     app: "foundryvtt"
