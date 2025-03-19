@@ -28,7 +28,7 @@ spec:
       containers:
         - name: "miniflux-app"
           # version 2.2.1 arm64
-          image: "miniflux/miniflux:bf4040c25021bcd390a52fcc8c67af8e2e43435cc3179814a05c1b33a9160265"
+          image: "miniflux/miniflux@sha256:bf4040c25021bcd390a52fcc8c67af8e2e43435cc3179814a05c1b33a9160265"
 
           env:
             - name: "ADMIN_PASSWORD"
