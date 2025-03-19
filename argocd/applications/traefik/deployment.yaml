@@ -1,9 +1,11 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: "traefik-deployment"
   labels:
     app: "traefik"
+    service: "traefik-app"
+  name: "traefik-app"
+  namespace: "traefik"
 
 spec:
   replicas: 1
@@ -12,17 +14,23 @@ spec:
   selector:
     matchLabels:
       app: "traefik"
+      service: "traefik-app"
 
   template:
     metadata:
       labels:
         app: "traefik"
+        service: "traefik-app"
+      name: "traefik-app"
+      namespace: "traefik"
 
     spec:
       serviceAccountName: "traefik-service-account"
       containers:
-        - name: "traefik"
-          image: "traefik:v3.1"
+        - name: "app"
+          # tag: 3.1.7
+          image: "traefik@sha256:74d72c7a1345984f186bddbabcc462b2128d0d8054177dc84afaeac4db1f0f56"
+          imagePullPolicy: "IfNotPresent"
           args:
             - "--api.insecure"
             - "--providers.kubernetesingress"
@@ -51,6 +59,9 @@ spec:
 
             - name: "static-config"
               mountPath: "/etc/traefik"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
 
       volumes:
         - name: "certs"
