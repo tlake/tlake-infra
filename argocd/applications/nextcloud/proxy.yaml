@@ -37,7 +37,9 @@ spec:
 
       containers:
         - name: "nextcloud-nginx"
-          image: "nginx:1.19.6-alpine"
+          # tag: 1.19.6-alpine linux/arm64/v8
+          image: "nginx@sha256:f48204c7bccf58041ed1719f55e22d70eb3460c5302c6100097ca78ce5970c07"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "TZ"
@@ -63,6 +65,9 @@ spec:
 
             - mountPath: "/var/www/html/data"
               name: "nextcloud-data"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
 
       volumes:
         - name: "nextcloud-nginx-config"

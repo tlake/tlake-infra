@@ -52,6 +52,9 @@ spec:
 
       containers:
         - name: "rsync"
+          # tag: 0.2 arm
+          image: "ogivuk/rsync@sha256:75c0cf3b120c644bf6e59b4bcbb5dbce8fce4ff4b43f4aaac3b55434acd90e5a"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "RSYNC_CRONTAB"
@@ -59,8 +62,6 @@ spec:
 
             - name: "TZ"
               value: "America/Los_Angeles"
-
-          image: "ogivuk/rsync:latest"
 
           resources:
             requests:
@@ -78,6 +79,9 @@ spec:
             - name: "crontab"
               mountPath: "/rsync/crontab"
               subPath: "crontab"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
 
       volumes:
         - name: "nextcloud-storage"

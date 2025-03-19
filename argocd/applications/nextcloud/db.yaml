@@ -26,7 +26,10 @@ spec:
 
     spec:
       containers:
-        - name: "nextcloud-postgres"
+        - name: "postgres"
+          # tag v16.8-alpine3.21
+          image: "postgres@sha256:3b057e1c2c6dfee60a30950096f3fab33be141dbb0fdd7af3d477083de94166c"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "POSTGRES_DB"
@@ -50,8 +53,6 @@ spec:
             - name: "TZ"
               value: "America/Los_Angeles"
 
-          image: "postgres:16"
-
           ports:
             - name: "db"
               containerPort: 5432
@@ -64,6 +65,9 @@ spec:
           volumeMounts:
             - name: "postgres-data"
               mountPath: "/var/lib/postgresql/data"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
 
       volumes:
         - name: "postgres-data"

@@ -27,7 +27,9 @@ spec:
     spec:
       containers:
         - name: "nextcloud-redis"
-          image: "redis:alpine"
+          # tag: alpine-3.21
+          image: "redis@sha256:02419de7eddf55aa5bcf49efb74e88fa8d931b4d77c07eff8a6b2144472b6952"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "TZ"
@@ -42,6 +44,10 @@ spec:
             requests:
               cpu: "20m"
               memory: "20Mi"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
 
 ---
 
