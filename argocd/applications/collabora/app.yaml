@@ -28,7 +28,7 @@ spec:
       containers:
         - name: "collabora-app"
           # version 24.04.13.2.1
-          image: "collabora/code:sha256:01dc4ab83977edf0f2eb35c07973ac267ebccf4917d3311efa9b9e336709f608"
+          image: "collabora/code@sha256:01dc4ab83977edf0f2eb35c07973ac267ebccf4917d3311efa9b9e336709f608"
           imagePullPolicy: "IfNotPresent"
 
           env:
