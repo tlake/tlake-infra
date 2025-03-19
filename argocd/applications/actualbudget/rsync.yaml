@@ -41,7 +41,7 @@ spec:
     spec:
       containers:
         - name: "rsync"
-          # version 0.2
+          # version 0.2 arm
           image: "ogivuk/rsync@sha256:75c0cf3b120c644bf6e59b4bcbb5dbce8fce4ff4b43f4aaac3b55434acd90e5a"
           imagePullPolicy: "IfNotPresent"
 
