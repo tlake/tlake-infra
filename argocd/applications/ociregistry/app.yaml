@@ -1,0 +1,136 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "ociregistry"
+    service: "ociregistry-app"
+  name: "ociregistry-app"
+  namespace: "ociregistry"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "ociregistry"
+      service: "ociregistry-app"
+
+  template:
+    metadata:
+      labels:
+        app: "ociregistry"
+        service: "ociregistry-app"
+      name: "ociregistry-app"
+      namespace: "ociregistry"
+
+    spec:
+      containers:
+        - name: "app"
+          # tag: 2.8.3
+          image: "registry@sha256:a3d8aaa63ed8681a604f1dea0aa03f100d5895b6a58ace528858a7b332415373"
+          imagePullPolicy: "IfNotPresent"
+
+          ports:
+            - name: "app"
+              containerPort: 5000
+
+          resources:
+            requests:
+              cpu: "1m"
+              memory: "25Mi"
+
+          volumeMounts:
+            - name: "auth"
+              mountPath: "/var/lib/htpasswd"
+            - name: "data"
+              mountPath: "/var/lib/registry"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "auth"
+          persistentVolumeClaim:
+            claimName: "auth"
+
+        - name: "data"
+          persistentVolumeClaim:
+            claimName: "data"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "ociregistry"
+    service: "ociregistry-app"
+  name: "ociregistry-app"
+  namespace: "ociregistry"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "ociregistry"
+    service: "ociregistry-app"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "ociregistry"
+    service: "ociregistry-app"
+  name: "ociregistry-web"
+  namespace: "ociregistry"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: >
+        Host(`docker-registry.tlake.io`) ||
+        Host(`oci-registry.tlake.io`) ||
+        Host(`ociregistry.tlake.io`) ||
+        Host(`registry.tlake.io`)
+      kind: Rule
+      services:
+        - name: "ociregistry-app"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "ociregistry"
+    service: "ociregistry-app"
+  name: "ociregistry-websecure"
+  namespace: "ociregistry"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: >
+        Host(`docker-registry.tlake.io`) ||
+        Host(`oci-registry.tlake.io`) ||
+        Host(`ociregistry.tlake.io`) ||
+        Host(`registry.tlake.io`)
+      kind: Rule
+      services:
+        - name: "ociregistry-app"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "production"
+
