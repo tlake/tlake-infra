@@ -42,7 +42,7 @@ spec:
       containers:
         - name: "rsync"
           # version 0.2
-          image: "ogivuk/rsync@sha256:ba8282ca451b397eb6a7ca7ecbf3135876737d27bd6bdbd85f17d7047a6d2578"
+          image: "ogivuk/rsync@sha256:75c0cf3b120c644bf6e59b4bcbb5dbce8fce4ff4b43f4aaac3b55434acd90e5a"
           imagePullPolicy: "IfNotPresent"
 
           env:
