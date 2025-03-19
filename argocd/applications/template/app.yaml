@@ -1,0 +1,106 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "CHANGE_APP_IDENTIFIER"
+  labels:
+    app: "CHANGE_APP_IDENTIFIER"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "CHANGE_APP_IDENTIFIER"
+
+  template:
+    metadata:
+      labels:
+        app: "CHANGE_APP_IDENTIFIER"
+
+    spec:
+      containers:
+        - name: "CHANGE_APP_IDENTIFIER"
+          # version x.y.z
+          image: "IMAGE_REF@IMAGE_SHA"
+          imagePullPolicy: "IfNotPresent"
+
+          env:
+            - name: "CHANGE_ENVVAR_NAME"
+              value: "CHANGE_ENVVAR_VALUE"
+
+          ports:
+            - name: "app"
+              containerPort: CHANGE_PORT_NUMBER
+
+          volumeMounts:
+            - name: "CHANGE_VOLUME_NAME"
+              mountPath: "/CHANGE_MOUNT_PATH"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "CHANGE_VOLUME_NAME"
+          persistentVolumeClaim:
+            claimName: "CHANGE_VOLUME_NAME"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "CHANGE_APP_IDENTIFIER"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "CHANGE_APP_IDENTIFIER"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "CHANGE_APP_IDENTIFIER-web"
+  namespace: "CHANGE_APP_IDENTIFIER"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`CHANGE_HOST`)
+      kind: Rule
+      services:
+        - name: "CHANGE_APP_IDENTIFIER"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "CHANGE_APP_IDENTIFIER-websecure"
+  namespace: "CHANGE_APP_IDENTIFIER"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`CHANGE_HOST`)
+      kind: Rule
+      services:
+        - name: "CHANGE_APP_IDENTIFIER"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+
