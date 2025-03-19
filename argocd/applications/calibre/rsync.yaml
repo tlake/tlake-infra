@@ -1,9 +1,11 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: "calibre"
   labels:
     app: "calibre"
+    service: "calibre-rsync"
+  name: "calibre-rsync"
+  namespace: "calibre"
 
 spec:
   replicas: 1
@@ -12,45 +14,21 @@ spec:
   selector:
     matchLabels:
       app: "calibre"
+      service: "calibre-rsync"
 
   template:
     metadata:
       labels:
         app: "calibre"
+        service: "calibre-rsync"
+      name: "calibre-rsync"
+      namespace: "calibre"
 
     spec:
       containers:
-        - name: "calibre"
-          # version 0.6.21
-          image: "linuxserver/calibre-web:sha256:24c78126d2c47a0bad2fb99fc3048e8cc6bb443333fb347594d27f02092204f2"
-          imagePullPolicy: "IfNotPresent"
-
-          env:
-            - name: "TZ"
-              value: "America/Los_Angeles"
-
-            - name: "DOCKER_MODS"
-              value: "linuxserver/mods:universal-calibre"
-
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "450Mi"
-
-          ports:
-            - name: "app"
-              containerPort: 8083
-
-          volumeMounts:
-            - name: "library"
-              mountPath: "/books"
-
-            - name: "config"
-              mountPath: "/config"
-
         - name: "rsync"
           # version 0.2
-          image: "ogivuk/rsync:sha256:ba8282ca451b397eb6a7ca7ecbf3135876737d27bd6bdbd85f17d7047a6d2578"
+          image: "ogivuk/rsync@sha256:ba8282ca451b397eb6a7ca7ecbf3135876737d27bd6bdbd85f17d7047a6d2578"
           imagePullPolicy: "IfNotPresent"
 
           env:

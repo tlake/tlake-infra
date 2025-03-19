@@ -1,0 +1,136 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "calibre"
+    service: "calibre-app"
+  name: "calibre-app"
+  namespace: "calibre"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "calibre"
+      service: "calibre-app"
+
+  template:
+    metadata:
+      labels:
+        app: "calibre"
+        service: "calibre-app"
+      name: "calibre-app"
+      namespace: "calibre"
+
+    spec:
+      containers:
+        - name: "app"
+          # version 0.6.21
+          image: "linuxserver/calibre-web@sha256:24c78126d2c47a0bad2fb99fc3048e8cc6bb443333fb347594d27f02092204f2"
+          imagePullPolicy: "IfNotPresent"
+
+          env:
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+            - name: "DOCKER_MODS"
+              value: "linuxserver/mods:universal-calibre"
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "450Mi"
+
+          ports:
+            - name: "app"
+              containerPort: 8083
+
+          volumeMounts:
+            - name: "library"
+              mountPath: "/books"
+
+            - name: "config"
+              mountPath: "/config"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "library"
+          persistentVolumeClaim:
+            claimName: "library"
+
+        - name: "config"
+          persistentVolumeClaim:
+            claimName: "config"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "calibre"
+    service: "calibre-app"
+  name: "calibre-app"
+  namespace: "calibre"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "calibre"
+    service: "calibre-app"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "calibre"
+    service: "calibre-app"
+  name: "calibre-web"
+  namespace: "calibre"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: "Host(`calibre.tlake.io`) || Host(`calibre-web.tlake.io`)"
+      kind: Rule
+      services:
+        - name: "calibre-app"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "calibre"
+    service: "calibre-app"
+  name: "calibre-websecure"
+  namespace: "calibre"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: "Host(`calibre.tlake.io`) || Host(`calibre-web.tlake.io`)"
+      kind: Rule
+      services:
+        - name: "calibre-app"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "production"
+
