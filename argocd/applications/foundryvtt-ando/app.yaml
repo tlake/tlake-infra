@@ -82,7 +82,7 @@ spec:
               value: "America/New_York"
 
           ports:
-            - name: "foundryvtt-ando"
+            - name: "foundryvtt-ando-app"
               containerPort: 30000
 
           resources:
