@@ -69,9 +69,6 @@ spec:
               mountPath: "/data/source"
               readOnly: true
 
-            - name: "rsync"
-              mountPath: "/rsync"
-
       imagePullSecrets:
         - name: "dockerhub-tlake-read-only"
 
@@ -87,8 +84,4 @@ spec:
         - name: "backup"
           persistentVolumeClaim:
             claimName: "backup"
-
-        - name: "rsync"
-          persistentVolumeClaim:
-            claimName: "rsync"
 

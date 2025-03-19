@@ -24,17 +24,3 @@ spec:
     requests:
       storage: "10Mi"
 
----
-
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: "rsync"
-spec:
-  storageClassName: "nfs-client"
-  accessModes:
-    - ReadOnlyMany
-  resources:
-    requests:
-      storage: "2Mi"
-
