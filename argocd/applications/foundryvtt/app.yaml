@@ -1,9 +1,11 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: "foundryvtt"
   labels:
     app: "foundryvtt"
+    service: "foundryvtt-app"
+  name: "foundryvtt-app"
+  namespace: "foundryvtt"
 
 spec:
   replicas: 1
@@ -12,11 +14,15 @@ spec:
   selector:
     matchLabels:
       app: "foundryvtt"
+      service: "foundryvtt-app"
 
   template:
     metadata:
       labels:
         app: "foundryvtt"
+        service: "foundryvtt-app"
+      name: "foundryvtt-app"
+      namespace: "foundryvtt"
 
     spec:
       affinity:
@@ -30,9 +36,9 @@ spec:
                     - "thicket1"
 
       containers:
-        - name: "foundryvtt"
+        - name: "app"
           # version 11.315
-          image: "felddy/foundryvtt:sha256:6a79a9fe9110d7447e7b36f534402884a2c88783dc59b7d25943a3c47145ab03"
+          image: "felddy/foundryvtt@sha256:6a79a9fe9110d7447e7b36f534402884a2c88783dc59b7d25943a3c47145ab03"
           imagePullPolicy: "IfNotPresent"
 
           env:
@@ -97,34 +103,6 @@ spec:
             - name: "load"
               mountPath: "/load"
 
-        - name: "rsync"
-          # version 0.2
-          image: "ogivuk/rsync:sha256:ba8282ca451b397eb6a7ca7ecbf3135876737d27bd6bdbd85f17d7047a6d2578"
-          imagePullPolicy: "IfNotPresent"
-
-          env:
-            - name: "RSYNC_CRONTAB"
-              value: "crontab"
-
-            - name: "TZ"
-              value: "America/Los_Angeles"
-
-          resources:
-            requests:
-              cpu: "80m"
-              memory: "70Mi"
-
-          volumeMounts:
-            - name: "backup"
-              mountPath: "/data/destination"
-
-            - name: "data"
-              mountPath: "/data/source"
-              readOnly: true
-
-            - name: "rsync"
-              mountPath: "/rsync"
-
       hostname: "mechamoogle-foundry"
 
       imagePullSecrets:
@@ -143,14 +121,6 @@ spec:
           persistentVolumeClaim:
             claimName: "load"
 
-        - name: "backup"
-          persistentVolumeClaim:
-            claimName: "backup"
-
-        - name: "rsync"
-          persistentVolumeClaim:
-            claimName: "rsync"
-
 ---
 
 apiVersion: v1
@@ -158,8 +128,8 @@ kind: Service
 metadata:
   labels:
     app: "foundryvtt"
-    service: "foundryvtt"
-  name: "foundryvtt"
+    service: "foundryvtt-app"
+  name: "foundryvtt-app"
   namespace: "foundryvtt"
 
 spec:
@@ -170,6 +140,7 @@ spec:
 
   selector:
     app: "foundryvtt"
+    service: "foundryvtt-app"
 
 ---
 
@@ -178,7 +149,7 @@ kind: IngressRoute
 metadata:
   labels:
     app: "foundryvtt"
-    service: "foundryvtt"
+    service: "foundryvtt-app"
   name: "foundryvtt-web"
   namespace: "foundryvtt"
 
@@ -190,7 +161,7 @@ spec:
     - match: Host(`foundry.tlake.io`)
       kind: Rule
       services:
-        - name: "foundryvtt"
+        - name: "foundryvtt-app"
           port: "http-traffic"
 
 ---
@@ -212,7 +183,7 @@ spec:
     - match: Host(`foundry.tlake.io`)
       kind: Rule
       services:
-        - name: "foundryvtt"
+        - name: "foundryvtt-app"
           port: "http-traffic"
 
   tls:
