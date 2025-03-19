@@ -31,7 +31,9 @@ spec:
 
       containers:
         - name: "foundryvtt"
-          image: "felddy/foundryvtt:11.315"
+          # version 11.315
+          image: "felddy/foundryvtt:sha256:6a79a9fe9110d7447e7b36f534402884a2c88783dc59b7d25943a3c47145ab03"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "CONTAINER_CACHE"
@@ -93,7 +95,9 @@ spec:
               mountPath: "/load"
 
         - name: "rsync"
-          image: "ogivuk/rsync:latest"
+          # version 0.2
+          image: "ogivuk/rsync:sha256:ba8282ca451b397eb6a7ca7ecbf3135876737d27bd6bdbd85f17d7047a6d2578"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "RSYNC_CRONTAB"
@@ -119,6 +123,9 @@ spec:
               mountPath: "/rsync"
 
       hostname: "ando-foundry"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
 
       volumes:
         - name: "container-cache"

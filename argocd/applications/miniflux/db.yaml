@@ -27,7 +27,9 @@ spec:
     spec:
       containers:
         - name: "miniflux-postgres"
-          image: "postgres:17"
+          # version 17.4
+          image: "postgres:sha256:7f29c02ba9eeff4de9a9f414d803faa0e6fe5e8d15ebe217e3e418c82e652b35"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "POSTGRES_DB"
@@ -55,6 +57,9 @@ spec:
           volumeMounts:
             - name: "postgres-data"
               mountPath: "/var/lib/postgresql/data"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
 
       volumes:
         - name: "postgres-data"

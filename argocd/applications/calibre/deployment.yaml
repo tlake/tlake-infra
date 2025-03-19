@@ -21,7 +21,9 @@ spec:
     spec:
       containers:
         - name: "calibre"
-          image: "lscr.io/linuxserver/calibre-web:0.6.21"
+          # version 0.6.21
+          image: "linuxserver/calibre-web:sha256:24c78126d2c47a0bad2fb99fc3048e8cc6bb443333fb347594d27f02092204f2"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "TZ"
@@ -47,7 +49,9 @@ spec:
               mountPath: "/config"
 
         - name: "rsync"
-          image: "ogivuk/rsync:latest"
+          # version 0.2
+          image: "ogivuk/rsync:sha256:ba8282ca451b397eb6a7ca7ecbf3135876737d27bd6bdbd85f17d7047a6d2578"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "RSYNC_CRONTAB"
@@ -75,6 +79,9 @@ spec:
 
             - name: "rsync"
               mountPath: "/rsync"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
 
       volumes:
         - name: "library"
