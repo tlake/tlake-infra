@@ -1,0 +1,98 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    app: "foundryvtt-ando"
+    service: "foundryvtt-ando-rsync"
+  name: "foundryvtt-ando-rsync-crontab"
+  namespace: "foundryvtt-ando"
+
+data:
+  crontab: |
+    50 * * * * rsync -avzh /data/source/* /data/destination/
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "foundryvtt-ando"
+    service: "foundryvtt-ando-rsync"
+  name: "foundryvtt-ando-rsync"
+  namespace: "foundryvtt-ando"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "foundryvtt-ando"
+      service: "foundryvtt-ando-rsync"
+
+  template:
+    metadata:
+      labels:
+        app: "foundryvtt-ando"
+        service: "foundryvtt-ando-rsync"
+      name: "foundryvtt-ando-rsync"
+      namespace: "foundryvtt-ando"
+
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "kubernetes.io/hostname"
+                  operator: In
+                  values:
+                    - "thicket2"
+
+      containers:
+        - name: "rsync"
+          # version 0.2 arm
+          image: "ogivuk/rsync@sha256:75c0cf3b120c644bf6e59b4bcbb5dbce8fce4ff4b43f4aaac3b55434acd90e5a"
+          imagePullPolicy: "IfNotPresent"
+
+          env:
+            - name: "RSYNC_CRONTAB"
+              value: "crontab"
+
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          resources:
+            requests:
+              cpu: "80m"
+              memory: "70Mi"
+
+          volumeMounts:
+            - name: "backup"
+              mountPath: "/data/destination"
+
+            - name: "crontab"
+              mountPath: "/rsync/crontab"
+              subPath: "crontab"
+
+            - name: "data"
+              mountPath: "/data/source"
+              readOnly: true
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup"
+
+        - name: "crontab"
+          configMap:
+            name: "foundryvtt-ando-rsync-crontab"
+
+        - name: "data"
+          persistentVolumeClaim:
+            claimName: "data"
+
