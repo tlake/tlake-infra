@@ -27,8 +27,8 @@ spec:
     spec:
       containers:
         - name: "app"
-          # tag: 2.8.3
-          image: "registry@sha256:a3d8aaa63ed8681a604f1dea0aa03f100d5895b6a58ace528858a7b332415373"
+          # tag: 2.8.3 linux/arm68/v8
+          image: "registry@sha256:fa647fc1e5d5df7d8d923fb6332aab8e78783f8fca1a1394efb4011f68f5a793"
           imagePullPolicy: "IfNotPresent"
 
           ports:
