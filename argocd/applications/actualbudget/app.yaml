@@ -27,7 +27,7 @@ spec:
       containers:
         - name: "app"
           # version 24.8.0
-          image: "docker.io/actualbudget/actual-server:sha256:52a63c1e521b9dec706ca9699e6f625582176b6a21930496dbabe3e4d36e3f03"
+          image: "actualbudget/actual-server@sha256:52a63c1e521b9dec706ca9699e6f625582176b6a21930496dbabe3e4d36e3f03"
           imagePullPolicy: "IfNotPresent"
 
           env:
