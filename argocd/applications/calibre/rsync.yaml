@@ -1,3 +1,18 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    app: "calibre"
+    service: "calibre-rsync"
+  name: "calibre-rsync-crontab"
+  namespace: "calibre"
+
+data:
+  crontab: |
+    50 * * * * rsync -avzh /data/source/* /data/destination/
+
+---
+
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -27,8 +42,8 @@ spec:
     spec:
       containers:
         - name: "rsync"
-          # version 0.2
-          image: "ogivuk/rsync@sha256:ba8282ca451b397eb6a7ca7ecbf3135876737d27bd6bdbd85f17d7047a6d2578"
+          # version 0.2 arm
+          image: "ogivuk/rsync@sha256:75c0cf3b120c644bf6e59b4bcbb5dbce8fce4ff4b43f4aaac3b55434acd90e5a"
           imagePullPolicy: "IfNotPresent"
 
           env:
@@ -44,37 +59,38 @@ spec:
               memory: "5Mi"
 
           volumeMounts:
-            - name: "library"
-              mountPath: "/data/source/books"
-              readOnly: true
+            - name: "backup"
+              mountPath: "/data/destination"
 
             - name: "config"
               mountPath: "/data/source/config"
               readOnly: true
 
-            - name: "backup"
-              mountPath: "/data/destination"
+            - name: "crontab"
+              mountPath: "/rsync/crontab"
+              subPath: "crontab"
 
-            - name: "rsync"
-              mountPath: "/rsync"
+            - name: "library"
+              mountPath: "/data/source/books"
+              readOnly: true
 
       imagePullSecrets:
         - name: "dockerhub-tlake-read-only"
 
       volumes:
-        - name: "library"
+        - name: "backup"
           persistentVolumeClaim:
-            claimName: "library"
+            claimName: "backup"
 
         - name: "config"
           persistentVolumeClaim:
             claimName: "config"
 
-        - name: "backup"
-          persistentVolumeClaim:
-            claimName: "backup"
+        - name: "crontab"
+          configMap:
+            name: "calibre-rsync-crontab"
 
-        - name: "rsync"
+        - name: "library"
           persistentVolumeClaim:
-            claimName: "rsync"
+            claimName: "library"
 
