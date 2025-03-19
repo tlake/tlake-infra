@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: "app"
-          # version 0.6.21 arm64
+          # version 0.6.21
           image: "linuxserver/calibre-web@sha256:24c78126d2c47a0bad2fb99fc3048e8cc6bb443333fb347594d27f02092204f2"
           imagePullPolicy: "IfNotPresent"
 
