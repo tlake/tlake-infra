@@ -2,14 +2,14 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   labels:
-    app: "nextcloud"
-    service: "nextcloud-rsync"
-  name: "nextcloud-rsync-crontab"
-  namespace: "nextcloud"
+    app: "foundryvtt"
+    service: "foundryvtt-rsync"
+  name: "foundryvtt-rsync-crontab"
+  namespace: "foundryvtt"
 
 data:
   crontab: |
-    50 * * * * rsync -avzh --exclude /data/source/data /data/source/ /data/destination/
+    50 * * * * rsync -avzh /data/source/* /data/destination/
 
 ---
 
@@ -17,10 +17,10 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   labels:
-    app: "nextcloud"
-    service: "nextcloud-rsync"
-  name: "nextcloud-rsync"
-  namespace: "nextcloud"
+    app: "foundryvtt"
+    service: "foundryvtt-rsync"
+  name: "foundryvtt-rsync"
+  namespace: "foundryvtt"
 
 spec:
   replicas: 1
@@ -28,16 +28,16 @@ spec:
 
   selector:
     matchLabels:
-      app: "nextcloud"
-      service: "nextcloud-rsync"
+      app: "foundryvtt"
+      service: "foundryvtt-rsync"
 
   template:
     metadata:
       labels:
-        app: "nextcloud"
-        service: "nextcloud-rsync"
-      name: "nextcloud-rsync"
-      namespace: "nextcloud"
+        app: "foundryvtt"
+        service: "foundryvtt-rsync"
+      name: "foundryvtt-rsync"
+      namespace: "foundryvtt"
 
     spec:
       affinity:
@@ -48,11 +48,11 @@ spec:
                 - key: "kubernetes.io/hostname"
                   operator: In
                   values:
-                    - "thicket3"
+                    - "thicket1"
 
       containers:
         - name: "rsync"
-          # tag: 0.2 arm
+          # version 0.2 arm
           image: "ogivuk/rsync@sha256:75c0cf3b120c644bf6e59b4bcbb5dbce8fce4ff4b43f4aaac3b55434acd90e5a"
           imagePullPolicy: "IfNotPresent"
 
@@ -65,34 +65,34 @@ spec:
 
           resources:
             requests:
-              cpu: "200m"
-              memory: "50Mi"
+              cpu: "80m"
+              memory: "70Mi"
 
           volumeMounts:
-            - name: "nextcloud-storage"
-              mountPath: "/data/source/nextcloud-storage"
-              readOnly: true
-
-            - name: "nextcloud-storage-backup"
+            - name: "backup"
               mountPath: "/data/destination"
 
             - name: "crontab"
               mountPath: "/rsync/crontab"
               subPath: "crontab"
 
+            - name: "data"
+              mountPath: "/data/source"
+              readOnly: true
+
       imagePullSecrets:
         - name: "dockerhub-tlake-read-only"
 
       volumes:
-        - name: "nextcloud-storage"
+        - name: "backup"
           persistentVolumeClaim:
-            claimName: "nextcloud-storage"
-
-        - name: "nextcloud-storage-backup"
-          persistentVolumeClaim:
-            claimName: "nextcloud-storage-backup"
+            claimName: "backup"
 
         - name: "crontab"
           configMap:
-            name: "nextcloud-rsync-crontab"
+            name: "foundryvtt-rsync-crontab"
+
+        - name: "data"
+          persistentVolumeClaim:
+            claimName: "data"
 

@@ -9,7 +9,8 @@ spec:
     - port: 80
       targetPort: dashboard
   selector:
-    app: traefik
+    app: "traefik"
+    service: "traefik-app"
   type: LoadBalancer
 
 ---
@@ -29,6 +30,7 @@ spec:
       port: 443
       targetPort: websecure
   selector:
-    app: traefik
+    app: "traefik"
+    service: "traefik-app"
   type: LoadBalancer
 

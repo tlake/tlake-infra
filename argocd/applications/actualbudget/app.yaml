@@ -1,0 +1,130 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "actualbudget"
+    service: "actualbudget-app"
+  name: "actualbudget-app"
+  namespace: "actualbudget"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "actualbudget"
+      service: "actualbudget-app"
+
+  template:
+    metadata:
+      labels:
+        app: "actualbudget"
+        service: "actualbudget-app"
+      name: "actualbudget-app"
+      namespace: "actualbudget"
+    spec:
+      containers:
+        - name: "app"
+          # version 24.8.0
+          image: "actualbudget/actual-server@sha256:52a63c1e521b9dec706ca9699e6f625582176b6a21930496dbabe3e4d36e3f03"
+          imagePullPolicy: "IfNotPresent"
+
+          env:
+            - name: "ACTUAL_UPLOAD_FILE_SYNC_SIZE_LIMIT_MB"
+              value: "200"
+
+            - name: "ACTUAL_UPLOAD_SYNC_ENCRYPTED_FILE_SYNC_SIZE_LIMIT_MB"
+              value: "500"
+
+            - name: "ACTUAL_UPLOAD_FILE_SIZE_LIMIT_MB"
+              value: "20"
+
+          ports:
+            - name: "app"
+              containerPort: 5006
+
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "120Mi"
+
+          volumeMounts:
+            - name: "data"
+              mountPath: "/data"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "data"
+          persistentVolumeClaim:
+            claimName: "data"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "actualbudget"
+    service: "actualbudget-app"
+  name: "actualbudget-app"
+  namespace: "actualbudget"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "actualbudget"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "actualbudget"
+    service: "actualbudget-app"
+  name: "actualbudget-web"
+  namespace: "actualbudget"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: "Host(`actual.tlake.io`) || Host(`actualbudget.tlake.io`)"
+      kind: Rule
+      services:
+        - name: "actualbudget-app"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "actualbudget"
+    service: "actualbudget-app"
+  name: "actualbudget-websecure"
+  namespace: "actualbudget"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: "Host(`actual.tlake.io`) || Host(`actualbudget.tlake.io`)"
+      kind: Rule
+      services:
+        - name: "actualbudget-app"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "production"
+

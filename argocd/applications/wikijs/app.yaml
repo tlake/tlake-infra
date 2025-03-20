@@ -1,0 +1,141 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "wikijs"
+    service: "wikijs-app"
+  name: "wikijs-app"
+  namespace: "wikijs"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "wikijs"
+      service: "wikijs-app"
+
+  template:
+    metadata:
+      labels:
+        app: "wikijs"
+        service: "wikijs-app"
+      name: "wikijs-app"
+      namespace: "wikijs"
+
+    spec:
+      containers:
+        - name: "wikijs"
+          # tag: 2.5
+          image: "requarks/wiki@sha256:8680a5e10663f1aa786b8c54978ce9b56f9802efcf624960d4b1280dcb240299"
+          imagePullPolicy: "IfNotPresent"
+
+          env:
+            - name: "DB_HOST"
+              value: "wikijs-postgres"
+
+            - name: "DB_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_db"
+
+            - name: "DB_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_password"
+
+            - name: "DB_PORT"
+              value: "5432"
+
+            - name: "DB_TYPE"
+              value: "postgres"
+
+            - name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "config"
+                  key: "postgres_user"
+
+          ports:
+            - name: "app"
+              containerPort: 3000
+
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "75Mi"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "wikijs"
+    service: "wikijs-app"
+  name: "wikijs-app"
+  namespace: "wikijs"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "wikijs"
+    service: "wikijs-app"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "wikijs"
+    service: "wikijs-app"
+  name: "wikijs-web"
+  namespace: "wikijs"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`wiki.tlake.io`)
+      kind: Rule
+      services:
+        - name: "wikijs-app"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "wikijs"
+    service: "wikijs-app"
+  name: "wikijs-websecure"
+  namespace: "wikijs"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`wiki.tlake.io`)
+      kind: Rule
+      services:
+        - name: "wikijs-app"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+

@@ -1,0 +1,96 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    app: "calibre"
+    service: "calibre-rsync"
+  name: "calibre-rsync-crontab"
+  namespace: "calibre"
+
+data:
+  crontab: |
+    50 * * * * rsync -avzh /data/source/* /data/destination/
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "calibre"
+    service: "calibre-rsync"
+  name: "calibre-rsync"
+  namespace: "calibre"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "calibre"
+      service: "calibre-rsync"
+
+  template:
+    metadata:
+      labels:
+        app: "calibre"
+        service: "calibre-rsync"
+      name: "calibre-rsync"
+      namespace: "calibre"
+
+    spec:
+      containers:
+        - name: "rsync"
+          # version 0.2 arm
+          image: "ogivuk/rsync@sha256:75c0cf3b120c644bf6e59b4bcbb5dbce8fce4ff4b43f4aaac3b55434acd90e5a"
+          imagePullPolicy: "IfNotPresent"
+
+          env:
+            - name: "RSYNC_CRONTAB"
+              value: "crontab"
+
+            - name: "TZ"
+              value: "America/Los_Angeles"
+
+          resources:
+            requests:
+              cpu: "1m"
+              memory: "5Mi"
+
+          volumeMounts:
+            - name: "backup"
+              mountPath: "/data/destination"
+
+            - name: "config"
+              mountPath: "/data/source/config"
+              readOnly: true
+
+            - name: "crontab"
+              mountPath: "/rsync/crontab"
+              subPath: "crontab"
+
+            - name: "library"
+              mountPath: "/data/source/books"
+              readOnly: true
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup"
+
+        - name: "config"
+          persistentVolumeClaim:
+            claimName: "config"
+
+        - name: "crontab"
+          configMap:
+            name: "calibre-rsync-crontab"
+
+        - name: "library"
+          persistentVolumeClaim:
+            claimName: "library"
+

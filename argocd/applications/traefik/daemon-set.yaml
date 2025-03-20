@@ -8,8 +8,9 @@
 #      serviceAccountName: traefik-service-account
 #      terminationGracePeriodSeconds: 60
 #      containers:
-#      - image: traefik:v2.2
-#        name: traefik-ingress-lb
+#      - name: traefik-ingress-lb
+#        # tag: 2.2.11
+#        image: traefik@sha256:a06428212b155cb688e7088609ffad20f0cf3e8e568c12af376234a92df9755a
 #        ports:
 #        - name: http
 #          containerPort: 80

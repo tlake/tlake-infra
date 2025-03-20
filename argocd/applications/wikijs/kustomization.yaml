@@ -3,10 +3,10 @@ kind: Kustomization
 
 resources:
 - app.yaml
+- db.yaml
 - persistent-volumes.yaml
-- rsync.yaml
 
-namespace: "foundryvtt"
+namespace: "wikijs"
 
 commonLabels:
-  app: "foundryvtt"
+  app: "wikijs"

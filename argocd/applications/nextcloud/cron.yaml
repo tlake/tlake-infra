@@ -36,9 +36,11 @@ spec:
                     - "thicket3"
 
       containers:
-        - name: "nextcloud-cron"
-          # UPDATE IN app.ymal AS WELL:
-          image: "nextcloud:29.0-fpm-alpine"
+        - name: "cron"
+          # UPDATE IN app.yaml AS WELL:
+          # tag 29.0.13-fpm-alpine
+          image: "nextcloud@sha256:809ce152986caebc1abf1449a4e1d067bdb54fe2728c6b050471f22d31d3186b"
+          imagePullPolicy: "IfNotPresent"
           command:
             - "/cron.sh"
 
@@ -57,6 +59,9 @@ spec:
 
             - mountPath: "/var/www/html/data"
               name: "nextcloud-data"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
 
       volumes:
         - name: "nextcloud-storage"

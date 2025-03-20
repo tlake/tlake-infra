@@ -27,7 +27,9 @@ spec:
     spec:
       containers:
         - name: "vaultwarden-app"
-          image: "vaultwarden/server:1.32.7"
+          # tag: 1.32.7-alpine
+          image: "vaultwarden/server@sha256:f2da5d437e0c25f0a6f3a5283db74ed06dfcf4136f8db7cb17277506b1d30a5c"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "ADMIN_TOKEN"
@@ -96,6 +98,9 @@ spec:
           volumeMounts:
             - name: "app-data"
               mountPath: "/data"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
 
       volumes:
         - name: "app-data"
