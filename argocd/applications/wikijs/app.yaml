@@ -14,16 +14,22 @@ spec:
   selector:
     matchLabels:
       app: "wikijs"
+      service: "wikijs-app"
 
   template:
     metadata:
       labels:
         app: "wikijs"
+        service: "wikijs-app"
+      name: "wikijs-app"
+      namespace: "wikijs"
 
     spec:
       containers:
         - name: "wikijs"
-          image: "requarks/wiki:2"
+          # tag: 2.5
+          image: "requarks/wiki@sha256:8680a5e10663f1aa786b8c54978ce9b56f9802efcf624960d4b1280dcb240299"
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: "DB_HOST"
@@ -62,12 +68,19 @@ spec:
               cpu: "10m"
               memory: "75Mi"
 
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: "wikijs"
+  labels:
+    app: "wikijs"
+    service: "wikijs-app"
+  name: "wikijs-app"
+  namespace: "wikijs"
 
 spec:
   ports:
@@ -77,13 +90,16 @@ spec:
 
   selector:
     app: "wikijs"
+    service: "wikijs-app"
 
 ---
 
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  annotations:
+  labels:
+    app: "wikijs"
+    service: "wikijs-app"
   name: "wikijs-web"
   namespace: "wikijs"
 
@@ -95,7 +111,7 @@ spec:
     - match: Host(`wiki.tlake.io`)
       kind: Rule
       services:
-        - name: "wikijs"
+        - name: "wikijs-app"
           port: "http-traffic"
 
 ---
@@ -103,7 +119,9 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  annotations:
+  labels:
+    app: "wikijs"
+    service: "wikijs-app"
   name: "wikijs-websecure"
   namespace: "wikijs"
 
@@ -115,7 +133,7 @@ spec:
     - match: Host(`wiki.tlake.io`)
       kind: Rule
       services:
-        - name: "wikijs"
+        - name: "wikijs-app"
           port: "http-traffic"
 
   tls:
