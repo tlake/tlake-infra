@@ -78,6 +78,7 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
     "rss",
     "stable-diffusion",
     "vaultwarden",
+    "wiki",
   ])
 
   content = var.home_ip_address
