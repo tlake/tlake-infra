@@ -13,7 +13,7 @@ services:
         traefik.http.routers.gitea.tls.certresolver: "production"
         traefik.http.services.gitea.loadbalancer.server.port: 3000
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:
@@ -43,7 +43,7 @@ services:
   db:
     deploy:
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:
