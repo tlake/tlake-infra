@@ -21,7 +21,7 @@ services:
         traefik.http.routers.foundry.middlewares: "foundry"
         traefik.http.services.foundry.loadbalancer.server.port: 30000
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:
