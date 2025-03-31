@@ -6,7 +6,7 @@ services:
   app:
     deploy:
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:
@@ -44,7 +44,7 @@ services:
         traefik.http.routers.calibre_web.tls.certresolver: "production"
         traefik.http.services.calibre_web.loadbalancer.server.port: 8083
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:
