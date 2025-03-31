@@ -13,7 +13,7 @@ services:
         traefik.http.routers.actualbudget.tls.certresolver: "production"
         traefik.http.services.actualbudget.loadbalancer.server.port: 5006
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:

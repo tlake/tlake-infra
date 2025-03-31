@@ -19,7 +19,7 @@ services:
         traefik.http.routers.firefly_app.tls.certresolver: "production"
         traefik.http.services.firefly_app.loadbalancer.server.port: 8080
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:
@@ -141,7 +141,7 @@ services:
   db:
     deploy:
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       placement:
         constraints:
           - "node.platform.arch == aarch64"
@@ -172,7 +172,7 @@ services:
         traefik.http.routers.firefly_importer.tls.certresolver: "production"
         traefik.http.services.firefly_importer.loadbalancer.server.port: 8080
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       placement:
         constraints:
           - "node.platform.arch == aarch64"
@@ -245,7 +245,7 @@ services:
   cron:
     deploy:
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       placement:
         constraints:
           - "node.platform.arch == aarch64"

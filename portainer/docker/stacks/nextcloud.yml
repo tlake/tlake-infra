@@ -7,7 +7,7 @@ services:
   app:
     deploy:
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       placement:
         constraints:
           - "node.platform.arch == aarch64"
@@ -34,7 +34,7 @@ services:
   postgres:
     deploy:
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       placement:
         constraints:
           - "node.platform.arch == aarch64"
@@ -74,7 +74,7 @@ services:
         traefik.http.routers.nextcloud.tls.certresolver: "staging"
         traefik.http.services.nextcloud.loadbalancer.server.port: 80
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       placement:
         constraints:
           - "node.platform.arch == aarch64"

@@ -33,6 +33,7 @@ services:
         constraints:
           - "node.role == manager"
           - "node.platform.arch == aarch64"
+      replicas: 0
     # The official v2 Traefik docker image
     #image: "traefik:v2.5"
     image: "traefik:v3.0"

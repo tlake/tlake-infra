@@ -13,7 +13,7 @@ services:
         traefik.udp.services.minecraft_udp.loadbalancer.server.address: "artemicion:25565"
         traefik.udp.services.minecraft_udp.loadbalancer.server.port: "25565"
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:
