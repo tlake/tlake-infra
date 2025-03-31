@@ -14,7 +14,7 @@ services:
         traefik.http.routers.vaultwarden.tls.certresolver: "production"
         traefik.http.services.vaultwarden.loadbalancer.server.port: 80
       mode: "replicated"
-      replicas: 1
+      replicas: 0
       restart_policy:
         condition: "any"
       placement:
