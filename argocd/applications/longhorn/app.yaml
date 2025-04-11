@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: longhorn
-  namespace: longhorn-system
+  namespace: argocd
 spec:
   syncPolicy:
     syncOptions:
