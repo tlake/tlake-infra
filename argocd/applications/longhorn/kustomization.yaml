@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
 - app.yaml
 
-namespace: "longhorn"
+namespace: "longhorn-system"
 
 commonLabels:
   app: "longhorn"
