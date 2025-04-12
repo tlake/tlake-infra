@@ -10,8 +10,10 @@ then
     echo "pre-commit: terraform not found locally, skipping task."
 else
     echo "pre-commit: running tf fmt..."
+echo -ne "${no_color}"
     terraform fmt dns/
     terraform fmt aws/
+echo -ne "${cyan}"
     echo "pre-commit: done."
     echo
     echo "pre-commit: Please review any .tf changes in dns/ and aws/,"
@@ -24,11 +26,16 @@ then
     echo "pre-commit: terraform-docs not found locally, skipping task."
 else
     echo "pre-commit: running tf fmt..."
+echo -ne "${no_color}"
     terraform-docs dns
     terraform-docs aws
+echo -ne "${cyan}"
     echo "pre-commit: done."
     echo
     echo "pre-commit: Please review any README.md changes in dns/ and aws/,"
     echo "pre-commit: then add and commit them if they're correct."
     echo
 fi
+
+
+echo -ne "${no_color}"
