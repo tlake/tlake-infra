@@ -10,10 +10,10 @@ then
     echo "pre-commit: terraform not found locally, skipping task."
 else
     echo "pre-commit: running tf fmt..."
-echo -ne "${no_color}"
+    echo -ne "${no_color}"
     terraform fmt dns/
     terraform fmt aws/
-echo -ne "${cyan}"
+    echo -ne "${cyan}"
     echo "pre-commit: done."
     echo
     echo "pre-commit: Please review any .tf changes in dns/ and aws/,"
@@ -25,14 +25,31 @@ if ! command -v terraform-docs &> /dev/null
 then
     echo "pre-commit: terraform-docs not found locally, skipping task."
 else
-    echo "pre-commit: running tf fmt..."
-echo -ne "${no_color}"
+    echo "pre-commit: running terraform-docs..."
+    echo -ne "${no_color}"
     terraform-docs dns
     terraform-docs aws
-echo -ne "${cyan}"
+    echo -ne "${cyan}"
     echo "pre-commit: done."
     echo
     echo "pre-commit: Please review any README.md changes in dns/ and aws/,"
+    echo "pre-commit: then add and commit them if they're correct."
+    echo
+fi
+
+
+if ! command -v tflint &> /dev/null
+then
+    echo "pre-commit: tflint not found locally, skipping task."
+else
+    echo "pre-commit: running tflint..."
+    echo -ne "${no_color}"
+    tflint --chdir dns
+    tflint --chdir aws
+    echo -ne "${cyan}"
+    echo "pre-commit: done."
+    echo
+    echo "pre-commit: Please review any issues/warnings in dns/ and aws/,"
     echo "pre-commit: then add and commit them if they're correct."
     echo
 fi
