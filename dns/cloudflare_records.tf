@@ -110,7 +110,9 @@ resource "cloudflare_record" "tlake_io_subdomain_porkbun_routes" {
 #################
 
 resource "cloudflare_record" "exo_archive_org_github_pages_ipv6" {
-  for_each = toset(data.github_ip_ranges.this.pages_ipv6)
+  for_each = toset([
+    for c in data.github_ip_ranges.this.pages_ipv6 : cidrhost(c, 0)
+  ])
 
   content = each.value
   name    = "@"
@@ -121,7 +123,9 @@ resource "cloudflare_record" "exo_archive_org_github_pages_ipv6" {
 }
 
 resource "cloudflare_record" "tlake_io_github_pages_ipv6" {
-  for_each = toset(data.github_ip_ranges.this.pages_ipv6)
+  for_each = toset([
+    for c in data.github_ip_ranges.this.pages_ipv6 : cidrhost(c, 0)
+  ])
 
   content = each.value
   name    = "@"
