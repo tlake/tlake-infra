@@ -1,3 +1,5 @@
+data "github_ip_ranges" "this" {}
+
 locals {
   txt_challenges = [
     { record_name : "_acme-challenge", record_value : "5zj3Pr2eRPPyw5S4euvnZ98qubjcLqAbO2aEz53h-lo", },
