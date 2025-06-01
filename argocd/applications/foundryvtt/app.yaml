@@ -38,7 +38,7 @@ spec:
       containers:
         - name: "app"
           # version 12.324
-          image: "sha256:469098ad090c1a8457d52ee388caaf70c3418cf91a39e6cb75670b16706192fb"
+          image: "felddy/foundryvtt@sha256:469098ad090c1a8457d52ee388caaf70c3418cf91a39e6cb75670b16706192fb"
           # version 11.315
           #image: "felddy/foundryvtt@sha256:6a79a9fe9110d7447e7b36f534402884a2c88783dc59b7d25943a3c47145ab03"
           imagePullPolicy: "IfNotPresent"
