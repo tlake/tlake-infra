@@ -87,7 +87,7 @@ spec:
             - name: "FOUNDRY_WORLD"
               value: "import_campaign"
             
-            - name: "TIMEZONE"
+            - name: "TZ"
               value: "America/Los_Angeles"
 
           ports:
