@@ -1,0 +1,93 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "it-tools"
+  labels:
+    app: "it-tools"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "it-tools"
+
+  template:
+    metadata:
+      labels:
+        app: "it-tools"
+
+    spec:
+      containers:
+        - name: "it-tools"
+          # version 2024.10.22-7ca5933
+          image: "corentinth/it-tools@sha256:8b8128748339583ca951af03dfe02a9a4d7363f61a216226fc28030731a5a61f"
+          imagePullPolicy: "IfNotPresent"
+
+          ports:
+            - name: "app"
+              containerPort: 8080
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "it-tools"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "it-tools"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "it-tools-web"
+  namespace: "it-tools"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`it-tools.tlake.io`)
+      kind: Rule
+      services:
+        - name: "it-tools"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "it-tools-websecure"
+  namespace: "it-tools"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`it-tools.tlake.io`)
+      kind: Rule
+      services:
+        - name: "it-tools"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+
