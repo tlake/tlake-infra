@@ -5,6 +5,7 @@ resources:
 - app.yaml
 
 namespace: "it-tools"
+namePrefix: "it-tools"
 
 commonLabels:
   app: "it-tools"
