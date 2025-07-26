@@ -3,12 +3,7 @@
 #################
 
 resource "cloudflare_zone" "zones" {
-  for_each = toset([
-    "exo-archive.org",
-    "tlake.io",
-    "mechamoogle.com",
-    "tannerjlake.com",
-  ])
+  for_each = local.cloudflare_domains
 
   account_id = var.cloudflare_account_id
   zone       = each.key
@@ -21,6 +16,15 @@ resource "cloudflare_record" "www_tlake_io" {
   ttl     = var.cloudflare_proxy_ttl
   type    = "CNAME"
   zone_id = cloudflare_zone.zones["tlake.io"].id
+}
+
+resource "cloudflare_record" "www_tlake_dev" {
+  content = "tlake.dev"
+  name    = "www"
+  proxied = true
+  ttl     = var.cloudflare_proxy_ttl
+  type    = "CNAME"
+  zone_id = cloudflare_zone.zones["tlake.dev"].id
 }
 
 #################
@@ -48,40 +52,8 @@ resource "cloudflare_record" "www_tlake_io" {
 #################
 ## A
 #################
-
 resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
-  for_each = toset([
-    "actual",
-    "actualbudget",
-    "ando-mcfoundry",
-    "argocd",
-    "bitwarden",
-    "calibre",
-    "calibre-web",
-    "cloud",
-    "collabora",
-    "docker-registry",
-    "firefly",
-    "firefly-importer",
-    "foundry",
-    "ghostfolio",
-    "gitea",
-    "gitlab",
-    "grafana",
-    "it-tools",
-    "jellyfin",
-    "lazylibrarian",
-    "mc",
-    "minecraft",
-    "oci-registry",
-    "ociregistry",
-    "portainer",
-    "registry",
-    "rss",
-    "stable-diffusion",
-    "vaultwarden",
-    "wiki",
-  ])
+  for_each = local.homelab_subdomains
 
   content = var.home_ip_address
   name    = each.value
@@ -91,6 +63,16 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
   zone_id = cloudflare_zone.zones["tlake.io"].id
 }
 
+resource "cloudflare_record" "tlake_dev_subdomain_home_routes" {
+  for_each = local.homelab_subdomains
+
+  content = var.home_ip_address
+  name    = each.value
+  proxied = true
+  ttl     = var.cloudflare_proxy_ttl
+  type    = "A"
+  zone_id = cloudflare_zone.zones["tlake.dev"].id
+}
 
 resource "cloudflare_record" "tlake_io_subdomain_porkbun_routes" {
   for_each = toset([
