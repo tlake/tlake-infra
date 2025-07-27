@@ -1,0 +1,41 @@
+locals {
+  cloudflare_domains = toset([
+    "exo-archive.org",
+    "mechamoogle.com",
+    "tlake.dev",
+    "tlake.io",
+  ])
+
+  homelab_subdomains = toset([
+    "actual",
+    "actualbudget",
+    "ando-mcfoundry",
+    "argocd",
+    "bitwarden",
+    "calibre",
+    "calibre-web",
+    "cloud",
+    "collabora",
+    "docker-registry",
+    "firefly",
+    "firefly-importer",
+    "foundry",
+    "ghostfolio",
+    "gitea",
+    "gitlab",
+    "grafana",
+    "it-tools",
+    "jellyfin",
+    "lazylibrarian",
+    "mc",
+    "minecraft",
+    "oci-registry",
+    "ociregistry",
+    "portainer",
+    "registry",
+    "rss",
+    "stable-diffusion",
+    "vaultwarden",
+    "wiki",
+  ])
+}
