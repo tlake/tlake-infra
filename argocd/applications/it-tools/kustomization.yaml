@@ -19,6 +19,13 @@ images:
 patches:
   - patch: |-
       - op: replace
+        path: /spec/template/spec/containers/0/ports/0/containerPort
+        value: 80
+    target:
+      kind: Deployment
+
+  - patch: |-
+      - op: replace
         path: /spec/routes/0/match
         value: "Host(`it-tools.tlake.io`)"
       - op: replace
