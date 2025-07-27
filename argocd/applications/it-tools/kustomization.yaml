@@ -23,6 +23,7 @@ patches:
         value: 80
     target:
       kind: Deployment
+      name: app
 
   - patch: |-
       - op: replace

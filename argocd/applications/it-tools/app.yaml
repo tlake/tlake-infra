@@ -16,7 +16,7 @@ spec:
 
           ports:
             - name: "app"
-              containerPort: $(CONTAINER_PORT)
+              containerPort: "<<REPLACE>>"
 
       imagePullSecrets:
         - name: "dockerhub-tlake-read-only"
