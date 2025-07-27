@@ -6,6 +6,6 @@
 
 - name: Enable microk8s metallb addon
   become: true
-  shell: /snap/bin/microk8s enable metallb:192.168.1.0/27
+  shell: /snap/bin/microk8s enable metallb:192.168.0.210-192.168.0.225
   run_once: true
   delegate_to: thicket0
