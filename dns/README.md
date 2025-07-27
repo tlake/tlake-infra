@@ -27,10 +27,12 @@ No modules.
 | Name | Type |
 |------|------|
 | [cloudflare_record.exo_archive_org_github_pages_ipv6](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
+| [cloudflare_record.tlake_dev_subdomain_home_routes](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
 | [cloudflare_record.tlake_io_github_pages_ipv6](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
 | [cloudflare_record.tlake_io_subdomain_home_routes](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
 | [cloudflare_record.tlake_io_subdomain_porkbun_routes](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
 | [cloudflare_record.tlake_io_txt_challenges](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
+| [cloudflare_record.www_tlake_dev](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
 | [cloudflare_record.www_tlake_io](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
 | [cloudflare_zone.zones](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone) | resource |
 | [github_ip_ranges.this](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/ip_ranges) | data source |

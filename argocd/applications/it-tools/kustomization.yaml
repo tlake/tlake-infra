@@ -1,0 +1,44 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - app.yaml
+
+namespace: "it-tools"
+namePrefix: "it-tools-"
+
+commonLabels:
+  app: "it-tools"
+
+images:
+  # version 2024.10.22-7ca5933
+  - digest: "sha256:8b8128748339583ca951af03dfe02a9a4d7363f61a216226fc28030731a5a61f"
+    name: "app"
+    newName: "corentinth/it-tools"
+
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/ports/0/containerPort
+        value: 80
+    target:
+      kind: Deployment
+      name: app
+
+  - patch: |-
+      - op: replace
+        path: /spec/routes/0/match
+        value: "Host(`it-tools.tlake.io`)"
+      - op: replace
+        path: /spec/routes/0/services/0/name
+        value: "it-tools-app"
+    target:
+      kind: IngressRoute
+
+  - patch: |-
+      - op: replace
+        path: /spec/tls/certResolver
+        value: "staging"
+    target:
+      kind: IngressRoute
+      annotationSelector: "routeType=https"
