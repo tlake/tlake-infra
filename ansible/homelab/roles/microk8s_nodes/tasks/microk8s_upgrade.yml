@@ -1,0 +1,9 @@
+- name: Cordon node
+  shell: /snap/bin/microk8s kubectl cordon {{ansible_hostname}}
+
+- name: Upgrade microk8s cluster version
+  become: true
+  shell: /usr/bin/snap refresh microk8s --channel={{version}}/stable
+
+- name: Uncordon node
+  shell: /snap/bin/microk8s kubectl uncordon {{ansible_hostname}}

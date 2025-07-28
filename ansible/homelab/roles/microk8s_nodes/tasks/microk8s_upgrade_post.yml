@@ -1,0 +1,23 @@
+- name: Disable microk8s metrics-server addon
+  become: true
+  shell: /snap/bin/microk8s disable metrics-server
+  run_once: true
+  delegate_to: thicket0
+
+- name: Disable microk8s metallb addon
+  become: true
+  shell: /snap/bin/microk8s disable metallb
+  run_once: true
+  delegate_to: thicket0
+
+- name: Enable microk8s metallb addon
+  become: true
+  shell: /snap/bin/microk8s enable metallb:192.168.0.210-192.168.0.225
+  run_once: true
+  delegate_to: thicket0
+
+- name: Enable microk8s metrics-server addon
+  become: true
+  shell: /snap/bin/microk8s enable metrics-server
+  run_once: true
+  delegate_to: thicket0

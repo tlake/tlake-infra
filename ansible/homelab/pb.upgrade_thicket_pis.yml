@@ -1,0 +1,22 @@
+---
+- name: upgrade raspberry pis
+  hosts: thicket_pis
+  serial: 1
+  tasks:
+    - include_role:
+        name: microk8s_nodes
+        tasks_from: microk8s_upgrade
+  vars:
+    # pass from terminal ansible command with `-e version=1.32`
+    version: "{{ version }}"
+  vars_files:
+    - vault/main.yml
+
+- name: post-upgrade raspberry pis
+  hosts: thicket_pis
+  tasks:
+    - include_role:
+        name: microk8s_nodes
+        tasks_from: microk8s_upgrade_post
+  vars_files:
+    - vault/main.yml
