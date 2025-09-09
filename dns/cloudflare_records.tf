@@ -18,14 +18,14 @@ resource "cloudflare_record" "www_tlake_io" {
   zone_id = cloudflare_zone.zones["tlake.io"].id
 }
 
-resource "cloudflare_record" "www_tlake_dev" {
-  content = "tlake.dev"
-  name    = "www"
-  proxied = true
-  ttl     = var.cloudflare_proxy_ttl
-  type    = "CNAME"
-  zone_id = cloudflare_zone.zones["tlake.dev"].id
-}
+#resource "cloudflare_record" "www_tlake_dev" {
+#  content = "tlake.dev"
+#  name    = "www"
+#  proxied = true
+#  ttl     = var.cloudflare_proxy_ttl
+#  type    = "CNAME"
+#  zone_id = cloudflare_zone.zones["tlake.dev"].id
+#}
 
 #################
 ## ALIAS
@@ -63,16 +63,16 @@ resource "cloudflare_record" "tlake_io_subdomain_home_routes" {
   zone_id = cloudflare_zone.zones["tlake.io"].id
 }
 
-resource "cloudflare_record" "tlake_dev_subdomain_home_routes" {
-  for_each = local.homelab_subdomains
-
-  content = var.home_ip_address
-  name    = each.value
-  proxied = true
-  ttl     = var.cloudflare_proxy_ttl
-  type    = "A"
-  zone_id = cloudflare_zone.zones["tlake.dev"].id
-}
+#resource "cloudflare_record" "tlake_dev_subdomain_home_routes" {
+#  for_each = local.homelab_subdomains
+#
+#  content = var.home_ip_address
+#  name    = each.value
+#  proxied = true
+#  ttl     = var.cloudflare_proxy_ttl
+#  type    = "A"
+#  zone_id = cloudflare_zone.zones["tlake.dev"].id
+#}
 
 resource "cloudflare_record" "tlake_io_subdomain_porkbun_routes" {
   for_each = toset([

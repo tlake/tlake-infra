@@ -2,7 +2,7 @@ locals {
   cloudflare_domains = toset([
     "exo-archive.org",
     "mechamoogle.com",
-    "tlake.dev",
+    #"tlake.dev",
     "tlake.io",
   ])
 
