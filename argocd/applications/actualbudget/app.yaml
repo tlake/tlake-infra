@@ -26,8 +26,8 @@ spec:
     spec:
       containers:
         - name: "app"
-          # version 24.12.0-alpine
-          image: "actualbudget/actual-server@sha256:2dcab0dda0a174a9336e34e75ac03707c684ebcdb331d40a1785c58ff166cd47"
+          # version 25.12.0-alpine
+          image: "actualbudget/actual-server@sha256:a9d0a6a406dd0ace4a5e091e139e9d990cd321bdc4a15ddd76271b5aa5e2950e"
           imagePullPolicy: "IfNotPresent"
 
           env:
