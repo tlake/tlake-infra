@@ -27,8 +27,8 @@ spec:
     spec:
       containers:
         - name: "vaultwarden-app"
-          # tag: 1.33.2-alpine
-          image: "vaultwarden/server@sha256:63cce7624f655f83ad5bab66ef62bc3e3327116b068704bfbbda5d0c1b3003be"
+          # tag: 1.34.3-alpine
+          image: "vaultwarden/server@sha256:d70118b9dafb8588ee2651ceb5df68db27dcbd8e18467722010644ba48d5d6d6"
           imagePullPolicy: "IfNotPresent"
 
           env:
