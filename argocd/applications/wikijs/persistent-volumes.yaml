@@ -3,12 +3,12 @@ kind: PersistentVolumeClaim
 metadata:
   name: postgres-data
 spec:
-  storageClassName: nfs-client
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 10Mi
+  storageClassName: nfs-client
 
 ---
 
@@ -23,6 +23,3 @@ spec:
     requests:
       storage: 10Mi
   storageClassName: longhorn
-  dataSource:
-    kind: PersistentVolumeClaim
-    name: postgres-data
