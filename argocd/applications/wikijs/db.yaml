@@ -60,6 +60,8 @@ spec:
           volumeMounts:
             - name: "postgres-data"
               mountPath: "/var/lib/postgresql/data"
+            - name: "postgres-data-longhorn"
+              mountPath: "/var/lib/postgresql/data-longhorn"
 
       imagePullSecrets:
         - name: "dockerhub-tlake-read-only"
@@ -68,6 +70,9 @@ spec:
         - name: "postgres-data"
           persistentVolumeClaim:
             claimName: "postgres-data"
+        - name: "postgres-data-longhorn"
+          persistentVolumeClaim:
+            claimName: "postgres-data-longhorn"
 
 ---
 
