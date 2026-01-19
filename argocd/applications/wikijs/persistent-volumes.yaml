@@ -1,5 +1,5 @@
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: "postgres-data"
 spec:
@@ -10,3 +10,16 @@ spec:
     requests:
       storage: "10Mi"
 
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-data-longhorn
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+  storageClassName: longhorn
