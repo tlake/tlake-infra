@@ -8,7 +8,7 @@ metadata:
   namespace: "wikijs"
 
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 0
 
   selector:
@@ -59,9 +59,9 @@ spec:
 
           volumeMounts:
             - name: "postgres-data"
-              mountPath: "/var/lib/postgresql/data"
+              mountPath: "/var/lib/postgresql/data-nfs"
             - name: "postgres-data-longhorn"
-              mountPath: "/var/lib/postgresql/data-longhorn"
+              mountPath: "/var/lib/postgresql/data"
 
       imagePullSecrets:
         - name: "dockerhub-tlake-read-only"
