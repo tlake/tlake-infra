@@ -57,17 +57,17 @@ spec:
               cpu: "20m"
               memory: "80Mi"
 
-          volumeMounts:
-            - name: "postgres-data"
-              mountPath: "/var/lib/postgresql/data"
+            #volumeMounts:
+              #- name: "postgres-data"
+              #mountPath: "/var/lib/postgresql/data"
 
       imagePullSecrets:
         - name: "dockerhub-tlake-read-only"
 
-      volumes:
-        - name: "postgres-data"
-          persistentVolumeClaim:
-            claimName: "postgres-data"
+      #volumes:
+        #- name: "postgres-data"
+        #persistentVolumeClaim:
+        #claimName: "postgres-data"
 
 ---
 
