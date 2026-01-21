@@ -1,12 +1,25 @@
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
-  name: "postgres-data"
+  name: postgres-data
 spec:
-  storageClassName: "nfs-client"
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: "10Mi"
+      storage: 100Mi
+  storageClassName: longhorn
 
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-data-longhorn
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: longhorn
