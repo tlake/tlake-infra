@@ -8,7 +8,7 @@ metadata:
   namespace: "wikijs"
 
 spec:
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 0
 
   selector:
@@ -59,8 +59,6 @@ spec:
 
           volumeMounts:
             - name: "postgres-data"
-              mountPath: "/var/lib/postgresql/data-nfs"
-            - name: "postgres-data-longhorn"
               mountPath: "/var/lib/postgresql/data"
 
       imagePullSecrets:
@@ -70,9 +68,6 @@ spec:
         - name: "postgres-data"
           persistentVolumeClaim:
             claimName: "postgres-data"
-        - name: "postgres-data-longhorn"
-          persistentVolumeClaim:
-            claimName: "postgres-data-longhorn"
 
 ---
 
