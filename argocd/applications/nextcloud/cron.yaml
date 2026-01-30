@@ -40,7 +40,7 @@ spec:
           # UPDATE IN app.yaml AS WELL:
           # tag 29.0.13-fpm-alpine
           #image: "nextcloud@sha256:809ce152986caebc1abf1449a4e1d067bdb54fe2728c6b050471f22d31d3186b"
-          image: "tlake/customized-nextcloud@sha256:44a4a0819f6d413861349fe35410aacc03384415cf8a1f417ddfe9e12b32d5b2"
+          image: "tlake/customized-nextcloud@sha256:c7acf9d72da2f1c8c45f9320369652e51e04bcaca73eb1fb4f83b6f9570164cb"
           imagePullPolicy: "IfNotPresent"
           command:
             - "/cron.sh"
