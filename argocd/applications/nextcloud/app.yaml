@@ -38,7 +38,8 @@ spec:
         - name: "app"
           # UPDATE IN cron.yaml AS WELL:
           # tag 29.0.13-fpm-alpine
-          image: "nextcloud@sha256:809ce152986caebc1abf1449a4e1d067bdb54fe2728c6b050471f22d31d3186b"
+          #image: "nextcloud@sha256:809ce152986caebc1abf1449a4e1d067bdb54fe2728c6b050471f22d31d3186b"
+          image: "tlake/customized-nextcloud@sha256:sha256:44a4a0819f6d413861349fe35410aacc03384415cf8a1f417ddfe9e12b32d5b2"
           imagePullPolicy: "IfNotPresent"
 
           env:
