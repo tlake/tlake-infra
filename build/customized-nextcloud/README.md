@@ -12,3 +12,5 @@ This directory exists to pull down the image in a Dockerfile and install those p
 3. Configure `build.sh` to build and tag a container image appropriately (use the same tag as the source nextcloud image), and to push it to `tlake/customized-nextcloud` in dockerhub.
 
 4. Run `docker login` if necessary, then run `./build.sh`.
+
+5. The new `tlake/customized-nextcloud` image is available for use in `argocd/applications/nextcloud/`, or whatever!
