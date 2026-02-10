@@ -29,7 +29,8 @@ spec:
         - name: "continuwuity"
           # forgejo.ellis.link/continuwuation/continuwuity:v0.5.4-maxperf
           # linux/arm64
-          image: "forgejo.ellis.link/continuwuation/continuwuity@sha256:2ce664752f95279d84bcabe6ad6839e3252a5339d6290c16fcfb59dcf15e7d14"
+          #image: "forgejo.ellis.link/continuwuation/continuwuity@sha256:2ce664752f95279d84bcabe6ad6839e3252a5339d6290c16fcfb59dcf15e7d14"
+          image: "forgejo.ellis.link/continuwuation/continuwuity:v0.5.4-maxperf"
           imagePullPolicy: "IfNotPresent"
 
           env:
