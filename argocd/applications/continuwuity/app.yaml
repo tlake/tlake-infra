@@ -64,15 +64,15 @@ spec:
               value: true
             - name: CONDUWUIT_CONFIG_RELOAD_SIGNAL
               value: true
-                #- name: CONDUWUIT_ALLOW_REGISTRATION
-                #value: true
+            - name: CONDUWUIT_ALLOW_REGISTRATION
+              value: true
             # CoreDNS Settings
-            #- name: CONDUWUIT_QUERY_OVER_TCP_ONLY
-            #value: true
+            - name: CONDUWUIT_QUERY_OVER_TCP_ONLY
+              value: true
             - name: CONDUWUIT_IP_LOOKUP_STRATEGY
               value: "1"
             # JJ's personal settings
-            #- name: CONDUWUIT_ALLOW_OUTGOING_READ_RECEIPTS
+            - name: CONDUWUIT_ALLOW_OUTGOING_READ_RECEIPTS
               value: false
             - name: CONDUWUIT_ALLOW_ANNOUNCEMENTS_CHECK
               value: false
