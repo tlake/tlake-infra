@@ -68,8 +68,13 @@ spec:
               value: "true"
             - name: CONDUWUIT_ALLOW_REGISTRATION
               value: "true"
-            - name: CONDUWUIT_YES_I_AM_VERY_VERY_SURE_I_WANT_AN_OPEN_REGISTRATION_SERVER_PRONE_TO_ABUSE
-              value: "true"
+            - name: CONDUWUIT_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: config
+                  key: admin_token
+            #- name: CONDUWUIT_YES_I_AM_VERY_VERY_SURE_I_WANT_AN_OPEN_REGISTRATION_SERVER_PRONE_TO_ABUSE
+            #value: "true"
             - name: CONDUWUIT_SUSPEND_ON_REGISTER
               value: "true"
             - name: CONDUWUIT_AUTO_JOIN_ROOMS
