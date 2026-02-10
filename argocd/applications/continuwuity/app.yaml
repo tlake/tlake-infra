@@ -28,7 +28,8 @@ spec:
       containers:
         - name: "continuwuity"
           # forgejo.ellis.link/continuwuation/continuwuity:v0.5.4-maxperf
-          image: "forgejo.ellis.link/continuwuation/continuwuity@sha256:71874923ccfd0095fb007c9d915d500453cfa4096cf8c75efb7f95c9939b2655"
+          # linux/arm64
+          image: "forgejo.ellis.link/continuwuation/continuwuity@sha256:2ce664752f95279d84bcabe6ad6839e3252a5339d6290c16fcfb59dcf15e7d14"
           imagePullPolicy: "IfNotPresent"
 
           env:
