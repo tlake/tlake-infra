@@ -126,11 +126,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app: "continuwuity"
-    service: "continuwuity-app"
   name: "continuwuity-app"
-  namespace: "continuwuity"
 
 spec:
   ports:
@@ -139,19 +135,16 @@ spec:
       targetPort: "app"
 
   selector:
-    app: "continuwuity"
-    service: "continuwuity-app"
+    app: "continuwuity-app"
 
 ---
 
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  labels:
-    app: "continuwuity"
-    service: "continuwuity-app"
-  name: "continuwuity-web"
-  namespace: "continuwuity"
+  annotations:
+  name: "continuwuity-app-web"
+  namespace: "continuwuity-app"
 
 spec:
   entryPoints:
@@ -169,11 +162,9 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  labels:
-    app: "continuwuity"
-    service: "continuwuity-app"
-  name: "continuwuity-websecure"
-  namespace: "continuwuity"
+  annotations:
+  name: "continuwuity-app-websecure"
+  namespace: "continuwuity-app"
 
 spec:
   entryPoints:
