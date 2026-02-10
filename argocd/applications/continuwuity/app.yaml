@@ -1,0 +1,191 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "continuwuity"
+    service: "continuwuity-app"
+  name: "continuwuity-app"
+  namespace: "continuwuity"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "continuwuity"
+      service: "continuwuity-app"
+
+  template:
+    metadata:
+      labels:
+        app: "continuwuity"
+        service: "continuwuity-app"
+      name: "continuwuity-app"
+      namespace: "continuwuity"
+
+    spec:
+      containers:
+        - name: "continuwuity"
+          # forgejo.ellis.link/continuwuation/continuwuity:v0.5.4-maxperf
+          image: "forgejo.ellis.link/continuwuation/continuwuity@sha256:71874923ccfd0095fb007c9d915d500453cfa4096cf8c75efb7f95c9939b2655"
+          imagePullPolicy: "IfNotPresent"
+
+          env:
+            - name: "TZ"
+              value: "America/Los_Angeles"
+            - name: CONDUWUIT_SERVER_NAME
+              value: "matrix.tlake.io"
+            #- name: CONDUWUIT_ADDRESS
+            #    valueFrom:
+            #      fieldRef:
+            #        apiVersion: v1
+            #        fieldPath: status.podIP
+            - name: CONDUWUIT_PORT
+              value: 8080
+              #value: &http 8080
+            - name: CONDUWUIT_DATABASE_PATH
+              value: "/var/lib/conduwuit"
+            - name: CONDUWUIT_DATABASE_BACKUP_PATH
+              value: "/opt/continuwuity-db-backups"
+            - name: CONDUWUIT_DATABASE_BACKUPS_TO_KEEP
+              value: 2
+            - name: CONDUWUIT_NEW_USER_DISPLAYNAME_SUFFIX
+              value: ""
+            #- name: CONDUWUIT_WELL_KNOWN__CLIENT
+            #  value: "https://matrix.ok8.sh"
+            #- name: CONDUWUIT_WELL_KNOWN__SERVER
+            #  value: "federation.ok8.sh:443"
+            #- name: CONDUWUIT_WELL_KNOWN__SUPPORT_EMAIL
+            #  value: "uwu@svcs.ok8.sh"
+            - name: CONDUWUIT_ALLOW_ENCRYPTION
+              value: true
+            - name: CONDUWUIT_ALLOW_FEDERATION
+              value: true
+            - name: CONDUWUIT_CONFIG_RELOAD_SIGNAL
+              value: true
+            - name: CONDUWUIT_ALLOW_REGISTRATION
+              value: true
+            # CoreDNS Settings
+            - name: CONDUWUIT_QUERY_OVER_TCP_ONLY
+              value: true
+            - name: CONDUWUIT_IP_LOOKUP_STRATEGY
+              value: "1"
+            # JJ's personal settings
+            #- name: CONDUWUIT_ALLOW_OUTGOING_READ_RECEIPTS
+              value: false
+            - name: CONDUWUIT_ALLOW_ANNOUNCEMENTS_CHECK
+              value: false
+            - name: CONDUWUIT_SUSPEND_ON_REGISTER
+              value: true
+            - name: CONDUWUIT_FORGET_FORCED_UPON_LEAVE
+              value: true
+            - name: CONDUWUIT_REQUIRE_AUTH_FOR_PROFILE_REQUESTS
+              value: true
+            - name: CONDUWUIT_ALLOW_PUBLIC_ROOM_DIRECTORY_WITHOUT_AUTH
+              value: false
+            - name: CONDUWUIT_ALLOW_PUBLIC_ROOM_DIRECTORY_OVER_FEDERATION
+              value: false
+            - name: CONDUWUIT_LOCKDOWN_PUBLIC_ROOM_DIRECTORY
+              value: true
+            - name: CONDUWUIT_QUERY_TRUSTED_KEY_SERVERS_FIRST
+              value: false
+            - name: CONDUWUIT_QUERY_TRUSTED_KEY_SERVERS_FIRST_ON_JOIN
+              value: false
+            - name: CONDUWUIT_ALLOW_LEGACY_MEDIA
+              value: false # unauthenticated
+
+          ports:
+            - name: "app"
+              containerPort: 3000
+
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "100Mi"
+
+          volumeMounts:
+            - name: "app-data"
+              mountPath: "/var/lib/conduwuit"
+            - name: "app-backup"
+              mountPath: "/opt/continuwuity-db-backups"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "app-data"
+          persistentVolumeClaim:
+            claimName: "app-data"
+        - name: "app-backup"
+          persistentVolumeClaim:
+            claimName: "app-backup"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "continuwuity"
+    service: "continuwuity-app"
+  name: "continuwuity-app"
+  namespace: "continuwuity"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "continuwuity"
+    service: "continuwuity-app"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "continuwuity"
+    service: "continuwuity-app"
+  name: "continuwuity-web"
+  namespace: "continuwuity"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`matrix.tlake.io`)
+      kind: Rule
+      services:
+        - name: "continuwuity-app"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: "continuwuity"
+    service: "continuwuity-app"
+  name: "continuwuity-websecure"
+  namespace: "continuwuity"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`matrix.tlake.io`)
+      kind: Rule
+      services:
+        - name: "continuwuity-app"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+
