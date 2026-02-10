@@ -73,7 +73,7 @@ spec:
             - name: CONDUWUIT_SUSPEND_ON_REGISTER
               value: "true"
             - name: CONDUWUIT_AUTO_JOIN_ROOMS
-              value: "#new-users:matrix.tlake.io"
+              value: "[#new-users:matrix.tlake.io]"
             # CoreDNS Settings
             - name: CONDUWUIT_QUERY_OVER_TCP_ONLY
               value: "true"
