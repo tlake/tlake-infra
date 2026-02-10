@@ -98,7 +98,7 @@ spec:
 
           ports:
             - name: "app"
-              containerPort: 3000
+              containerPort: 8080
 
           resources:
             requests:
