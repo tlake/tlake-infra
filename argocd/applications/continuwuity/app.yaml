@@ -42,14 +42,14 @@ spec:
             #        apiVersion: v1
             #        fieldPath: status.podIP
             - name: CONDUWUIT_PORT
-              value: 8080
+              value: "8080"
               #value: &http 8080
             - name: CONDUWUIT_DATABASE_PATH
               value: "/var/lib/conduwuit"
             - name: CONDUWUIT_DATABASE_BACKUP_PATH
               value: "/opt/continuwuity-db-backups"
             - name: CONDUWUIT_DATABASE_BACKUPS_TO_KEEP
-              value: 2
+              value: "2"
             - name: CONDUWUIT_NEW_USER_DISPLAYNAME_SUFFIX
               value: ""
             #- name: CONDUWUIT_WELL_KNOWN__CLIENT
