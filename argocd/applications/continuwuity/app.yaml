@@ -43,8 +43,7 @@ spec:
             #        apiVersion: v1
             #        fieldPath: status.podIP
             - name: CONDUWUIT_PORT
-              value: "8080"
-              #value: &http 8080
+              value: "8008"
             - name: CONDUWUIT_DATABASE_PATH
               value: "/var/lib/conduwuit"
             - name: CONDUWUIT_DATABASE_BACKUP_PATH
@@ -188,5 +187,5 @@ spec:
           port: "http-traffic"
 
   tls:
-    certResolver: "staging"
+    certResolver: "production"
 
