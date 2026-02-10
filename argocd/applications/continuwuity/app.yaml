@@ -59,41 +59,41 @@ spec:
             #- name: CONDUWUIT_WELL_KNOWN__SUPPORT_EMAIL
             #  value: "uwu@svcs.ok8.sh"
             - name: CONDUWUIT_ALLOW_ENCRYPTION
-              value: true
+              value: "true"
             - name: CONDUWUIT_ALLOW_FEDERATION
-              value: true
+              value: "true"
             - name: CONDUWUIT_CONFIG_RELOAD_SIGNAL
-              value: true
+              value: "true"
             - name: CONDUWUIT_ALLOW_REGISTRATION
-              value: true
+              value: "true"
             # CoreDNS Settings
             - name: CONDUWUIT_QUERY_OVER_TCP_ONLY
-              value: true
+              value: "true"
             - name: CONDUWUIT_IP_LOOKUP_STRATEGY
               value: "1"
             # JJ's personal settings
             - name: CONDUWUIT_ALLOW_OUTGOING_READ_RECEIPTS
-              value: false
+              value: "false"
             - name: CONDUWUIT_ALLOW_ANNOUNCEMENTS_CHECK
-              value: false
+              value: "false"
             - name: CONDUWUIT_SUSPEND_ON_REGISTER
-              value: true
+              value: "true"
             - name: CONDUWUIT_FORGET_FORCED_UPON_LEAVE
-              value: true
+              value: "true"
             - name: CONDUWUIT_REQUIRE_AUTH_FOR_PROFILE_REQUESTS
-              value: true
+              value: "true"
             - name: CONDUWUIT_ALLOW_PUBLIC_ROOM_DIRECTORY_WITHOUT_AUTH
-              value: false
+              value: "false"
             - name: CONDUWUIT_ALLOW_PUBLIC_ROOM_DIRECTORY_OVER_FEDERATION
-              value: false
+              value: "false"
             - name: CONDUWUIT_LOCKDOWN_PUBLIC_ROOM_DIRECTORY
-              value: true
+              value: "true"
             - name: CONDUWUIT_QUERY_TRUSTED_KEY_SERVERS_FIRST
-              value: false
+              value: "false"
             - name: CONDUWUIT_QUERY_TRUSTED_KEY_SERVERS_FIRST_ON_JOIN
-              value: false
+              value: "false"
             - name: CONDUWUIT_ALLOW_LEGACY_MEDIA
-              value: false # unauthenticated
+              value: "false" # unauthenticated
 
           ports:
             - name: "app"
