@@ -37,6 +37,8 @@ spec:
               value: "America/Los_Angeles"
             - name: CONDUWUIT_SERVER_NAME
               value: "matrix.tlake.io"
+            - name: CONDUWUIT_ADDRESS
+              value: "0.0.0.0"
             #- name: CONDUWUIT_ADDRESS
             #    valueFrom:
             #      fieldRef:
