@@ -68,6 +68,10 @@ spec:
               value: "true"
             - name: CONDUWUIT_ALLOW_REGISTRATION
               value: "true"
+            - name: CONDUWUIT_YES_I_AM_VERY_VERY_SURE_I_WANT_AN_OPEN_REGISTRATION_SERVER_PRONE_TO_ABUSE
+              value: "true"
+            - name: CONDUWUIT_SUSPEND_ON_REGISTER
+              value: "true"
             # CoreDNS Settings
             - name: CONDUWUIT_QUERY_OVER_TCP_ONLY
               value: "true"
