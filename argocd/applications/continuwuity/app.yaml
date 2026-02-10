@@ -64,8 +64,8 @@ spec:
               value: true
             - name: CONDUWUIT_CONFIG_RELOAD_SIGNAL
               value: true
-            - name: CONDUWUIT_ALLOW_REGISTRATION
-              value: true
+                #- name: CONDUWUIT_ALLOW_REGISTRATION
+                #value: true
             # CoreDNS Settings
             #- name: CONDUWUIT_QUERY_OVER_TCP_ONLY
             #value: true
