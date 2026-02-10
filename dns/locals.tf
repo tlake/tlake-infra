@@ -27,6 +27,7 @@ locals {
     "it-tools",
     "jellyfin",
     "lazylibrarian",
+    "matrix",
     "mc",
     "minecraft",
     "oci-registry",
