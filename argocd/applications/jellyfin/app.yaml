@@ -1,0 +1,106 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "jellyfin"
+  labels:
+    app: "jellyfin"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "jellyfin"
+
+  template:
+    metadata:
+      labels:
+        app: "jellyfin"
+
+    spec:
+      containers:
+        - name: "jellyfin"
+          # version 10.10.7
+          image: "jellyfin/jellyfin@sha256:7ae36aab93ef9b6aaff02b37f8bb23df84bb2d7a3f6054ec8fc466072a648ce2"
+          imagePullPolicy: "IfNotPresent"
+
+          env:
+            - name: "CHANGE_ENVVAR_NAME"
+              value: "CHANGE_ENVVAR_VALUE"
+
+          ports:
+            - name: "app"
+              containerPort: CHANGE_PORT_NUMBER
+
+          volumeMounts:
+            - name: "CHANGE_VOLUME_NAME"
+              mountPath: "/CHANGE_MOUNT_PATH"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "CHANGE_VOLUME_NAME"
+          persistentVolumeClaim:
+            claimName: "CHANGE_VOLUME_NAME"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "jellyfin"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "jellyfin"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "jellyfin-web"
+  namespace: "jellyfin"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`jellyfin.tlake.io`)
+      kind: Rule
+      services:
+        - name: "jellyfin"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "jellyfin-websecure"
+  namespace: "jellyfin"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`jellyfin.tlake.io`)
+      kind: Rule
+      services:
+        - name: "jellyfin"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+
