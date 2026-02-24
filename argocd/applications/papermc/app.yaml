@@ -1,0 +1,104 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "papermc"
+  labels:
+    app: "papermc"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "papermc"
+
+  template:
+    metadata:
+      labels:
+        app: "papermc"
+
+    spec:
+      containers:
+        - name: "papermc"
+          # marctv/minecraft-papermc-server
+          # tag 1.21.11-117
+          # sha256:2e3d7a69cad8d35281b0778ba0ce6ac3588b2551a69b1bef7d817e0cc3fde275
+          image: "marctv/minecraft-papermc-server@sha256:2e3d7a69cad8d35281b0778ba0ce6ac3588b2551a69b1bef7d817e0cc3fde275"
+          imagePullPolicy: "IfNotPresent"
+
+          env:
+            - name: "CHANGE_ENVVAR_NAME"
+              value: "CHANGE_ENVVAR_VALUE"
+
+          ports:
+            - name: "app"
+              containerPort: 25565
+
+          volumeMounts:
+            - name: "data"
+              mountPath: "/data"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "data"
+          persistentVolumeClaim:
+            claimName: "data"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "papermc"
+
+spec:
+  ports:
+    - name: "mc-traffic"
+      port: 25565
+      targetPort: "app"
+
+  selector:
+    app: "papermc"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  annotations:
+  name: "papermc-tcp"
+  namespace: "papermc"
+
+spec:
+  entryPoints:
+    - minecraft-tcp
+
+  routes:
+    - match: HostSNI(`*`)
+      kind: Rule
+      services:
+        - name: "papermc"
+          port: "mc-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteUDP
+metadata:
+  annotations:
+  name: "papermc-udp"
+  namespace: "papermc"
+
+spec:
+  entryPoints:
+    - minecraft-udp
+
+  routes:
+    - match: HostSNI(`*`)
+      kind: Rule
+      services:
+        - name: "papermc"
+          port: "mc-traffic"
