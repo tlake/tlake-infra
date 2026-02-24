@@ -1,12 +1,39 @@
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: "CHANGE_VOLUME_NAME"
 spec:
-  storageClassName: "nfs-client"
   accessModes:
-    - ReadWriteMany
+    - "ReadWriteMany"
   resources:
     requests:
       storage: "10Mi"
+  storageClassName: "longhorn"
 
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "CHANGE_VOLUME_NAME"
+spec:
+  accessModes:
+    - "ReadWriteMany"
+  resources:
+    requests:
+      storage: "10Mi"
+  storageClassName: "nfs-client"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "CHANGE_VOLUME_NAME"
+spec:
+  accessModes:
+    - "ReadWriteMany"
+  resources:
+    requests:
+      storage: "10Mi"
+  storageClassName: "microk8s-hostpath"
