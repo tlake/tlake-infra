@@ -28,9 +28,9 @@ entryPoints:
           to: "websecure"
   websecure:
     address: ":443"
-  minecraft-tcp:
+  minecrafttcp:
     address: ":25565/tcp"
-  minecraft-udp:
+  minecraftudp:
     address: ":25565/udp"
     udp:
       timeout: "10s"

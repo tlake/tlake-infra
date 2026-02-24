@@ -74,7 +74,7 @@ metadata:
 
 spec:
   entryPoints:
-    - minecraft-tcp
+    - minecrafttcp
 
   routes:
     - kind: Rule
@@ -94,7 +94,7 @@ metadata:
 
 spec:
   entryPoints:
-    - minecraft-udp
+    - minecraftudp
 
   routes:
     - kind: Rule
