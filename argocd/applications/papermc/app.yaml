@@ -77,8 +77,7 @@ spec:
     - minecrafttcp
 
   routes:
-    - kind: Rule
-      match: HostSNI(`*`)
+    - match: HostSNI(`*`)
       services:
         - name: "papermc"
           port: "mc-traffic"
@@ -97,8 +96,7 @@ spec:
     - minecraftudp
 
   routes:
-    - kind: Rule
-      match: HostSNI(`*`)
+    - match: HostSNI(`*`)
       services:
         - name: "papermc"
           port: "mc-traffic"
