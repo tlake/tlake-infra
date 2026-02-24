@@ -96,7 +96,6 @@ spec:
     - minecraftudp
 
   routes:
-    - match: HostSNI(`*`)
-      services:
+    - services:
         - name: "papermc"
           port: "mc-traffic"
