@@ -99,3 +99,6 @@ spec:
     - services:
         - name: "papermc"
           port: "mc-traffic"
+          nativeLB: true
+      match: Host(`minecraft.tlake.io`)
+      kind: Rule
