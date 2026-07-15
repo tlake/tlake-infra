@@ -27,10 +27,10 @@ spec:
     spec:
       containers:
         - name: "vaultwarden-app"
-          # tag: 1.35.8-alpine
-          # index digest: sha256:f5d0368ee8d29b62afbf9b8e34dcd074e3e22a2973a82f947d2c3260f9e2389a
-          # https://hub.docker.com/layers/vaultwarden/server/1.35.8-alpine
-          image: "vaultwarden/server@sha256:f5d0368ee8d29b62afbf9b8e34dcd074e3e22a2973a82f947d2c3260f9e2389a"
+          # tag: 1.36.0-alpine
+          # index digest: sha256:d3531610b486905943706b235e97159331801c6856e1367a93a5905e2b40f204
+          # https://hub.docker.com/layers/vaultwarden/server/1.36.0-alpine
+          image: "vaultwarden/server@sha256:d3531610b486905943706b235e97159331801c6856e1367a93a5905e2b40f204"
           imagePullPolicy: "IfNotPresent"
 
           env:
