@@ -24,6 +24,7 @@ locals {
     "gitea",
     "gitlab",
     "grafana",
+    "immich",
     "it-tools",
     "jellyfin",
     "lazylibrarian",
