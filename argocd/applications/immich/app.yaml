@@ -1,0 +1,108 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "immich"
+    service:
+  name: "immich"
+  namespace: "immich"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "immich"
+
+  template:
+    metadata:
+      labels:
+        app: "immich"
+
+    spec:
+      containers:
+        - name: "immich"
+          # version x.y.z
+          image: "IMAGE_REF@IMAGE_SHA"
+          imagePullPolicy: "IfNotPresent"
+
+          env:
+            - name: "CHANGE_ENVVAR_NAME"
+              value: "CHANGE_ENVVAR_VALUE"
+
+          ports:
+            - name: "app"
+              containerPort: CHANGE_PORT_NUMBER
+
+          volumeMounts:
+            - name: "CHANGE_VOLUME_NAME"
+              mountPath: "/CHANGE_MOUNT_PATH"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "CHANGE_VOLUME_NAME"
+          persistentVolumeClaim:
+            claimName: "CHANGE_VOLUME_NAME"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "immich"
+
+spec:
+  ports:
+    - name: "http-traffic"
+      port: 80
+      targetPort: "app"
+
+  selector:
+    app: "immich"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "immich-web"
+  namespace: "immich"
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+    - match: Host(`immich.tlake.io`)
+      kind: Rule
+      services:
+        - name: "immich"
+          port: "http-traffic"
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+  name: "immich-websecure"
+  namespace: "immich"
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`immich.tlake.io`)
+      kind: Rule
+      services:
+        - name: "immich"
+          port: "http-traffic"
+
+  tls:
+    certResolver: "staging"
+
