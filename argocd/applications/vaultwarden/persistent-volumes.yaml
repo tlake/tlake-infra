@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "app-data"
+  name: "app-data-lh"
 spec:
   storageClassName: "longhorn"
   accessModes:
@@ -15,7 +15,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "postgres-data"
+  name: "postgres-data-lh"
 spec:
   storageClassName: "longhorn"
   accessModes:

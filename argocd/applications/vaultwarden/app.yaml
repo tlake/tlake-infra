@@ -107,7 +107,7 @@ spec:
       volumes:
         - name: "app-data"
           persistentVolumeClaim:
-            claimName: "app-data"
+            claimName: "app-data-lh"
 
 ---
 

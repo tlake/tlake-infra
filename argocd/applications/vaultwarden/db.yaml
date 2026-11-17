@@ -67,11 +67,11 @@ spec:
       volumes:
         - name: "app-data"
           persistentVolumeClaim:
-            claimName: "app-data"
+            claimName: "app-data-lh"
 
         - name: "postgres-data"
           persistentVolumeClaim:
-            claimName: "postgres-data"
+            claimName: "postgres-data-lh"
 
 ---
 
