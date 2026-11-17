@@ -3,6 +3,63 @@ apiVersion: apps/v1
 metadata:
   labels:
     app: "vaultwarden"
+    service: "vaultwarden-volfix"
+  name: "vaultwarden-volfix"
+  namespace: "vaultwarden"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "vaultwarden"
+
+  template:
+    metadata:
+      labels:
+        app: "vaultwarden"
+        service: "vaultwarden-volfix"
+      name: "vaultwarden-volfix"
+      namespace: "vaultwarden"
+
+    spec:
+      containers:
+        - name: "volfix"
+          # tag v16.8-alpine3.21
+          image: "alpine"
+          imagePullPolicy: "IfNotPresent"
+
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "80Mi"
+
+          volumeMounts:
+            - name: "app-data"
+              mountPath: "/tmp/app-data"
+            - name: "postgres-data"
+              mountPath: "/tmp/postgres-data"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "app-data"
+          persistentVolumeClaim:
+            claimName: "app-data-lh"
+
+        - name: "postgres-data"
+          persistentVolumeClaim:
+            claimName: "postgres-data-lh"
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "vaultwarden"
     service: "vaultwarden-postgres"
   name: "vaultwarden-postgres"
   namespace: "vaultwarden"
