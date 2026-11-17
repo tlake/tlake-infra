@@ -29,6 +29,7 @@ spec:
           # tag v16.8-alpine3.21
           image: "alpine"
           imagePullPolicy: "IfNotPresent"
+          command: ["sh", "-c", "sleep infinity"]
 
           resources:
             requests:
