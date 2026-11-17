@@ -8,7 +8,7 @@ metadata:
   namespace: "foundryvtt-ando"
 
 spec:
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 0
 
   selector:
@@ -108,7 +108,7 @@ spec:
       volumes:
         - name: "container-cache"
           persistentVolumeClaim:
-            claimName: "container-cache"
+            claimName: "container-cache-lh"
 
         - name: "data"
           persistentVolumeClaim:
@@ -116,7 +116,7 @@ spec:
 
         - name: "load"
           persistentVolumeClaim:
-            claimName: "load"
+            claimName: "load-lh"
 
 ---
 

@@ -1,0 +1,55 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "foundryvtt-ando"
+    service: "foundryvtt-ando-nasfix"
+  name: "foundryvtt-ando-nasfix"
+  namespace: "foundryvtt-ando"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "foundryvtt-ando"
+      service: "foundryvtt-ando-nasfix"
+
+  template:
+    metadata:
+      labels:
+        app: "foundryvtt-ando"
+        service: "foundryvtt-ando-nasfix"
+      name: "foundryvtt-ando-nasfix"
+      namespace: "foundryvtt-ando"
+
+    spec:
+      containers:
+        - name: "nasfix"
+          command: ["/bin/sh", "-c", "sleep infinity"]
+          image: "nasfix"
+          imagePullPolicy: "IfNotPresent"
+
+          volumeMounts:
+            - name: "backup"
+              mountPath: "/tmp/backup"
+            - name: "container-cache"
+              mountPath: "/tmp/container-cache"
+            - name: "load"
+              mountPath: "/tmp/load"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "container-cache"
+          persistentVolumeClaim:
+            claimName: "container-cache-lh"
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup-lh"
+        - name: "load"
+          persistentVolumeClaim:
+            claimName: "load-lh"
+
