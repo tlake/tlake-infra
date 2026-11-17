@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
 - app.yaml
-- nasfix.yaml
 - persistent-volumes.yaml
 - rsync.yaml
 
