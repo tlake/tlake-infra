@@ -51,28 +51,28 @@ spec:
               memory: "200Mi"
 
           volumeMounts:
-            - name: "certs"
+            - name: "certs-lh"
               mountPath: "/etc/certs"
 
-            - name: "dynamic-config"
+            - name: "dynamic-config-lh"
               mountPath: "/etc/dynamic-config"
 
-            - name: "static-config"
+            - name: "static-config-lh"
               mountPath: "/etc/traefik"
 
       imagePullSecrets:
         - name: "dockerhub-tlake-read-only"
 
       volumes:
-        - name: "certs"
+        - name: "certs-lh"
           persistentVolumeClaim:
-            claimName: "certs"
+            claimName: "certs-lh"
 
-        - name: "dynamic-config"
+        - name: "dynamic-config-lh"
           persistentVolumeClaim:
-            claimName: "dynamic-config"
+            claimName: "dynamic-config-lh"
 
-        - name: "static-config"
+        - name: "static-config-lh"
           persistentVolumeClaim:
-            claimName: "static-config"
+            claimName: "static-config-lh"
 
