@@ -28,7 +28,7 @@ spec:
       containers:
         - name: "nasfix"
           command: ["/bin/sh", "-c", "sleep infinity"]
-          image: "nasfix"
+          image: "alpine"
           imagePullPolicy: "IfNotPresent"
 
           volumeMounts:
