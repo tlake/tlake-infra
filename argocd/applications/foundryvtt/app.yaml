@@ -3,12 +3,68 @@ apiVersion: apps/v1
 metadata:
   labels:
     app: "foundryvtt"
+    service: "foundryvtt-nasfix"
+  name: "foundryvtt-nasfix"
+  namespace: "foundryvtt"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "foundryvtt"
+      service: "foundryvtt-nasfix"
+
+  template:
+    metadata:
+      labels:
+        app: "foundryvtt"
+        service: "foundryvtt-nasfix"
+      name: "foundryvtt-nasfix"
+      namespace: "foundryvtt"
+
+    spec:
+      containers:
+        - name: "nasfix"
+          image: "alpine"
+          imagePullPolicy: "IfNotPresent"
+          command: ["/bin/sh", "-c", "sleep infinity"]
+          volumeMounts:
+            - name: "backup"
+              mountPath: "/tmp/backup"
+            - name: "container-cache"
+              mountPath: "/tmp/container-cache"
+            - name: "load"
+              mountPath: "/tmp/load"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup-lh"
+        - name: "container-cache"
+          persistentVolumeClaim:
+            claimName: "container-cache-lh"
+        - name: "load"
+          persistentVolumeClaim:
+            claimName: "load-lh"
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "foundryvtt"
     service: "foundryvtt-app"
   name: "foundryvtt-app"
   namespace: "foundryvtt"
 
 spec:
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 0
 
   selector:
@@ -111,7 +167,7 @@ spec:
       volumes:
         - name: "container-cache"
           persistentVolumeClaim:
-            claimName: "container-cache"
+            claimName: "container-cache-lh"
 
         - name: "data"
           persistentVolumeClaim:
@@ -119,7 +175,7 @@ spec:
 
         - name: "load"
           persistentVolumeClaim:
-            claimName: "load"
+            claimName: "load-lh"
 
 ---
 

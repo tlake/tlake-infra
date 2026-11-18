@@ -23,7 +23,7 @@ metadata:
   namespace: "foundryvtt"
 
 spec:
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 0
 
   selector:
@@ -86,7 +86,7 @@ spec:
       volumes:
         - name: "backup"
           persistentVolumeClaim:
-            claimName: "backup"
+            claimName: "backup-lh"
 
         - name: "crontab"
           configMap:
