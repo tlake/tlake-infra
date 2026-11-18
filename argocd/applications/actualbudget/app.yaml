@@ -59,7 +59,7 @@ spec:
       volumes:
         - name: "data"
           persistentVolumeClaim:
-            claimName: "data-lh"
+            claimName: "data"
 
 ---
 
