@@ -29,12 +29,12 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "backup"
+  name: "backup-lh"
 spec:
-  storageClassName: "nfs-client"
+  storageClassName: "longhorn"
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: "10Mi"
+      storage: "15Gi"
 
