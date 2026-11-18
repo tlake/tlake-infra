@@ -3,12 +3,67 @@ apiVersion: apps/v1
 metadata:
   labels:
     app: "actualbudget"
+    service: "actualbudget-fix"
+  name: "actualbudget-fix"
+  namespace: "actualbudget"
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+
+  selector:
+    matchLabels:
+      app: "actualbudget"
+      service: "actualbudget-fix"
+
+  template:
+    metadata:
+      labels:
+        app: "actualbudget"
+        service: "actualbudget-fix"
+      name: "actualbudget-fix"
+      namespace: "actualbudget"
+    spec:
+      containers:
+        - name: "alpine"
+          image: "alpine"
+          imagePullPolicy: "IfNotPresent"
+          command: ["/bin/sh", "-c", "sleep infinity"]
+          volumeMounts:
+            - name: "data"
+              mountPath: "/tmp/data"
+            - name: "data-lh"
+              mountPath: "/tmp/data-lh"
+            - name: "backup"
+              mountPath: "/tmp/backup"
+
+      imagePullSecrets:
+        - name: "dockerhub-tlake-read-only"
+
+      volumes:
+        - name: "data"
+          persistentVolumeClaim:
+            claimName: "data"
+        - name: "data-lh"
+          persistentVolumeClaim:
+            claimName: "data-lh"
+        - name: "backup"
+          persistentVolumeClaim:
+            claimName: "backup-lh"
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: "actualbudget"
     service: "actualbudget-app"
   name: "actualbudget-app"
   namespace: "actualbudget"
 
 spec:
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 0
 
   selector:

@@ -23,7 +23,7 @@ metadata:
   namespace: "actualbudget"
 
 spec:
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 0
 
   selector:
@@ -83,5 +83,5 @@ spec:
 
         - name: "backup"
           persistentVolumeClaim:
-            claimName: "backup"
+            claimName: "backup-lh"
 
